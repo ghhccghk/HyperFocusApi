@@ -78,7 +78,7 @@ class FocusApi {
                            picbg:Icon? = null,
                            updatable:Boolean = true,
                            showSmallIcon:Boolean = true
-    ): NotificationCompat.Builder {
+    ): Bundle {
         val paramBundle = Bundle()
         val pics = Bundle()
         val param = JSONObject()
@@ -129,6 +129,6 @@ class FocusApi {
         }
         paramBundle.putBundle("miui.focus.pics", pics)
         builder.addExtras(paramBundle)
-        return builder
+        return paramBundle
     }
 }
