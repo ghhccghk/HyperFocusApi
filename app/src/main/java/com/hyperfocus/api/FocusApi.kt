@@ -114,6 +114,4 @@ class FocusApi {
         builder.addExtras(paramBundle)
         return paramBundle
     }
-
-
 }
