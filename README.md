@@ -43,4 +43,27 @@ dependencies {
 }
 ```
 
+### 3.如何在代码下使用
+
+```kotlin
+//代码还需要补充
+import com.hyperfocus.api.FocusApi
+
+val FocusApi = FocusApi()
+val builder = NotificationCompat.Builder(context, "lyricgetter")
+sendFocus(builder,
+    ticker = "text",
+    title = "text",
+    colorTitle = "#FFFFFF",
+    aodTitle = text,
+    aodPic = "miui.focus.pic_mark_v2",
+    picmarkv2 = Icon,
+    picmarkv2type = 3,
+    picticker = Icon,
+    picbg = Icon,)
+val notification = builder.build()
+(context.getSystemService("notification") as NotificationManager).notify(
+    "lyricgetter".hashCode(), notification
+)
+```
 正在建设
