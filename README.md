@@ -1,3 +1,5 @@
+![](https://socialify.git.ci/ghhccghk/HyperFocusApi/image?description=1&descriptionEditable=把小米澎湃的焦点通知写成api方便调用&language=1&name=1&owner=1&theme=Auto)
+
 [![](https://jitpack.io/v/ghhccghk/HyperFocusApi.svg)](https://jitpack.io/#ghhccghk/HyperFocusApi)
 
 ### 使用方法
@@ -67,3 +69,10 @@ val notification = builder.build()
 )
 ```
 正在建设
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ghhccghk/HyperFocusApi&type=Timeline)](https://star-history.com/#ghhccghk/HyperFocusApi&Timeline)
+
+## Thanks
+[<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" width="200"/>](https://www.jetbrains.com)
