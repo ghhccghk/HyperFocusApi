@@ -197,194 +197,194 @@ public class HyperFocusNotify {
      * 内部 Builder 类，提供链式调用设置各项参数
      */
     public static class Builder {
-        private final HyperFocusNotify hyperFocusNotify;
+        private final HyperFocusNotify mHyperFocusNotify;
 
         private Builder(HyperFocusNotify hyperFocusNotify) {
-            this.hyperFocusNotify = hyperFocusNotify;
+            this.mHyperFocusNotify = hyperFocusNotify;
         }
 
         public Builder setTitle(String title) {
-            hyperFocusNotify.title = title;
+            mHyperFocusNotify.title = title;
             return this;
         }
 
         public Builder setTicker(String ticker) {
-            hyperFocusNotify.ticker = ticker;
+            mHyperFocusNotify.ticker = ticker;
             return this;
         }
 
         public Builder setContent(String content) {
-            hyperFocusNotify.content = content;
+            mHyperFocusNotify.content = content;
             return this;
         }
 
         public Builder setAodTitle(String aodTitle) {
-            hyperFocusNotify.aodTitle = aodTitle;
+            mHyperFocusNotify.aodTitle = aodTitle;
             return this;
         }
 
         public Builder setSubTitle(String subTitle) {
-            hyperFocusNotify.subTitle = subTitle;
+            mHyperFocusNotify.subTitle = subTitle;
             return this;
         }
 
         public Builder setSubContent(String subContent) {
-            hyperFocusNotify.subContent = subContent;
+            mHyperFocusNotify.subContent = subContent;
             return this;
         }
 
         public Builder setExtraTitle(String extraTitle) {
-            hyperFocusNotify.extraTitle = extraTitle;
+            mHyperFocusNotify.extraTitle = extraTitle;
             return this;
         }
 
         public Builder setSpecialTitle(String specialTitle) {
-            hyperFocusNotify.specialTitle = specialTitle;
+            mHyperFocusNotify.specialTitle = specialTitle;
             return this;
         }
 
         public Builder setDesc1(String desc1) {
-            hyperFocusNotify.desc1 = desc1;
+            mHyperFocusNotify.desc1 = desc1;
             return this;
         }
 
         public Builder setDesc2(String desc2) {
-            hyperFocusNotify.desc2 = desc2;
+            mHyperFocusNotify.desc2 = desc2;
             return this;
         }
 
         public Builder setColorSubTitle(String colorSubTitle) {
-            hyperFocusNotify.colorSubTitle = colorSubTitle;
+            mHyperFocusNotify.colorSubTitle = colorSubTitle;
             return this;
         }
 
         public Builder setColorSubTitleDark(String colorSubTitleDark) {
-            hyperFocusNotify.colorSubTitleDark = colorSubTitleDark;
+            mHyperFocusNotify.colorSubTitleDark = colorSubTitleDark;
             return this;
         }
 
         public Builder setColorSubContent(String colorSubContent) {
-            hyperFocusNotify.colorSubContent = colorSubContent;
+            mHyperFocusNotify.colorSubContent = colorSubContent;
             return this;
         }
 
         public Builder setColorSubContentDark(String colorSubContentDark) {
-            hyperFocusNotify.colorSubContentDark = colorSubContentDark;
+            mHyperFocusNotify.colorSubContentDark = colorSubContentDark;
             return this;
         }
 
         public Builder setColorContent(String colorContent) {
-            hyperFocusNotify.colorContent = colorContent;
+            mHyperFocusNotify.colorContent = colorContent;
             return this;
         }
 
         public Builder setColorContentDark(String colorContentDark) {
-            hyperFocusNotify.colorContentDark = colorContentDark;
+            mHyperFocusNotify.colorContentDark = colorContentDark;
             return this;
         }
 
         public Builder setColorTitle(String colorTitle) {
-            hyperFocusNotify.colorTitle = colorTitle;
+            mHyperFocusNotify.colorTitle = colorTitle;
             return this;
         }
 
         public Builder setColorTitleDark(String colorTitleDark) {
-            hyperFocusNotify.colorTitleDark = colorTitleDark;
+            mHyperFocusNotify.colorTitleDark = colorTitleDark;
             return this;
         }
 
         public Builder setColorExtraTitle(String colorExtraTitle) {
-            hyperFocusNotify.colorExtraTitle = colorExtraTitle;
+            mHyperFocusNotify.colorExtraTitle = colorExtraTitle;
             return this;
         }
 
         public Builder setColorExtraTitleDark(String colorExtraTitleDark) {
-            hyperFocusNotify.colorExtraTitleDark = colorExtraTitleDark;
+            mHyperFocusNotify.colorExtraTitleDark = colorExtraTitleDark;
             return this;
         }
 
         public Builder setColorSpecialTitle(String colorSpecialTitle) {
-            hyperFocusNotify.colorSpecialTitle = colorSpecialTitle;
+            mHyperFocusNotify.colorSpecialTitle = colorSpecialTitle;
             return this;
         }
 
         public Builder setColorSpecialTitleDark(String colorSpecialTitleDark) {
-            hyperFocusNotify.colorSpecialTitleDark = colorSpecialTitleDark;
+            mHyperFocusNotify.colorSpecialTitleDark = colorSpecialTitleDark;
             return this;
         }
 
         public Builder setColorSpecialTitleBg(String colorSpecialTitleBg) {
-            hyperFocusNotify.colorSpecialTitleBg = colorSpecialTitleBg;
+            mHyperFocusNotify.colorSpecialTitleBg = colorSpecialTitleBg;
             return this;
         }
 
         public Builder setPicTicker(Icon picTicker) {
-            hyperFocusNotify.picTicker = picTicker;
+            mHyperFocusNotify.picTicker = picTicker;
             return this;
         }
 
         public Builder setPicTickerDark(Icon picTickerDark) {
-            hyperFocusNotify.picTickerDark = picTickerDark;
+            mHyperFocusNotify.picTickerDark = picTickerDark;
             return this;
         }
 
         public Builder setPicMarkV2(Icon picMarkV2) {
-            hyperFocusNotify.picMarkV2 = picMarkV2;
+            mHyperFocusNotify.picMarkV2 = picMarkV2;
             return this;
         }
 
         public Builder setAodPic(String aodPic) {
-            hyperFocusNotify.aodPic = aodPic;
+            mHyperFocusNotify.aodPic = aodPic;
             return this;
         }
 
         public Builder setPicBg(Icon picBg) {
-            hyperFocusNotify.picBg = picBg;
+            mHyperFocusNotify.picBg = picBg;
             return this;
         }
 
         public Builder setPicBgType(int picBgType) {
-            hyperFocusNotify.picBgType = picBgType;
+            mHyperFocusNotify.picBgType = picBgType;
             return this;
         }
 
         public Builder setBaseType(int basetype) {
-            hyperFocusNotify.baseType = basetype;
+            mHyperFocusNotify.baseType = basetype;
             return this;
         }
 
         public Builder setProtocol(int protocol) {
-            hyperFocusNotify.protocol = protocol;
+            mHyperFocusNotify.protocol = protocol;
             return this;
         }
 
         public Builder setPicMarkV2Type(int picMarkV2Type) {
-            hyperFocusNotify.picMarkV2Type = picMarkV2Type;
+            mHyperFocusNotify.picMarkV2Type = picMarkV2Type;
             return this;
         }
 
         public Builder setTimeout(Integer timeout) {
-            hyperFocusNotify.timeout = timeout;
+            mHyperFocusNotify.timeout = timeout;
             return this;
         }
 
         public Builder setNormalHeight(Integer normalHeight) {
-            hyperFocusNotify.normalHeight = normalHeight;
+            mHyperFocusNotify.normalHeight = normalHeight;
             return this;
         }
 
         public Builder setUpdatable(boolean updatable) {
-            hyperFocusNotify.updatable = updatable;
+            mHyperFocusNotify.updatable = updatable;
             return this;
         }
 
         public Builder setEnableFloat(boolean enableFloat) {
-            hyperFocusNotify.enableFloat = enableFloat;
+            mHyperFocusNotify.enableFloat = enableFloat;
             return this;
         }
 
         public Builder setPadding(boolean padding) {
-            hyperFocusNotify.padding = padding;
+            mHyperFocusNotify.padding = padding;
             return this;
         }
 
@@ -394,7 +394,7 @@ public class HyperFocusNotify {
          * @return 构造好的 Bundle
          */
         public Bundle build() {
-            return hyperFocusNotify.buildBundle();
+            return mHyperFocusNotify.buildBundle();
         }
     }
 }
