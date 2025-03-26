@@ -10,219 +10,391 @@ import androidx.core.app.NotificationCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class HyperFocusNotify {
-    private static Builder mBuilder;
-    private final Bundle mParamBundle = new Bundle();
-    private final Bundle mPicsBundle = new Bundle();
-    private final JSONObject mParam = new JSONObject();
-    private final JSONObject mParam_v2 = new JSONObject();
-    private final JSONObject mBaseInfo = new JSONObject();
+    private final NotificationCompat.Builder mNotifyBuilder;
 
-    private HyperFocusNotify() {
+    private String title = "";
+    private String ticker = "";
+    private String content = null;
+    private String aodTitle = null;
+    private String subTitle = null;
+    private String subContent = null;
+    private String extraTitle = null;
+    private String specialTitle = null;
+    private String desc1 = null;
+    private String desc2 = null;
+    private String colorSubTitle = "#000000";
+    private String colorSubTitleDark = "#000000";
+    private String colorSubContent = "#000000";
+    private String colorSubContentDark = null;
+    private String colorContent = "#000000";
+    private String colorContentDark = null;
+    private String colorTitle = "#000000";
+    private String colorTitleDark = null;
+    private String colorExtraTitle = "#000000";
+    private String colorExtraTitleDark = null;
+    private String colorSpecialTitle = "#000000";
+    private String colorSpecialTitleDark = null;
+    private String colorSpecialTitleBg = "#000000";
+    private Icon picTicker;
+    private Icon picTickerDark = null;
+    private Icon picMarkV2 = null;
+    private String aodPic = null;
+    private Icon picBg = null;
+    private int picBgType = 1;
+    private int baseType = 1;
+    private int protocol = 1;
+    private int picMarkV2Type = 1;
+    private Integer timeout = 280;
+    private Integer normalHeight = null;
+    private boolean updatable = true;
+    private boolean enableFloat = false;
+    private boolean padding = false;
+
+    // 私有构造函数
+    private HyperFocusNotify(NotificationCompat.Builder builder) {
+        this.mNotifyBuilder = builder;
     }
 
-    public static Builder builder(NotificationCompat.Builder builder) {
-        return mBuilder = new Builder(new HyperFocusNotify(), builder);
-    }
+    /**
+     * 组装 Bundle 的过程：
+     * 1. 构造 baseInfo JSON（基础通知信息）。
+     * 2. 构造 param_v2 JSON（扩展通知参数），包括状态栏图标、背景图、右侧标志、aod参数等。
+     * 3. 将图片相关 Bundle 与 JSON 数据放入最终 Bundle 中，并添加到 notifyBuilder 的 extras 中。
+     *
+     * @return 构建好的 Bundle
+     */
+    private Bundle buildBundle() {
+        Bundle paramBundle = new Bundle();
+        Bundle pics = new Bundle();
+        JSONObject param = new JSONObject();
+        JSONObject param_v2 = new JSONObject();
+        JSONObject baseInfo = new JSONObject();
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private Bundle create() {
         try {
-            mBaseInfo.put("title", mBuilder.mTitle);
-            mBaseInfo.put("colorTitle", mBuilder.mTitleColor);
-            mBaseInfo.put("type", mBuilder.mBaseType);
+            // 填充 baseInfo
+            baseInfo.put("title", title);
+            baseInfo.put("colorTitle", colorTitle);
+            baseInfo.put("type", baseType);
+            if (colorTitleDark != null) {
+                baseInfo.put("colorTitleDark", colorTitleDark);
+            }
+            if (content != null) {
+                baseInfo.put("content", content);
+                baseInfo.put("colorContent", colorContent);
+                if (colorContentDark != null) {
+                    baseInfo.put("colorContentDark", colorContentDark);
+                }
+            }
+            if (subContent != null) {
+                baseInfo.put("subContent", subContent);
+                baseInfo.put("colorSubContent", colorSubContent);
+                if (colorSubContentDark != null) {
+                    baseInfo.put("colorSubContentDark", colorSubContentDark);
+                }
+            }
+            if (extraTitle != null) {
+                baseInfo.put("extraTitle", extraTitle);
+                baseInfo.put("colorExtraTitle", colorExtraTitle);
+                if (colorExtraTitleDark != null) {
+                    baseInfo.put("colorExtraTitleDark", colorExtraTitleDark);
+                }
+            }
+            if (specialTitle != null) {
+                baseInfo.put("specialTitle", specialTitle);
+                baseInfo.put("colorSpecialTitle", colorSpecialTitle);
+                if (colorSpecialTitleDark != null) {
+                    baseInfo.put("colorSpecialTitleDark", colorSpecialTitleDark);
+                }
+                baseInfo.put("colorSpecialTitleBg", colorSpecialTitleBg);
+            }
+            if (subTitle != null) {
+                baseInfo.put("subTitle", subTitle);
+                baseInfo.put("colorSubTitle", colorSubTitle);
+                if (colorSubTitleDark != null) {
+                    baseInfo.put("colorSubTitleDark", colorSubTitleDark);
+                }
+            }
+            if (desc1 != null) {
+                baseInfo.put("desc1", desc1);
+            }
+            if (desc2 != null) {
+                baseInfo.put("desc2", desc2);
+            }
 
-            mParam_v2.put("protocol", mBuilder.mProtocol);
-            mParam_v2.put("aodTitle", mBuilder.mTitle);
-            mParam_v2.put("enableFloat", mBuilder.isEnableFloat);
-            mParam_v2.put("ticker", mBuilder.mTicker);
-            mParam_v2.put("tickerPic", "miui.focus.pic_ticker");
-            mParam_v2.put("tickerPicDark", "miui.focus.pic_ticker_dark");
-            mParam_v2.put("updatable", mBuilder.isUpdatable);
+            // 填充 param_v2
+            param_v2.put("protocol", protocol);
+            param_v2.put("enableFloat", enableFloat);
+            param_v2.put("ticker", ticker);
+            param_v2.put("tickerPic", "miui.focus.pic_ticker");
+            param_v2.put("updatable", updatable);
+            param_v2.put("padding", padding);
+            if (normalHeight != null) {
+                param_v2.put("normalHeight", normalHeight);
+            }
 
-            if (mBuilder.mPicTicker != null)
-                mPicsBundle.putParcelable("miui.focus.pic_ticker", mBuilder.mPicTicker);
-            if (mBuilder.mPicTickerDark != null)
-                mPicsBundle.putParcelable("miui.focus.pic_ticker_dark", mBuilder.mPicTickerDark);
-            if (mBuilder.mPicBg != null) {
+            // 添加状态栏图标
+            pics.putParcelable("miui.focus.pic_ticker", picTicker);
+            if (picTickerDark != null) {
+                param_v2.put("tickerPicDark", "miui.focus.pic_ticker_dark");
+                pics.putParcelable("miui.focus.pic_ticker_dark", picTickerDark);
+            }
+
+            // 添加背景图片及参数
+            if (picBg != null) {
                 JSONObject bgInfo = new JSONObject();
-                bgInfo.put("type", mBuilder.mPicBgType);
+                bgInfo.put("type", picBgType);
                 bgInfo.put("picBg", "miui.focus.pic_bg");
-                mParam_v2.put("bgInfo", bgInfo);
-                mPicsBundle.putParcelable("miui.focus.pic_bg", mBuilder.mPicBg);
+                param_v2.put("bgInfo", bgInfo);
+                pics.putParcelable("miui.focus.pic_bg", picBg);
             }
 
-            if (mBuilder.mPicMarkV2 != null) {
+            // 添加右侧标志图片及参数
+            if (picMarkV2 != null) {
                 JSONObject picInfo = new JSONObject();
-                picInfo.put("type", mBuilder.mPicMarkV2Type);
+                picInfo.put("type", picMarkV2Type);
                 picInfo.put("pic", "miui.focus.pic_mark_v2");
-                mParam_v2.put("picInfo", picInfo);
-                mPicsBundle.putParcelable("miui.focus.pic_mark_v2", mBuilder.mPicMarkV2);
+                param_v2.put("picInfo", picInfo);
+                pics.putParcelable("miui.focus.pic_mark_v2", picMarkV2);
             }
 
-            mParamBundle.putBundle("miui.focus.pics", mPicsBundle);
-
-            if (mBuilder.mContent != null) {
-                mBaseInfo.put("content", mBuilder.mContent);
-                mBaseInfo.put("colorContent", mBuilder.mContentColor);
+            // aod相关信息
+            if (aodTitle != null) {
+                param_v2.put("aodTitle", title);
+                if (aodPic != null) {
+                    param_v2.put("aodPic", aodPic);
+                }
             }
-            if (mBuilder.mSubContent != null) {
-                mBaseInfo.put("subContent", mBuilder.mSubContent);
-                mBaseInfo.put("colorSubContent", mBuilder.mSubContentColor);
+            // 超时参数
+            if (timeout != null) {
+                param_v2.put("timeout", timeout);
             }
 
-            mParam_v2.put("baseInfo", mBaseInfo);
-            mParam.put("param_v2", mParam_v2);
-            mParamBundle.putString("miui.focus.param", mParam.toString());
+            // 整合 Bundle 数据
+            paramBundle.putBundle("miui.focus.pics", pics);
+            param_v2.put("baseInfo", baseInfo);
+            param.put("param_v2", param_v2);
+            paramBundle.putString("miui.focus.param", param.toString());
+
+            // 将参数添加到通知构造器中
+            mNotifyBuilder.addExtras(paramBundle);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        mBuilder.mNotifyBuilder.addExtras(mParamBundle);
-        return mParamBundle;
+        return paramBundle;
     }
 
+    /**
+     * 静态工厂方法，传入 NotificationCompat.Builder 后返回 Builder 实例
+     */
+    public static Builder builder(NotificationCompat.Builder builder) {
+        return new Builder(new HyperFocusNotify(builder));
+    }
+
+    /**
+     * 内部 Builder 类，提供链式调用设置各项参数
+     */
     public static class Builder {
-        private final HyperFocusNotify mHyperFocusNotify;
-        private final NotificationCompat.Builder mNotifyBuilder;
-        private String mTicker = "";
-        private String mTitle = "";
-        private String mTitleColor = "#000000";
-        private String mContent;
-        private String mContentColor = "#000000";
-        private String mSubContent;
-        private String mSubContentColor = "#000000";
-        private Icon mPicTicker;
-        private Icon mPicTickerDark;
-        private Icon mPicBg;
-        private Icon mPicMarkV2;
-        private int mPicBgType = 1;
-        private int mPicMarkV2Type = 1;
-        private int mBaseType = 1;
-        private int mProtocol = 1;
-        private boolean isUpdatable = true;
-        private boolean isEnableFloat = false;
+        private final HyperFocusNotify hyperFocusNotify;
 
-        private Builder(HyperFocusNotify hyperFocusNotify, NotificationCompat.Builder builder) {
-            mHyperFocusNotify = hyperFocusNotify;
-            mNotifyBuilder = builder;
+        private Builder(HyperFocusNotify hyperFocusNotify) {
+            this.hyperFocusNotify = hyperFocusNotify;
         }
 
-        /**
-         * 标题
-         * */
         public Builder setTitle(String title) {
-            mTitle = title;
+            hyperFocusNotify.title = title;
             return this;
         }
 
-        /**
-         * 标题颜色
-         * */
-        public Builder setTitleColor(String titleColor) {
-            mTitleColor = titleColor;
-            return this;
-        }
-
-        /**
-         * 小标题
-         * */
-        public Builder setContent(String content) {
-            mContent = content;
-            return this;
-        }
-
-        /**
-         * 小标题颜色
-         */
-        public Builder setContentColor(String contentColor) {
-            mContentColor = contentColor;
-            return this;
-        }
-
-        /**
-         * 小标题边上的小标题
-         */
-        public Builder setSubContent(String subContent) {
-            mSubContent = subContent;
-            return this;
-        }
-
-        /**
-         * 小标题边上的小标题颜色
-         * */
-        public Builder setSubContentColor(String subContentColor) {
-            mSubContentColor = subContentColor;
-            return this;
-        }
-
-        /**
-         * 状态栏内容
-         * */
         public Builder setTicker(String ticker) {
-            mTicker = ticker;
+            hyperFocusNotify.ticker = ticker;
             return this;
         }
 
-        /**
-         * 状态栏图标
-         * */
+        public Builder setContent(String content) {
+            hyperFocusNotify.content = content;
+            return this;
+        }
+
+        public Builder setAodTitle(String aodTitle) {
+            hyperFocusNotify.aodTitle = aodTitle;
+            return this;
+        }
+
+        public Builder setSubTitle(String subTitle) {
+            hyperFocusNotify.subTitle = subTitle;
+            return this;
+        }
+
+        public Builder setSubContent(String subContent) {
+            hyperFocusNotify.subContent = subContent;
+            return this;
+        }
+
+        public Builder setExtraTitle(String extraTitle) {
+            hyperFocusNotify.extraTitle = extraTitle;
+            return this;
+        }
+
+        public Builder setSpecialTitle(String specialTitle) {
+            hyperFocusNotify.specialTitle = specialTitle;
+            return this;
+        }
+
+        public Builder setDesc1(String desc1) {
+            hyperFocusNotify.desc1 = desc1;
+            return this;
+        }
+
+        public Builder setDesc2(String desc2) {
+            hyperFocusNotify.desc2 = desc2;
+            return this;
+        }
+
+        public Builder setColorSubTitle(String colorSubTitle) {
+            hyperFocusNotify.colorSubTitle = colorSubTitle;
+            return this;
+        }
+
+        public Builder setColorSubTitleDark(String colorSubTitleDark) {
+            hyperFocusNotify.colorSubTitleDark = colorSubTitleDark;
+            return this;
+        }
+
+        public Builder setColorSubContent(String colorSubContent) {
+            hyperFocusNotify.colorSubContent = colorSubContent;
+            return this;
+        }
+
+        public Builder setColorSubContentDark(String colorSubContentDark) {
+            hyperFocusNotify.colorSubContentDark = colorSubContentDark;
+            return this;
+        }
+
+        public Builder setColorContent(String colorContent) {
+            hyperFocusNotify.colorContent = colorContent;
+            return this;
+        }
+
+        public Builder setColorContentDark(String colorContentDark) {
+            hyperFocusNotify.colorContentDark = colorContentDark;
+            return this;
+        }
+
+        public Builder setColorTitle(String colorTitle) {
+            hyperFocusNotify.colorTitle = colorTitle;
+            return this;
+        }
+
+        public Builder setColorTitleDark(String colorTitleDark) {
+            hyperFocusNotify.colorTitleDark = colorTitleDark;
+            return this;
+        }
+
+        public Builder setColorExtraTitle(String colorExtraTitle) {
+            hyperFocusNotify.colorExtraTitle = colorExtraTitle;
+            return this;
+        }
+
+        public Builder setColorExtraTitleDark(String colorExtraTitleDark) {
+            hyperFocusNotify.colorExtraTitleDark = colorExtraTitleDark;
+            return this;
+        }
+
+        public Builder setColorSpecialTitle(String colorSpecialTitle) {
+            hyperFocusNotify.colorSpecialTitle = colorSpecialTitle;
+            return this;
+        }
+
+        public Builder setColorSpecialTitleDark(String colorSpecialTitleDark) {
+            hyperFocusNotify.colorSpecialTitleDark = colorSpecialTitleDark;
+            return this;
+        }
+
+        public Builder setColorSpecialTitleBg(String colorSpecialTitleBg) {
+            hyperFocusNotify.colorSpecialTitleBg = colorSpecialTitleBg;
+            return this;
+        }
+
         public Builder setPicTicker(Icon picTicker) {
-            mPicTicker = picTicker;
+            hyperFocusNotify.picTicker = picTicker;
             return this;
         }
 
-        /**
-         * 深色模式下状态栏图标
-         */
         public Builder setPicTickerDark(Icon picTickerDark) {
-            mPicTickerDark = picTickerDark;
-            return this;
-        }
-
-        public Builder setPicBg(Icon picBg) {
-            mPicBg = picBg;
-            return this;
-        }
-
-        public Builder setPicBgType(int picBgType) {
-            mPicBgType = picBgType;
+            hyperFocusNotify.picTickerDark = picTickerDark;
             return this;
         }
 
         public Builder setPicMarkV2(Icon picMarkV2) {
-            mPicMarkV2 = picMarkV2;
+            hyperFocusNotify.picMarkV2 = picMarkV2;
             return this;
         }
 
-        public Builder setPicMarkV2Type(int picMarkV2Type) {
-            mPicMarkV2Type = picMarkV2Type;
+        public Builder setAodPic(String aodPic) {
+            hyperFocusNotify.aodPic = aodPic;
             return this;
         }
 
-        public Builder setBaseType(int baseType) {
-            mBaseType = baseType;
+        public Builder setPicBg(Icon picBg) {
+            hyperFocusNotify.picBg = picBg;
+            return this;
+        }
+
+        public Builder setPicBgType(int picBgType) {
+            hyperFocusNotify.picBgType = picBgType;
+            return this;
+        }
+
+        public Builder setBaseType(int basetype) {
+            hyperFocusNotify.baseType = basetype;
             return this;
         }
 
         public Builder setProtocol(int protocol) {
-            mProtocol = protocol;
+            hyperFocusNotify.protocol = protocol;
+            return this;
+        }
+
+        public Builder setPicMarkV2Type(int picMarkV2Type) {
+            hyperFocusNotify.picMarkV2Type = picMarkV2Type;
+            return this;
+        }
+
+        public Builder setTimeout(Integer timeout) {
+            hyperFocusNotify.timeout = timeout;
+            return this;
+        }
+
+        public Builder setNormalHeight(Integer normalHeight) {
+            hyperFocusNotify.normalHeight = normalHeight;
             return this;
         }
 
         public Builder setUpdatable(boolean updatable) {
-            isUpdatable = updatable;
+            hyperFocusNotify.updatable = updatable;
             return this;
         }
 
         public Builder setEnableFloat(boolean enableFloat) {
-            isEnableFloat = enableFloat;
+            hyperFocusNotify.enableFloat = enableFloat;
             return this;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        public Bundle create() {
-            return mHyperFocusNotify.create();
+        public Builder setPadding(boolean padding) {
+            hyperFocusNotify.padding = padding;
+            return this;
+        }
+
+        /**
+         * 构建 Bundle，同时将参数添加到传入的 NotificationCompat.Builder 中
+         *
+         * @return 构造好的 Bundle
+         */
+        public Bundle build() {
+            return hyperFocusNotify.buildBundle();
         }
     }
 }
