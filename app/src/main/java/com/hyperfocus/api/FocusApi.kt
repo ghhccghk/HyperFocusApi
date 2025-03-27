@@ -10,27 +10,13 @@ class FocusApi {
 
     /**发送焦点通知
      * @param ticker 焦点在状态栏内容
+     * @param scene 场景
+     * @param baseInfo 基础信息
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
      * @param subContent 焦点通知小标题边上的小标题
      * @param aodTitle aodTitle 息屏标题
-     * @param subTitle 焦点通知副标题
-     * @param extraTitle 焦点通知额外标题
-     * @param specialTitle 焦点通知特殊标题
-     * @param desc1 焦点通知描述1 (不可用
-     * @param desc2 焦点通知描述2 （不可用
-     * @param colorsubTitle 焦点通知小标题颜色
-     * @param colorSubContent 焦点通知小标题边上的小标题的颜色
-     * @param colorSubTitleDark 焦点通知副标题深色颜色
-     * @param colorTitle title颜色
-     * @param colorTitleDark title深色颜色
-     * @param colorContent Content颜色
-     * @param colorContentDark Content深色颜色
-     * @param colorExtraTitle extraTitle颜色
-     * @param colorExtraTitleDark extraTitle深色颜色
-     * @param colorSpecialTitle specialTitle颜色
-     * @param colorSpecialTitleDark specialTitle深色颜色
-     * @param colorSpecialTitleBg specialTitle背景颜色
+     * @param aodPic aodPic 息屏图标
      * @param normalHeight 焦点通知高度（无法使用）
      * @param picbgtype 背景标志 未知 1~2 可用
      * @param picmarkv2type 焦点通知右边标志 未知 1~4 可用
@@ -47,41 +33,27 @@ class FocusApi {
      * @param enableFloat 焦点通知是否弹出
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
-     * @param aodPic aodPic 息屏图标
      * @param builder 通知Builder */
     @SuppressLint("NewApi")
     fun sendFocus(
         builder: NotificationCompat.Builder,
+        baseInfo: JSONObject? = null,
+        highlightInfo: JSONObject? = null,
+        scene: String = "templateBaseScene",
         title: String,
-        ticker: String,
         content: String? = null,
-        aodTitle: String? = null,
-        subTitle: String? = null,
         subContent: String? = null,
-        extraTitle: String? = null,
-        specialTitle: String? = null,
-        desc1: String? = null,
-        desc2: String? = null,
-        colorsubTitle: String? = "#000000",
-        colorSubTitleDark: String? = "#000000",
         colorSubContent: String = "#000000",
         colorSubContentDark: String? = null,
-        colorContent: String = "#000000",
-        colorContentDark: String? = null,
-        colorTitle: String = "#000000",
-        colorTitleDark: String? = null,
-        colorExtraTitle: String = "#000000",
-        colorExtraTitleDark: String? = null,
-        colorSpecialTitle: String = "#000000",
-        colorSpecialTitleDark: String? = null,
-        colorSpecialTitleBg: String = "#000000",
+        ticker: String,
+        aodTitle: String? = null,
         picticker: Icon,
         pictickerdark: Icon? = null,
         picmarkv2: Icon? = null,
-        aodPic: String? = null,
+        aodPic: Icon? = null,
         picbg: Icon? = null,
+        picFunction: Icon? = null,
         picbgtype: Int = 1,
-        basetype: Int = 1,
         protocol: Int = 1,
         picmarkv2type: Int = 1,
         timeout: Int? = 280,
@@ -94,16 +66,7 @@ class FocusApi {
         val pics = Bundle()
         val param = JSONObject()
         val param_v2 = JSONObject()
-        val baseInfo = JSONObject()
 
-        baseInfo.put("title", title)
-        baseInfo.put("colorTitle", colorTitle)
-
-        if (colorTitleDark != null){
-            baseInfo.put("colorTitleDark", colorTitleDark)
-        }
-
-        baseInfo.put("type", basetype)
 
         param_v2.put("protocol", protocol)
         param_v2.put("enableFloat", enableFloat)
@@ -112,6 +75,9 @@ class FocusApi {
         param_v2.put("updatable", updatable)
         param_v2.put("padding", padding)
 
+        param.put("content", content)
+        param.put("title", title)
+        param.put("scene", scene)
         pics.putParcelable(
             "miui.focus.pic_ticker", picticker
         )
@@ -144,6 +110,99 @@ class FocusApi {
             pics.putParcelable("miui.focus.pic_mark_v2", picmarkv2)
         }
 
+
+        if (aodTitle != null){
+            param_v2.put("aodTitle", aodTitle)
+            if (aodPic != null){
+                pics.putParcelable("miui.focus.pic_aod", aodPic)
+                param_v2.put("aodPic", "miui.focus.pic_aod")
+            }
+        }
+
+
+        if (timeout != null){
+            param_v2.put("timeout", timeout)
+        }
+
+        if (highlightInfo != null){
+            param_v2.put("highlightInfo", highlightInfo)
+        }
+
+        if (picFunction != null && subContent != null){
+            pics.putParcelable("miui.focus.pic_notification", picFunction)
+            param_v2.put("subContent", subContent)
+            param_v2.put("colorSubContent", colorSubContent)
+            if (colorSubContentDark != null){
+                param_v2.put("colorSubContentDark", colorSubContentDark)
+            }
+            param_v2.put("picFunction", "miui.focus.pic_notification")
+        }
+
+
+        paramBundle.putBundle("miui.focus.pics", pics)
+        if (baseInfo != null){
+            param_v2.put("baseInfo", baseInfo)
+        }
+        param.put("param_v2", param_v2)
+        paramBundle.putString("miui.focus.param", param.toString())
+
+        builder.addExtras(paramBundle)
+        return paramBundle
+    }
+
+    /** Baseinfo
+     * @param title 焦点通知标题
+     * @param subTitle 焦点通知副标题
+     * @param extraTitle 焦点通知额外标题
+     * @param specialTitle 焦点通知特殊标题
+     * @param desc1 焦点通知描述1 (不可用
+     * @param desc2 焦点通知描述2 （不可用
+     * @param colorsubTitle 焦点通知小标题颜色
+     * @param colorSubContent 焦点通知小标题边上的小标题的颜色
+     * @param colorSubTitleDark 焦点通知副标题深色颜色
+     * @param colorTitle title颜色
+     * @param colorTitleDark title深色颜色
+     * @param colorContent Content颜色
+     * @param colorContentDark Content深色颜色
+     * @param colorExtraTitle extraTitle颜色
+     * @param colorExtraTitleDark extraTitle深色颜色
+     * @param colorSpecialTitle specialTitle颜色
+     * @param colorSpecialTitleDark specialTitle深色颜色
+     * @param colorSpecialTitleBg specialTitle背景颜色 */
+    fun baseinfo(
+        basetype: Int = 1,
+        title: String,
+        content: String? = null,
+        subTitle: String? = null,
+        subContent: String? = null,
+        extraTitle: String? = null,
+        specialTitle: String? = null,
+        desc1: String? = null,
+        desc2: String? = null,
+        colorsubTitle: String? = "#000000",
+        colorSubTitleDark: String? = "#000000",
+        colorSubContent: String = "#000000",
+        colorSubContentDark: String? = null,
+        colorContent: String = "#000000",
+        colorContentDark: String? = null,
+        colorTitle: String = "#000000",
+        colorTitleDark: String? = null,
+        colorExtraTitle: String = "#000000",
+        colorExtraTitleDark: String? = null,
+        colorSpecialTitle: String = "#000000",
+        colorSpecialTitleDark: String? = null,
+        colorSpecialTitleBg: String = "#000000",
+    ): JSONObject{
+        val baseInfo = JSONObject()
+
+        baseInfo.put("title", title)
+        baseInfo.put("colorTitle", colorTitle)
+
+        if (colorTitleDark != null){
+            baseInfo.put("colorTitleDark", colorTitleDark)
+        }
+
+
         if (content != null) {
             baseInfo.put("content", content)
             baseInfo.put("colorContent", colorContent)
@@ -168,6 +227,7 @@ class FocusApi {
                 baseInfo.put("colorExtraTitleDark", colorExtraTitleDark)
             }
         }
+
         if (specialTitle != null) {
             baseInfo.put("specialTitle", specialTitle)
             baseInfo.put("colorSpecialTitle", colorSpecialTitle)
@@ -178,12 +238,6 @@ class FocusApi {
             baseInfo.put("colorSpecialTitleBg", colorSpecialTitleBg)
         }
 
-        if (aodTitle != null){
-            param_v2.put("aodTitle", title)
-            if (aodPic != null){
-                param_v2.put("aodPic", aodPic)
-            }
-        }
         if (subTitle != null){
             baseInfo.put("subTitle", subTitle)
             baseInfo.put("colorSubTitle",colorsubTitle)
@@ -191,6 +245,7 @@ class FocusApi {
                 baseInfo.put("colorSubTitleDark", colorSubTitleDark)
             }
         }
+
         if (desc1 != null){
             baseInfo.put("desc1", desc1)
         }
@@ -199,16 +254,36 @@ class FocusApi {
             baseInfo.put("desc2", desc2)
         }
 
-        if (timeout != null){
-            param_v2.put("timeout", timeout)
+        baseInfo.put("type", basetype)
+        return baseInfo
+    }
+
+    fun highlightInfo(
+        type: Int = 1,
+        timerInfo: String? = null
+    ): JSONObject{
+        val highlightInfo = JSONObject()
+        highlightInfo.put("type", type)
+        if (timerInfo != null){
+            highlightInfo.put("timerInfo", timerInfo)
+        }
+        return highlightInfo
+    }
+
+    fun timerInfo(
+        timerType: Int = -1,
+        timerWhen: Long? = null,
+        timerSystemCurrent: Long? = null,
+        ): JSONObject {
+        val timerInfo = JSONObject()
+        timerInfo.put("timerType", timerType)
+        if (timerWhen != null){
+            timerInfo.put("timerWhen", timerWhen)
+        }
+        if (timerSystemCurrent != null){
+            timerInfo.put("timerSystemCurrent", timerSystemCurrent)
         }
 
-        paramBundle.putBundle("miui.focus.pics", pics)
-        param_v2.put("baseInfo", baseInfo)
-        param.put("param_v2", param_v2)
-        paramBundle.putString("miui.focus.param", param.toString())
-
-        builder.addExtras(paramBundle)
-        return paramBundle
+        return timerInfo
     }
 }
