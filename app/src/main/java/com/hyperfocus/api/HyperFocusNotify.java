@@ -6,394 +6,465 @@ import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * FocusApi 用于构建焦点通知的参数 Bundle，并添加到 NotificationCompat.Builder 中。
+ * 使用 Builder 模式进行参数设置，同时提供了多个辅助 Builder 用于构建各类 JSON 对象。
+ */
 public class HyperFocusNotify {
-    private final NotificationCompat.Builder mNotifyBuilder;
+    private final Bundle paramsBundle;
 
-    private String title = "";
-    private String ticker = "";
-    private String content = null;
-    private String aodTitle = null;
-    private String subTitle = null;
-    private String subContent = null;
-    private String extraTitle = null;
-    private String specialTitle = null;
-    private String desc1 = null;
-    private String desc2 = null;
-    private String colorSubTitle = "#000000";
-    private String colorSubTitleDark = "#000000";
-    private String colorSubContent = "#000000";
-    private String colorSubContentDark = null;
-    private String colorContent = "#000000";
-    private String colorContentDark = null;
-    private String colorTitle = "#000000";
-    private String colorTitleDark = null;
-    private String colorExtraTitle = "#000000";
-    private String colorExtraTitleDark = null;
-    private String colorSpecialTitle = "#000000";
-    private String colorSpecialTitleDark = null;
-    private String colorSpecialTitleBg = "#000000";
-    private Icon picTicker;
-    private Icon picTickerDark = null;
-    private Icon picMarkV2 = null;
-    private String aodPic = null;
-    private Icon picBg = null;
-    private int picBgType = 1;
-    private int baseType = 1;
-    private int protocol = 1;
-    private int picMarkV2Type = 1;
-    private Integer timeout = 280;
-    private Integer normalHeight = null;
-    private boolean updatable = true;
-    private boolean enableFloat = false;
-    private boolean padding = false;
-
-    // 私有构造函数
-    private HyperFocusNotify(NotificationCompat.Builder builder) {
-        this.mNotifyBuilder = builder;
+    private HyperFocusNotify(Bundle paramsBundle) {
+        this.paramsBundle = paramsBundle;
     }
 
     /**
-     * 组装 Bundle 的过程：
-     * 1. 构造 baseInfo JSON（基础通知信息）。
-     * 2. 构造 param_v2 JSON（扩展通知参数），包括状态栏图标、背景图、右侧标志、aod参数等。
-     * 3. 将图片相关 Bundle 与 JSON 数据放入最终 Bundle 中，并添加到 notifyBuilder 的 extras 中。
+     * 获取构建好的参数 Bundle。
      *
-     * @return 构建好的 Bundle
+     * @return Bundle 包含所有焦点通知参数
      */
-    @SuppressLint("NewApi")
-    private Bundle buildBundle() {
-        Bundle paramBundle = new Bundle();
-        Bundle pics = new Bundle();
-        JSONObject param = new JSONObject();
-        JSONObject param_v2 = new JSONObject();
-        JSONObject baseInfo = new JSONObject();
-
-        try {
-            // 填充 baseInfo
-            baseInfo.put("title", title);
-            baseInfo.put("colorTitle", colorTitle);
-            baseInfo.put("type", baseType);
-            if (colorTitleDark != null) {
-                baseInfo.put("colorTitleDark", colorTitleDark);
-            }
-            if (content != null) {
-                baseInfo.put("content", content);
-                baseInfo.put("colorContent", colorContent);
-                if (colorContentDark != null) {
-                    baseInfo.put("colorContentDark", colorContentDark);
-                }
-            }
-            if (subContent != null) {
-                baseInfo.put("subContent", subContent);
-                baseInfo.put("colorSubContent", colorSubContent);
-                if (colorSubContentDark != null) {
-                    baseInfo.put("colorSubContentDark", colorSubContentDark);
-                }
-            }
-            if (extraTitle != null) {
-                baseInfo.put("extraTitle", extraTitle);
-                baseInfo.put("colorExtraTitle", colorExtraTitle);
-                if (colorExtraTitleDark != null) {
-                    baseInfo.put("colorExtraTitleDark", colorExtraTitleDark);
-                }
-            }
-            if (specialTitle != null) {
-                baseInfo.put("specialTitle", specialTitle);
-                baseInfo.put("colorSpecialTitle", colorSpecialTitle);
-                if (colorSpecialTitleDark != null) {
-                    baseInfo.put("colorSpecialTitleDark", colorSpecialTitleDark);
-                }
-                baseInfo.put("colorSpecialTitleBg", colorSpecialTitleBg);
-            }
-            if (subTitle != null) {
-                baseInfo.put("subTitle", subTitle);
-                baseInfo.put("colorSubTitle", colorSubTitle);
-                if (colorSubTitleDark != null) {
-                    baseInfo.put("colorSubTitleDark", colorSubTitleDark);
-                }
-            }
-            if (desc1 != null) {
-                baseInfo.put("desc1", desc1);
-            }
-            if (desc2 != null) {
-                baseInfo.put("desc2", desc2);
-            }
-
-            // 填充 param_v2
-            param_v2.put("protocol", protocol);
-            param_v2.put("enableFloat", enableFloat);
-            param_v2.put("ticker", ticker);
-            param_v2.put("tickerPic", "miui.focus.pic_ticker");
-            param_v2.put("updatable", updatable);
-            param_v2.put("padding", padding);
-            if (normalHeight != null) {
-                param_v2.put("normalHeight", normalHeight);
-            }
-
-            // 添加状态栏图标
-            pics.putParcelable("miui.focus.pic_ticker", picTicker);
-            if (picTickerDark != null) {
-                param_v2.put("tickerPicDark", "miui.focus.pic_ticker_dark");
-                pics.putParcelable("miui.focus.pic_ticker_dark", picTickerDark);
-            }
-
-            // 添加背景图片及参数
-            if (picBg != null) {
-                JSONObject bgInfo = new JSONObject();
-                bgInfo.put("type", picBgType);
-                bgInfo.put("picBg", "miui.focus.pic_bg");
-                param_v2.put("bgInfo", bgInfo);
-                pics.putParcelable("miui.focus.pic_bg", picBg);
-            }
-
-            // 添加右侧标志图片及参数
-            if (picMarkV2 != null) {
-                JSONObject picInfo = new JSONObject();
-                picInfo.put("type", picMarkV2Type);
-                picInfo.put("pic", "miui.focus.pic_mark_v2");
-                param_v2.put("picInfo", picInfo);
-                pics.putParcelable("miui.focus.pic_mark_v2", picMarkV2);
-            }
-
-            // aod相关信息
-            if (aodTitle != null) {
-                param_v2.put("aodTitle", title);
-                if (aodPic != null) {
-                    param_v2.put("aodPic", aodPic);
-                }
-            }
-            // 超时参数
-            if (timeout != null) {
-                param_v2.put("timeout", timeout);
-            }
-
-            // 整合 Bundle 数据
-            paramBundle.putBundle("miui.focus.pics", pics);
-            param_v2.put("baseInfo", baseInfo);
-            param.put("param_v2", param_v2);
-            paramBundle.putString("miui.focus.param", param.toString());
-
-            // 将参数添加到通知构造器中
-            mNotifyBuilder.addExtras(paramBundle);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        return paramBundle;
+    public Bundle getParamsBundle() {
+        return paramsBundle;
     }
 
     /**
-     * 静态工厂方法，传入 NotificationCompat.Builder 后返回 Builder 实例
+     * 将焦点通知参数添加到指定的 NotificationCompat.Builder 中。
+     *
+     * @param builder NotificationCompat.Builder 对象
      */
-    public static Builder builder(NotificationCompat.Builder builder) {
-        return new Builder(new HyperFocusNotify(builder));
+    public void applyTo(NotificationCompat.Builder builder) {
+        builder.addExtras(paramsBundle);
     }
 
     /**
-     * 内部 Builder 类，提供链式调用设置各项参数
+     * FocusApi 的 Builder 内部类，用于逐步构建 FocusApi 对象。
      */
     public static class Builder {
-        private final HyperFocusNotify mHyperFocusNotify;
+        private BaseInfo baseInfo;
+        private HighlightInfo highlightInfo;
+        private HintInfo hintInfo;
+        private ChatInfo chatInfo;
+        private String scene = "templateBaseScene";
+        private String title;
+        private String colorTitle = "#000000";
+        private String content;
+        private String ticker;
+        private String aodTitle;
+        private Icon tickerPic;
+        private Icon tickerPicDark;
+        private Icon picMarkV2;
+        private Icon picProfile;
+        private Icon aodPic;
+        private Icon picBg;
+        private Bundle additionalPics;
+        private Icon picFunction;
+        private int picBgType = 1;
+        private int protocol = 1;
+        private int picMarkV2Type = 1;
+        private Integer timeout = 280;
+        private Integer normalHeight;
+        private boolean updatable = true;
+        private boolean enableFloat = false;
+        private boolean padding = false;
 
-        private Builder(HyperFocusNotify hyperFocusNotify) {
-            this.mHyperFocusNotify = hyperFocusNotify;
-        }
-
-        public Builder setTitle(String title) {
-            mHyperFocusNotify.title = title;
-            return this;
-        }
-
-        public Builder setTicker(String ticker) {
-            mHyperFocusNotify.ticker = ticker;
-            return this;
-        }
-
-        public Builder setContent(String content) {
-            mHyperFocusNotify.content = content;
-            return this;
-        }
-
-        public Builder setAodTitle(String aodTitle) {
-            mHyperFocusNotify.aodTitle = aodTitle;
-            return this;
-        }
-
-        public Builder setSubTitle(String subTitle) {
-            mHyperFocusNotify.subTitle = subTitle;
-            return this;
-        }
-
-        public Builder setSubContent(String subContent) {
-            mHyperFocusNotify.subContent = subContent;
-            return this;
-        }
-
-        public Builder setExtraTitle(String extraTitle) {
-            mHyperFocusNotify.extraTitle = extraTitle;
-            return this;
-        }
-
-        public Builder setSpecialTitle(String specialTitle) {
-            mHyperFocusNotify.specialTitle = specialTitle;
-            return this;
-        }
-
-        public Builder setDesc1(String desc1) {
-            mHyperFocusNotify.desc1 = desc1;
-            return this;
-        }
-
-        public Builder setDesc2(String desc2) {
-            mHyperFocusNotify.desc2 = desc2;
-            return this;
-        }
-
-        public Builder setColorSubTitle(String colorSubTitle) {
-            mHyperFocusNotify.colorSubTitle = colorSubTitle;
-            return this;
-        }
-
-        public Builder setColorSubTitleDark(String colorSubTitleDark) {
-            mHyperFocusNotify.colorSubTitleDark = colorSubTitleDark;
-            return this;
-        }
-
-        public Builder setColorSubContent(String colorSubContent) {
-            mHyperFocusNotify.colorSubContent = colorSubContent;
-            return this;
-        }
-
-        public Builder setColorSubContentDark(String colorSubContentDark) {
-            mHyperFocusNotify.colorSubContentDark = colorSubContentDark;
-            return this;
-        }
-
-        public Builder setColorContent(String colorContent) {
-            mHyperFocusNotify.colorContent = colorContent;
-            return this;
-        }
-
-        public Builder setColorContentDark(String colorContentDark) {
-            mHyperFocusNotify.colorContentDark = colorContentDark;
-            return this;
-        }
-
-        public Builder setColorTitle(String colorTitle) {
-            mHyperFocusNotify.colorTitle = colorTitle;
-            return this;
-        }
-
-        public Builder setColorTitleDark(String colorTitleDark) {
-            mHyperFocusNotify.colorTitleDark = colorTitleDark;
-            return this;
-        }
-
-        public Builder setColorExtraTitle(String colorExtraTitle) {
-            mHyperFocusNotify.colorExtraTitle = colorExtraTitle;
-            return this;
-        }
-
-        public Builder setColorExtraTitleDark(String colorExtraTitleDark) {
-            mHyperFocusNotify.colorExtraTitleDark = colorExtraTitleDark;
-            return this;
-        }
-
-        public Builder setColorSpecialTitle(String colorSpecialTitle) {
-            mHyperFocusNotify.colorSpecialTitle = colorSpecialTitle;
-            return this;
-        }
-
-        public Builder setColorSpecialTitleDark(String colorSpecialTitleDark) {
-            mHyperFocusNotify.colorSpecialTitleDark = colorSpecialTitleDark;
-            return this;
-        }
-
-        public Builder setColorSpecialTitleBg(String colorSpecialTitleBg) {
-            mHyperFocusNotify.colorSpecialTitleBg = colorSpecialTitleBg;
-            return this;
-        }
-
-        public Builder setPicTicker(Icon picTicker) {
-            mHyperFocusNotify.picTicker = picTicker;
-            return this;
-        }
-
-        public Builder setPicTickerDark(Icon picTickerDark) {
-            mHyperFocusNotify.picTickerDark = picTickerDark;
-            return this;
-        }
-
-        public Builder setPicMarkV2(Icon picMarkV2) {
-            mHyperFocusNotify.picMarkV2 = picMarkV2;
-            return this;
-        }
-
-        public Builder setAodPic(String aodPic) {
-            mHyperFocusNotify.aodPic = aodPic;
-            return this;
-        }
-
-        public Builder setPicBg(Icon picBg) {
-            mHyperFocusNotify.picBg = picBg;
-            return this;
-        }
-
-        public Builder setPicBgType(int picBgType) {
-            mHyperFocusNotify.picBgType = picBgType;
-            return this;
-        }
-
-        public Builder setBaseType(int basetype) {
-            mHyperFocusNotify.baseType = basetype;
-            return this;
-        }
-
-        public Builder setProtocol(int protocol) {
-            mHyperFocusNotify.protocol = protocol;
-            return this;
-        }
-
-        public Builder setPicMarkV2Type(int picMarkV2Type) {
-            mHyperFocusNotify.picMarkV2Type = picMarkV2Type;
-            return this;
-        }
-
-        public Builder setTimeout(Integer timeout) {
-            mHyperFocusNotify.timeout = timeout;
-            return this;
-        }
-
-        public Builder setNormalHeight(Integer normalHeight) {
-            mHyperFocusNotify.normalHeight = normalHeight;
-            return this;
-        }
-
-        public Builder setUpdatable(boolean updatable) {
-            mHyperFocusNotify.updatable = updatable;
-            return this;
-        }
-
-        public Builder setEnableFloat(boolean enableFloat) {
-            mHyperFocusNotify.enableFloat = enableFloat;
-            return this;
-        }
-
-        public Builder setPadding(boolean padding) {
-            mHyperFocusNotify.padding = padding;
+        /**
+         * 设置基础信息 JSON 对象。
+         *
+         * @param baseInfo 包含基础信息的 JSON 对象
+         * @return Builder 实例
+         */
+        public Builder setBaseInfo(BaseInfo baseInfo) {
+            this.baseInfo = baseInfo;
             return this;
         }
 
         /**
-         * 构建 Bundle，同时将参数添加到传入的 NotificationCompat.Builder 中
+         * 设置高亮信息 JSON 对象。
          *
-         * @return 构造好的 Bundle
+         * @param highlightInfo 包含高亮信息的 JSON 对象
+         * @return Builder 实例
          */
-        public Bundle build() {
-            return mHyperFocusNotify.buildBundle();
+        public Builder setHighlightInfo(HighlightInfo highlightInfo) {
+            this.highlightInfo = highlightInfo;
+            return this;
         }
+
+        /**
+         * 设置提示信息 JSON 对象。
+         *
+         * @param hintInfo 包含提示信息的 JSON 对象
+         * @return Builder 实例
+         */
+        public Builder setHintInfo(HintInfo hintInfo) {
+            this.hintInfo = hintInfo;
+            return this;
+        }
+
+        /**
+         * 设置聊天信息 JSON 对象。
+         *
+         * @param chatInfo 包含聊天信息的 JSON 对象
+         * @return Builder 实例
+         */
+        public Builder setChatInfo(ChatInfo chatInfo) {
+            this.chatInfo = chatInfo;
+            return this;
+        }
+
+        /**
+         * 设置场景信息。
+         *
+         * @param scene 场景字符串
+         * @return Builder 实例
+         */
+        public Builder setScene(String scene) {
+            this.scene = scene;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知标题。
+         *
+         * @param title 标题字符串
+         * @return Builder 实例
+         */
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        /**
+         * 设置标题颜色。
+         *
+         * @param colorTitle 颜色字符串（如 "#000000"）
+         * @return Builder 实例
+         */
+        public Builder setColorTitle(String colorTitle) {
+            this.colorTitle = colorTitle;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知内容。
+         *
+         * @param content 内容字符串
+         * @return Builder 实例
+         */
+        public Builder setContent(String content) {
+            this.content = content;
+            return this;
+        }
+
+        /**
+         * 设置状态栏 ticker 文本。
+         *
+         * @param ticker ticker 文本
+         * @return Builder 实例
+         */
+        public Builder setTicker(String ticker) {
+            this.ticker = ticker;
+            return this;
+        }
+
+        /**
+         * 设置息屏时显示的标题。
+         *
+         * @param aodTitle 息屏标题
+         * @return Builder 实例
+         */
+        public Builder setAodTitle(String aodTitle) {
+            this.aodTitle = aodTitle;
+            return this;
+        }
+
+        /**
+         * 设置状态栏浅色图标。
+         *
+         * @param tickerPic 浅色图标
+         * @return Builder 实例
+         */
+        public Builder setTickerPic(Icon tickerPic) {
+            this.tickerPic = tickerPic;
+            return this;
+        }
+
+        /**
+         * 设置状态栏深色图标。
+         *
+         * @param tickerPicDark 深色图标
+         * @return Builder 实例
+         */
+        public Builder setTickerPicDark(Icon tickerPicDark) {
+            this.tickerPicDark = tickerPicDark;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知右侧标志图标（版本2）。
+         *
+         * @param picMarkV2 图标
+         * @return Builder 实例
+         */
+        public Builder setPicMarkV2(Icon picMarkV2) {
+            this.picMarkV2 = picMarkV2;
+            return this;
+        }
+
+        /**
+         * 设置聊天头像图标。
+         *
+         * @param picProfile 聊天头像图标
+         * @return Builder 实例
+         */
+        public Builder setPicProfile(Icon picProfile) {
+            this.picProfile = picProfile;
+            return this;
+        }
+
+        /**
+         * 设置息屏图标。
+         *
+         * @param aodPic 息屏图标
+         * @return Builder 实例
+         */
+        public Builder setAodPic(Icon aodPic) {
+            this.aodPic = aodPic;
+            return this;
+        }
+
+        /**
+         * 设置通知背景图标。
+         *
+         * @param picBg 背景图标
+         * @return Builder 实例
+         */
+        public Builder setPicBg(Icon picBg) {
+            this.picBg = picBg;
+            return this;
+        }
+
+        /**
+         * 设置附加图片 Bundle。
+         *
+         * @param additionalPics 附加图片 Bundle
+         * @return Builder 实例
+         */
+        public Builder setAdditionalPics(Bundle additionalPics) {
+            this.additionalPics = additionalPics;
+            return this;
+        }
+
+        /**
+         * 设置通知功能图标。
+         *
+         * @param picFunction 功能图标
+         * @return Builder 实例
+         */
+        public Builder setPicFunction(Icon picFunction) {
+            this.picFunction = picFunction;
+            return this;
+        }
+
+        /**
+         * 设置背景图标类型。
+         *
+         * @param picBgType 背景图标类型（如 1）
+         * @return Builder 实例
+         */
+        public Builder setPicBgType(int picBgType) {
+            this.picBgType = picBgType;
+            return this;
+        }
+
+        /**
+         * 设置协议版本。
+         *
+         * @param protocol 协议版本
+         * @return Builder 实例
+         */
+        public Builder setProtocol(int protocol) {
+            this.protocol = protocol;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知右侧标志类型（版本2）。
+         *
+         * @param picMarkV2Type 标志类型
+         * @return Builder 实例
+         */
+        public Builder setPicMarkV2Type(int picMarkV2Type) {
+            this.picMarkV2Type = picMarkV2Type;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知超时时间。
+         *
+         * @param timeout 超时时间（秒）
+         * @return Builder 实例
+         */
+        public Builder setTimeout(int timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知的默认高度。
+         *
+         * @param normalHeight 高度数值
+         * @return Builder 实例
+         */
+        public Builder setNormalHeight(int normalHeight) {
+            this.normalHeight = normalHeight;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知是否支持更新。
+         *
+         * @param updatable true 表示可更新，false 表示不可更新
+         * @return Builder 实例
+         */
+        public Builder setUpdatable(boolean updatable) {
+            this.updatable = updatable;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知是否可以悬浮显示。
+         *
+         * @param enableFloat true 表示可以悬浮，false 表示不可以
+         * @return Builder 实例
+         */
+        public Builder setEnableFloat(boolean enableFloat) {
+            this.enableFloat = enableFloat;
+            return this;
+        }
+
+        /**
+         * 设置焦点通知的内边距开关。
+         *
+         * @param padding true 表示启用内边距，false 表示禁用
+         * @return Builder 实例
+         */
+        public Builder setPadding(boolean padding) {
+            this.padding = padding;
+            return this;
+        }
+
+        /**
+         * 构建 FocusApi 对象。
+         *
+         * @return 构建好的 FocusApi 对象，内部包含生成的参数 Bundle
+         */
+        @SuppressLint("NewApi")
+        public HyperFocusNotify build() {
+            Bundle paramsBundle = new Bundle();
+            Bundle picsBundle = new Bundle();
+            JSONObject param = new JSONObject();
+            JSONObject paramV2 = new JSONObject();
+
+            try {
+                // 设置基础参数到 paramV2
+                paramV2.put("protocol", protocol);
+                paramV2.put("enableFloat", enableFloat);
+                paramV2.put("ticker", ticker);
+                paramV2.put("tickerPic", "miui.focus.pic_ticker");
+                paramV2.put("updatable", updatable);
+                paramV2.put("padding", padding);
+
+                if (content != null) {
+                    param.put("content", content);
+                }
+                if (title != null) {
+                    param.put("title", title);
+                    param.put("colorTitle", colorTitle);
+                    paramV2.put("colorTitle", colorTitle);
+                }
+                param.put("scene", scene);
+
+                // 添加状态栏图标
+                picsBundle.putParcelable("miui.focus.pic_ticker", tickerPic);
+
+                if (normalHeight != null) {
+                    paramV2.put("normalHeight", normalHeight);
+                }
+
+                if (tickerPicDark != null) {
+                    paramV2.put("tickerPicDark", "miui.focus.pic_ticker_dark");
+                    picsBundle.putParcelable("miui.focus.pic_ticker_dark", tickerPicDark);
+                }
+                if (picBg != null) {
+                    JSONObject bgInfo = new JSONObject();
+                    bgInfo.put("type", picBgType);
+                    bgInfo.put("picBg", "miui.focus.pic_bg");
+                    paramV2.put("bgInfo", bgInfo);
+                    picsBundle.putParcelable("miui.focus.pic_bg", picBg);
+                }
+                if (picMarkV2 != null) {
+                    JSONObject picInfo = new JSONObject();
+                    picInfo.put("type", picMarkV2Type);
+                    picInfo.put("pic", "miui.focus.pic_mark_v2");
+                    paramV2.put("picInfo", picInfo);
+                    picsBundle.putParcelable("miui.focus.pic_mark_v2", picMarkV2);
+                }
+                if (aodTitle != null) {
+                    paramV2.put("aodTitle", aodTitle);
+                    if (aodPic != null) {
+                        picsBundle.putParcelable("miui.focus.pic_aod", aodPic);
+                        paramV2.put("aodPic", "miui.focus.pic_aod");
+                    }
+                }
+                if (timeout != null) {
+                    paramV2.put("timeout", timeout);
+                }
+                if (highlightInfo != null) {
+                    paramV2.put("highlightInfo", highlightInfo.getHighlightInfo());
+                }
+                if (picFunction != null) {
+                    picsBundle.putParcelable("miui.focus.pic_notification", picFunction);
+                }
+                if (picProfile != null) {
+                    picsBundle.putParcelable("miui.focus.pic_profile", picProfile);
+                }
+                if (chatInfo != null) {
+                    paramV2.put("chatInfo", chatInfo.getChatInfo());
+                }
+                if (hintInfo != null) {
+                    paramV2.put("hintInfo", hintInfo.getHintInfo());
+                }
+                if (additionalPics != null) {
+                    picsBundle.putAll(additionalPics);
+                }
+
+                paramsBundle.putBundle("miui.focus.pics", picsBundle);
+
+                if (baseInfo != null) {
+                    paramV2.put("baseInfo", baseInfo.getBaseInfo());
+                }
+                param.put("param_v2", paramV2);
+                paramsBundle.putString("miui.focus.param", param.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return new HyperFocusNotify(paramsBundle);
+        }
+    }
+
+    /**
+     * 辅助方法：添加单个图片到 Bundle 中。
+     *
+     * @param name 图片名称标识
+     * @param icon 图标对象
+     * @return Bundle 包含该图片
+     */
+    @SuppressLint("NewApi")
+    public static Bundle addPicture(String name, Icon icon) {
+        Bundle pics = new Bundle();
+        String key = "miui.focus.pic_" + name;
+        pics.putParcelable(key, icon);
+        return pics;
     }
 }
