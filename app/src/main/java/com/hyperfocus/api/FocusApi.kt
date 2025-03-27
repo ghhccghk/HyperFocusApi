@@ -1,9 +1,8 @@
 package com.hyperfocus.api
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import org.json.JSONObject
 
@@ -50,8 +49,7 @@ class FocusApi {
      * @param timeout 焦点通知超时时间 单位秒
      * @param aodPic aodPic 息屏图标
      * @param builder 通知Builder */
-
-    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("NewApi")
     fun sendFocus(
         builder: NotificationCompat.Builder,
         title: String,

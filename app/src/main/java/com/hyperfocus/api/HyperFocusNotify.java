@@ -1,16 +1,14 @@
 package com.hyperfocus.api;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class HyperFocusNotify {
     private final NotificationCompat.Builder mNotifyBuilder;
 
@@ -65,6 +63,7 @@ public class HyperFocusNotify {
      *
      * @return 构建好的 Bundle
      */
+    @SuppressLint("NewApi")
     private Bundle buildBundle() {
         Bundle paramBundle = new Bundle();
         Bundle pics = new Bundle();

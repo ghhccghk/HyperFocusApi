@@ -34,8 +34,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    compileOnly(project(":stub"))
 }
 
 afterEvaluate {
