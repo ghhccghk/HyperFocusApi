@@ -40,11 +40,9 @@ class FocusApi {
         baseInfo: JSONObject? = null,
         highlightInfo: JSONObject? = null,
         scene: String = "templateBaseScene",
-        title: String,
+        title: String? = null,
+        colorTitle: String = "#000000",
         content: String? = null,
-        subContent: String? = null,
-        colorSubContent: String = "#000000",
-        colorSubContentDark: String? = null,
         ticker: String,
         aodTitle: String? = null,
         picticker: Icon,
@@ -74,9 +72,15 @@ class FocusApi {
         param_v2.put("tickerPic", "miui.focus.pic_ticker")
         param_v2.put("updatable", updatable)
         param_v2.put("padding", padding)
+        if (content != null ){
+            param.put("content", content)
+        }
+        if (title != null){
+            param.put("title", title)
+            param.put("colorTitle", colorTitle)
+            param_v2.put("colorTitle", colorTitle)
 
-        param.put("content", content)
-        param.put("title", title)
+        }
         param.put("scene", scene)
         pics.putParcelable(
             "miui.focus.pic_ticker", picticker
@@ -128,14 +132,8 @@ class FocusApi {
             param_v2.put("highlightInfo", highlightInfo)
         }
 
-        if (picFunction != null && subContent != null){
+        if (picFunction != null){
             pics.putParcelable("miui.focus.pic_notification", picFunction)
-            param_v2.put("subContent", subContent)
-            param_v2.put("colorSubContent", colorSubContent)
-            if (colorSubContentDark != null){
-                param_v2.put("colorSubContentDark", colorSubContentDark)
-            }
-            param_v2.put("picFunction", "miui.focus.pic_notification")
         }
 
 
@@ -260,12 +258,27 @@ class FocusApi {
 
     fun highlightInfo(
         type: Int = 1,
-        timerInfo: String? = null
+        timerInfo: JSONObject,
+        title: String? = null,
+        subContent: String? = null,
+        colorSubContent: String = "#000000",
+        colorSubContentDark: String? = null,
     ): JSONObject{
         val highlightInfo = JSONObject()
         highlightInfo.put("type", type)
-        if (timerInfo != null){
-            highlightInfo.put("timerInfo", timerInfo)
+        highlightInfo.put("timerInfo", timerInfo)
+        if (title != null){
+            highlightInfo.put("title", title)
+        }
+        highlightInfo.put("colorTitle", colorSubContent)
+
+        if (subContent != null){
+            highlightInfo.put("subContent", subContent)
+            highlightInfo.put("colorSubContent", colorSubContent)
+            if (colorSubContentDark != null){
+                highlightInfo.put("colorSubContentDark", colorSubContentDark)
+            }
+            highlightInfo.put("picFunction", "miui.focus.pic_notification")
         }
         return highlightInfo
     }
@@ -274,7 +287,7 @@ class FocusApi {
         timerType: Int = -1,
         timerWhen: Long? = null,
         timerSystemCurrent: Long? = null,
-        ): JSONObject {
+    ): JSONObject {
         val timerInfo = JSONObject()
         timerInfo.put("timerType", timerType)
         if (timerWhen != null){
