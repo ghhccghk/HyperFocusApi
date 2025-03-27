@@ -12,6 +12,9 @@ class FocusApi {
      * @param ticker 焦点在状态栏内容
      * @param scene 场景
      * @param baseInfo 基础信息
+     * @param highlightInfo 高亮信息
+     * @param hintInfo 提示信息
+     * @param chatinfo 聊天信息
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
      * @param subContent 焦点通知小标题边上的小标题
@@ -39,8 +42,10 @@ class FocusApi {
         builder: NotificationCompat.Builder,
         baseInfo: JSONObject? = null,
         highlightInfo: JSONObject? = null,
+        hintInfo: JSONObject? = null,
+        chatinfo: JSONObject? = null,
         scene: String = "templateBaseScene",
-        title: String? = null,
+        title: String,
         colorTitle: String = "#000000",
         content: String? = null,
         ticker: String,
@@ -48,8 +53,10 @@ class FocusApi {
         picticker: Icon,
         pictickerdark: Icon? = null,
         picmarkv2: Icon? = null,
+        picProfile: Icon? = null,
         aodPic: Icon? = null,
         picbg: Icon? = null,
+        addpics: Bundle? = null,
         picFunction: Icon? = null,
         picbgtype: Int = 1,
         protocol: Int = 1,
@@ -136,8 +143,25 @@ class FocusApi {
             pics.putParcelable("miui.focus.pic_notification", picFunction)
         }
 
+        if (picProfile != null){
+            pics.putParcelable("miui.focus.pic_profile", picProfile)
+        }
+
+        if (chatinfo != null){
+            param_v2.put("chatInfo", chatinfo)
+        }
+
+        if (hintInfo != null){
+            param_v2.put("hintInfo", hintInfo)
+        }
+
+        if (addpics != null){
+            pics.putAll(addpics)
+        }
 
         paramBundle.putBundle("miui.focus.pics", pics)
+
+
         if (baseInfo != null){
             param_v2.put("baseInfo", baseInfo)
         }
@@ -255,7 +279,15 @@ class FocusApi {
         baseInfo.put("type", basetype)
         return baseInfo
     }
-
+    /** HighlightInfo
+     * @param type 标志
+     * @param timerInfo 时间信息
+     * @param title 标题
+     * @param subContent 小标题
+     * @param colorSubContent 小标题颜色
+     * @param colorSubContentDark 小标题深色颜色
+     * @return JSONObject
+     * */
     fun highlightInfo(
         type: Int = 1,
         timerInfo: JSONObject,
@@ -283,6 +315,12 @@ class FocusApi {
         return highlightInfo
     }
 
+    /** 时间
+     * @param timerType 时间类型
+     * @param timerWhen 结束时间戳
+     * @param timerSystemCurrent 系统时间
+     * timerWhen 比 timerSystemCurrent 大为倒计时 小为过了多少
+     * @return JSONObject*/
     fun timerInfo(
         timerType: Int = -1,
         timerWhen: Long? = null,
@@ -298,5 +336,101 @@ class FocusApi {
         }
 
         return timerInfo
+    }
+
+    /** 聊天信息
+     * @param picProfile 头像
+     * @param timerInfo 时间信息
+     * @param title 标题
+     * @param colortitle 标题颜色
+     * @param colortitleDark 标题深色颜色
+     * @param content 内容
+     * @param colorcontent 内容颜色
+     * @param colorcontentDark 内容深色颜色
+     * @return JSONObject*/
+    fun chatinfo(
+        picProfile: String = "miui.focus.pic_profile",
+        timerInfo: JSONObject? = null,
+        title: String,
+        colortitle: String = "#000000",
+        colortitleDark: String? = null,
+        content: String,
+        colorcontent: String = "#000000",
+        colorcontentDark: String? = null,
+    ): JSONObject{
+        val chatInfo = JSONObject()
+        chatInfo.put("picProfile", picProfile)
+        if (timerInfo != null){
+            chatInfo.put("timerInfo", timerInfo)
+        }
+        chatInfo.put("title", title)
+        chatInfo.put("colorTitle", colortitle)
+        if (colortitleDark != null){
+            chatInfo.put("colortitleDark", colortitleDark)
+        }
+
+        chatInfo.put("content", content)
+        chatInfo.put("colorContent", colorcontent)
+        if (colorcontentDark != null){
+            chatInfo.put("colorContentDark", colorcontentDark)
+        }
+        return chatInfo
+    }
+    /** HintInfo
+     * @param colorContentBg 内容背景颜色
+     * @param type 标志
+     * @param picContent 图标
+     * @param timerInfo 时间信息
+     * @param title 标题
+     * @param colortitle 标题颜色
+     * @param colortitleDark 标题深色颜色
+     * @param titleLineCount 标题行数
+     * @return JSONObject*/
+    fun HintInfo(
+        colorContentBg: String? = null,
+        type: Int = 1,
+        picContent: String? = null,
+        timerInfo: JSONObject? = null,
+        title: String? = null,
+        colortitle: String = "#000000",
+        colortitleDark: String? = null,
+        titleLineCount: Int? = null,
+    ): JSONObject{
+        val hintInfo = JSONObject()
+        if (colorContentBg != null){
+            hintInfo.put("colorContentBg", colorContentBg)
+        }
+        if (picContent != null){
+            hintInfo.put("picContent", picContent)
+        }
+        if (timerInfo != null){
+            hintInfo.put("timerInfo", timerInfo)
+        }
+        if (title != null){
+            hintInfo.put("title", title)
+            hintInfo.put("colorTitle", colortitle)
+            if (colortitleDark != null){
+                hintInfo.put("colortitleDark", colortitleDark)
+            }
+        }
+        if (titleLineCount != null){
+            hintInfo.put("titleLineCount", titleLineCount)
+        }
+        hintInfo.put("type", type)
+        return hintInfo
+    }
+    /** 添加图标
+     * @param name 图标名称
+     * @param icon 图标
+     * @return Bundle */
+    @Suppress("NewApi")
+    fun addpics(
+        name : String,
+        icon : Icon,
+    ): Bundle {
+        val pics = Bundle()
+        val namea = "miui.focus.pic_$name"
+        pics.putParcelable(namea, icon)
+        return pics
     }
 }
