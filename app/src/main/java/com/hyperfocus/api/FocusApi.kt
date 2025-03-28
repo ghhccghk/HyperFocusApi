@@ -24,7 +24,7 @@ class FocusApi {
      * @param chatinfo 聊天信息
      * @param hintInfo 提示信息 不能和 ProgressInfo 同时使用
      * @param chatinfo 聊天信息
-     * @param actions 按钮信息 不能和picmarkv2 同时使用 ，ActionInfo使用JSONArray合并一起可生成多个按钮
+     * @param actions 按钮信息 不能和picmarkv2 同时使用 ，ActionInfo使用JSONArray合并一起可生成两个按钮
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
      * @param subContent 焦点通知小标题边上的小标题
@@ -307,6 +307,7 @@ class FocusApi {
     /** HighlightInfo
      * @param type 标志
      * @param timerInfo 时间信息
+     * @param actionInfo 按钮信息
      * @param title 标题
      * @param subContent 小标题
      * @param colorSubContent 小标题颜色
@@ -316,6 +317,7 @@ class FocusApi {
     fun highlightInfo(
         type: Int = 1,
         timerInfo: JSONObject? = null,
+        actionInfo: JSONObject? = null,
         title: String? = null,
         content: String? = null,
         subContent: String? = null,
@@ -330,6 +332,9 @@ class FocusApi {
         highlightInfo.put("type", type)
         if (timerInfo != null){
             highlightInfo.put("timerInfo", timerInfo)
+        }
+        if (actionInfo != null){
+            highlightInfo.put("actionInfo", actionInfo)
         }
         if (title != null){
             highlightInfo.put("title", title)
