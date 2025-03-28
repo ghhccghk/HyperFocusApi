@@ -52,23 +52,33 @@ dependencies {
 import com.hyperfocus.api.FocusApi
 
 val FocusApi = FocusApi()
-val builder = NotificationCompat.Builder(context, "lyricgetter")
-sendFocus(builder,
-    ticker = "text",
-    title = "text",
-    colorTitle = "#FFFFFF",
-    aodTitle = text,
-    aodPic = "miui.focus.pic_mark_v2",
-    picmarkv2 = Icon,
-    picmarkv2type = 3,
-    picticker = Icon,
-    picbg = Icon,)
-val notification = builder.build()
-(context.getSystemService("notification") as NotificationManager).notify(
-    "lyricgetter".hashCode(), notification
+val sendNotification = NotificationHelper.sendNotification("你好", "世界")
+val intent = Intent()
+intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"  // 设置 Action，跳转到应用详情页
+intent.data = Uri.fromParts("package", this.packageName, null)  // 指定要打开的应用包名
+val actions = FocusApi.ActionInfo(actionsIntent = intent, actionsTitle = "test")
+val baseInfo = FocusApi.baseinfo(title = "title", colorTitle = "#FFFFFF",
+    basetype = 1, content = "content", colorContent = "#FFFFFF", subContent = "subContent",
+    colorSubContent = "#FFFFFF", extraTitle = "extraTitle", colorExtraTitle = "#FFFFFF",
+    subTitle = "subTitle", colorsubTitle = "#FFFFFF",
+    specialTitle = "special", colorSpecialTitle = "#FFFFFF",)
+val hintInfo = FocusApi.HintInfo(type = 1 ,titleLineCount = 6,title = "这是Hint里的title", colortitle = "#FFFFFF" , content = "content",  colorContent = "#FFFFFF", actionInfo = actions)
+val api = FocusApi.sendFocus(
+    title = "测试",
+    baseInfo = baseInfo,
+    hintInfo = hintInfo,
+    picbg = Icon.createWithResource(this,R.drawable.lycaon_bg_2),
+    picmarkv2 = Icon.createWithResource(this,R.drawable.wdlyjz),
+    picbgtype = 2,
+    picmarkv2type = 2,
+    builder = sendNotification,
+    ticker = "ticker测试",
+    picticker = Icon.createWithResource(this,R.drawable.ic_launcher_foreground)
 )
+sendNotification.addExtras(api)
+NotificationManagerCompat.from(this).notify(1, sendNotification.build())
 ```
-正在建设
+看完不会写可以看看这个![demo](https://github.com/ghhccghk/HyperFocusNotifDemo)
 
 ## Star History
 
