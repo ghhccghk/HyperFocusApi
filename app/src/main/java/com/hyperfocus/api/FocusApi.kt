@@ -15,7 +15,7 @@ class FocusApi {
     private var picFunctionset: Boolean = false
     private var picProfileset: Boolean = false
 
-    /**发送焦点通知
+    /**发送焦点通知 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param ticker 焦点在状态栏内容
      * @param scene 场景
      * @param baseInfo 基础信息
@@ -57,7 +57,7 @@ class FocusApi {
         actions : JSONArray? = null,
         scene: String? = null,
         title: String? = null ,
-        colorTitle: String = "#000000",
+        colorTitle: String? = null,
         content: String? = null,
         ticker: String,
         aodTitle: String? = null,
@@ -112,10 +112,6 @@ class FocusApi {
         pics.putParcelable(
             "miui.focus.pic_ticker", picticker
         )
-        if (normalHeight != null){
-            param_v2.put("normalHeight", normalHeight)
-
-        }
 
         if (pictickerdark != null) {
             param_v2.put("tickerPicDark", "miui.focus.pic_ticker_dark")
@@ -209,7 +205,7 @@ class FocusApi {
         return paramBundle
     }
 
-    /** Baseinfo
+    /** Baseinfo 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param title 焦点通知标题
      * @param subTitle 焦点通知副标题
      * @param extraTitle 焦点通知额外标题
@@ -234,19 +230,19 @@ class FocusApi {
         subContent: String? = null,
         extraTitle: String? = null,
         specialTitle: String? = null,
-        colorsubTitle: String? = "#000000",
-        colorSubTitleDark: String? = "#000000",
-        colorSubContent: String = "#000000",
+        colorsubTitle: String? = null,
+        colorSubTitleDark: String? = null,
+        colorSubContent: String? = null,
         colorSubContentDark: String? = null,
-        colorContent: String = "#000000",
+        colorContent: String? = null,
         colorContentDark: String? = null,
-        colorTitle: String = "#000000",
+        colorTitle: String? = null,
         colorTitleDark: String? = null,
-        colorExtraTitle: String = "#000000",
+        colorExtraTitle: String? = null,
         colorExtraTitleDark: String? = null,
-        colorSpecialTitle: String = "#000000",
+        colorSpecialTitle: String? = null,
         colorSpecialTitleDark: String? = null,
-        colorSpecialTitleBg: String = "#000000",
+        colorSpecialTitleBg: String? = null,
     ): JSONObject{
         val baseInfo = JSONObject()
 
@@ -260,7 +256,10 @@ class FocusApi {
 
         if (content != null) {
             baseInfo.put("content", content)
-            baseInfo.put("colorContent", colorContent)
+            if (colorContent != null){
+                baseInfo.put("colorContent", colorContent)
+            }
+
             if (colorContentDark != null){
                 baseInfo.put("colorContentDark", colorContentDark)
             }
@@ -269,7 +268,9 @@ class FocusApi {
 
         if (subContent != null) {
             baseInfo.put("subContent", subContent)
-            baseInfo.put("colorSubContent", colorSubContent)
+            if (colorSubContent != null){
+                baseInfo.put("colorSubContent", colorSubContent)
+            }
             if (colorSubContentDark != null) {
                 baseInfo.put("colorSubContentDark", colorSubContentDark)
             }
@@ -277,7 +278,9 @@ class FocusApi {
 
         if (extraTitle != null) {
             baseInfo.put("extraTitle", extraTitle)
-            baseInfo.put("colorExtraTitle", colorExtraTitle)
+            if (colorExtraTitle != null){
+                baseInfo.put("colorExtraTitle", colorExtraTitle)
+            }
             if (colorExtraTitleDark != null){
                 baseInfo.put("colorExtraTitleDark", colorExtraTitleDark)
             }
@@ -285,7 +288,9 @@ class FocusApi {
 
         if (specialTitle != null) {
             baseInfo.put("specialTitle", specialTitle)
-            baseInfo.put("colorSpecialTitle", colorSpecialTitle)
+            if (colorSpecialTitle != null){
+                baseInfo.put("colorSpecialTitle", colorSpecialTitle)
+            }
             if (colorSpecialTitleDark != null){
                 baseInfo.put("colorSpecialTitleDark", colorSpecialTitleDark)
             }
@@ -295,7 +300,9 @@ class FocusApi {
 
         if (subTitle != null){
             baseInfo.put("subTitle", subTitle)
-            baseInfo.put("colorSubTitle",colorsubTitle)
+            if (colorsubTitle != null){
+                baseInfo.put("colorSubTitle", colorsubTitle)
+            }
             if (colorSubTitleDark != null){
                 baseInfo.put("colorSubTitleDark", colorSubTitleDark)
             }
@@ -304,7 +311,7 @@ class FocusApi {
         baseInfo.put("type", basetype)
         return baseInfo
     }
-    /** HighlightInfo
+    /** HighlightInfo 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param type 标志
      * @param timerInfo 时间信息
      * @param actionInfo 按钮信息
@@ -321,11 +328,11 @@ class FocusApi {
         title: String? = null,
         content: String? = null,
         subContent: String? = null,
-        colorSubContent: String = "#000000",
+        colorSubContent: String? = null,
         colorSubContentDark: String? = null,
-        colorContent: String = "#000000",
+        colorContent: String? = null,
         colorContentDark: String? = null,
-        colorTitle: String = "#000000",
+        colorTitle: String? = null,
         colorTitleDark: String? = null,
     ): JSONObject{
         val highlightInfo = JSONObject()
@@ -339,14 +346,18 @@ class FocusApi {
         if (title != null){
             highlightInfo.put("title", title)
         }
-        highlightInfo.put("colorTitle", colorTitle)
+        if (colorTitle != null){
+            highlightInfo.put("colorTitle", colorTitle)
+        }
 
         if (colorTitleDark != null){
             highlightInfo.put("colorTitleDark", colorTitleDark)
         }
         if (content != null){
             highlightInfo.put("content", content)
-            highlightInfo.put("colorContent", colorContent)
+            if (colorContent != null){
+                highlightInfo.put("colorContent", colorContent)
+            }
             if (colorContentDark != null){
                 highlightInfo.put("colorContentDark", colorContentDark)
             }
@@ -354,7 +365,9 @@ class FocusApi {
 
         if (subContent != null){
             highlightInfo.put("subContent", subContent)
-            highlightInfo.put("colorSubContent", colorSubContent)
+            if (colorSubContent != null){
+                highlightInfo.put("colorSubContent", colorSubContent)
+            }
             if (colorSubContentDark != null){
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
@@ -366,7 +379,7 @@ class FocusApi {
         return highlightInfo
     }
 
-    /** 时间
+    /** 时间 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param timerType 时间类型 1:过了多少 不设置为倒计时
      * @param timerWhen 结束时间戳
      * @param timerSystemCurrent 系统时间
@@ -389,8 +402,9 @@ class FocusApi {
         return timerInfo
     }
 
-    /** 聊天信息
+    /** 聊天信息 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param picProfile 头像，请在sendFocus中添加picProfile
+     * @param picProfileDark 图标 请自行添加picProfileDark
      * @param timerInfo 时间信息
      * @param title 标题
      * @param colortitle 标题颜色
@@ -401,36 +415,42 @@ class FocusApi {
      * @return JSONObject*/
     fun chatinfo(
         picProfile: String = "miui.focus.pic_profile",
+        picProfileDark: String? = null,
         timerInfo: JSONObject? = null,
         title: String,
-        colortitle: String = "#000000",
+        colortitle: String? = null,
         colortitleDark: String? = null,
         content: String,
-        colorcontent: String = "#000000",
+        colorcontent: String? = null,
         colorcontentDark: String? = null,
-    ): JSONObject{
+    ): JSONObject {
         val chatInfo = JSONObject()
-        if (picProfileset){
-            chatInfo.put("picProfile", picProfile)
+        chatInfo.put("picProfile", picProfile)
+        if (picProfileDark != null) {
+            chatInfo.put("picProfileDark", picProfileDark)
         }
-        if (timerInfo != null){
+        if (timerInfo != null) {
             chatInfo.put("timerInfo", timerInfo)
         }
         chatInfo.put("title", title)
-        chatInfo.put("colorTitle", colortitle)
-        if (colortitleDark != null){
+        if (colortitle != null) {
+            chatInfo.put("colorTitle", colortitle)
+        }
+        if (colortitleDark != null) {
             chatInfo.put("colortitleDark", colortitleDark)
         }
 
         chatInfo.put("content", content)
-        chatInfo.put("colorContent", colorcontent)
+        if (colorcontent != null){
+            chatInfo.put("colorContent", colorcontent)
+        }
         if (colorcontentDark != null){
             chatInfo.put("colorContentDark", colorcontentDark)
         }
         return chatInfo
     }
 
-    /** HintInfo
+    /** HintInfo 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param colorContentBg 内容背景颜色
      * @param type 标志
      * @param picContent 图标
@@ -451,13 +471,13 @@ class FocusApi {
         content: String? = null,
         subTitle: String? = null,
         subContent: String? = null,
-        colorsubTitle: String? = "#000000",
-        colorSubTitleDark: String? = "#000000",
-        colorSubContent: String = "#000000",
+        colorsubTitle: String? = null,
+        colorSubTitleDark: String? = null,
+        colorSubContent: String? = null,
         colorSubContentDark: String? = null,
-        colorContent: String = "#000000",
+        colorContent: String? = null,
         colorContentDark: String? = null,
-        colortitle: String = "#000000",
+        colortitle: String? = null,
         colortitleDark: String? = null,
         titleLineCount: Int? = null,
     ): JSONObject{
@@ -473,7 +493,9 @@ class FocusApi {
         }
         if (title != null){
             hintInfo.put("title", title)
-            hintInfo.put("colorTitle", colortitle)
+            if (colortitle != null) {
+                hintInfo.put("colorTitle", colortitle)
+            }
             if (colortitleDark != null){
                 hintInfo.put("colortitleDark", colortitleDark)
             }
@@ -483,21 +505,27 @@ class FocusApi {
         }
         if (content != null){
             hintInfo.put("content", content)
-            hintInfo.put("colorContent", colorContent)
+            if (colorContent != null){
+                hintInfo.put("colorContent", colorContent)
+            }
             if (colorContentDark != null){
                 hintInfo.put("colorContentDark", colorContentDark)
             }
         }
         if (subTitle != null){
             hintInfo.put("subTitle", subTitle)
-            hintInfo.put("colorSubTitle", colorsubTitle)
+            if (colorsubTitle != null) {
+                hintInfo.put("colorSubTitle", colorsubTitle)
+            }
             if (colorSubTitleDark != null){
                 hintInfo.put("colorSubTitleDark", colorSubTitleDark)
             }
         }
         if (subContent != null) {
             hintInfo.put("subContent", subContent)
-            hintInfo.put("colorSubContent", colorSubContent)
+            if (colorSubContent != null){
+                hintInfo.put("colorSubContent", colorSubContent)
+            }
             if (colorSubContentDark != null) {
                 hintInfo.put("colorSubContentDark", colorSubContentDark)
             }
@@ -570,7 +598,7 @@ class FocusApi {
         return progressInfo
     }
 
-    /** 按钮信息 图标和文本不要在一起用 只能分开用
+    /** 按钮信息 图标和文本不要在一起用 只能分开用 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param actionBgColor 按钮背景颜色
      * @param actionBgColorDark 按钮深色背景颜色
      * @param actionsIcon 按钮图标
