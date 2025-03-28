@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "HyperFocusApi"
 include(":app")
 include(":stub")
+include(":systemui")

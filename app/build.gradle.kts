@@ -10,7 +10,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        namespace  = "com.hyperfocus.api"
+        namespace = "com.hyperfocus.api"
     }
 
     buildTypes {
@@ -35,6 +35,7 @@ android {
 
 dependencies {
     compileOnly(project(":stub"))
+    implementation("com.google.code.gson:gson:2.12.1")
 }
 
 afterEvaluate {
