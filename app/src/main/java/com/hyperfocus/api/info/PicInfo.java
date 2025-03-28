@@ -10,8 +10,6 @@ import java.util.Objects;
 public final class PicInfo {
     private ActionInfo actionInfo;
     private String pic;
-    private Icon picFunction;
-    private Icon picProfile;
     private Icon myPic;
     private Integer type;
     Bundle picBundle = new Bundle();
@@ -29,16 +27,6 @@ public final class PicInfo {
 
     public PicInfo setType(Integer type) {
         this.type = type;
-        return this;
-    }
-
-    public PicInfo setPicFunction(Icon picFunction) {
-        picBundle.putParcelable("miui.focus.pic_notification", picFunction);
-        return this;
-    }
-
-    public PicInfo setPicProfile(Icon picProfile) {
-        picBundle.putParcelable("miui.focus.pic_profile", picProfile);
         return this;
     }
 

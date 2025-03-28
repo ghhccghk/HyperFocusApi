@@ -66,6 +66,7 @@ public final class Template {
 
     public Template setChatInfo(ChatInfo chatInfo) {
         this.chatInfo = chatInfo;
+        picBundle.putAll(chatInfo.picBundle);
         return this;
     }
 
@@ -76,6 +77,7 @@ public final class Template {
 
     public Template setHighlightInfo(HighlightInfo highlightInfo) {
         this.highlightInfo = highlightInfo;
+        picBundle.putAll(highlightInfo.picBundle);
         return this;
     }
 
