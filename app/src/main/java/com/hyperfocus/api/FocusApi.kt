@@ -8,12 +8,17 @@ import org.json.JSONObject
 
 class FocusApi {
 
+    private var picFunctionset: Boolean = false
+    private var picProfileset: Boolean = false
+
     /**发送焦点通知
      * @param ticker 焦点在状态栏内容
      * @param scene 场景
      * @param baseInfo 基础信息
      * @param highlightInfo 高亮信息
-     * @param hintInfo 提示信息
+     * @param ProgressInfo 进度信息 不能和hintInfo 同时使用
+     * @param chatinfo 聊天信息
+     * @param hintInfo 提示信息 不能和 ProgressInfo 同时使用
      * @param chatinfo 聊天信息
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
@@ -29,7 +34,7 @@ class FocusApi {
      * @param picbg 焦点通知背景，留空为默认背景
      * @param picbgtype 背景标志 未知
      * @param picmarkv2 焦点通知右边图标
-     * @param picmarkv2type 焦点通知右边标志 未知
+     * @param picmarkv2type 焦点通知右边标志 1-3
      * @param basetype 基础标志 可以改成 2
      * @param protocol 控制版本 默认即可
      * @param updatable 焦点通知是否还要更新
@@ -44,8 +49,9 @@ class FocusApi {
         highlightInfo: JSONObject? = null,
         hintInfo: JSONObject? = null,
         chatinfo: JSONObject? = null,
-        scene: String = "templateBaseScene",
-        title: String,
+        ProgressInfo: JSONObject? = null,
+        scene: String? = null,
+        title: String? = null ,
         colorTitle: String = "#000000",
         content: String? = null,
         ticker: String,
@@ -72,13 +78,19 @@ class FocusApi {
         val param = JSONObject()
         val param_v2 = JSONObject()
 
-
         param_v2.put("protocol", protocol)
-        param_v2.put("enableFloat", enableFloat)
+        if (enableFloat){
+            param_v2.put("enableFloat", enableFloat)
+        }
         param_v2.put("ticker", ticker)
         param_v2.put("tickerPic", "miui.focus.pic_ticker")
-        param_v2.put("updatable", updatable)
-        param_v2.put("padding", padding)
+        if (updatable){
+            param_v2.put("updatable", updatable)
+        }
+        if (padding){
+            param_v2.put("padding", padding)
+        }
+
         if (content != null ){
             param.put("content", content)
         }
@@ -88,7 +100,10 @@ class FocusApi {
             param_v2.put("colorTitle", colorTitle)
 
         }
-        param.put("scene", scene)
+        if (scene != null){
+            param.put("scene", scene)
+        }
+
         pics.putParcelable(
             "miui.focus.pic_ticker", picticker
         )
@@ -141,19 +156,32 @@ class FocusApi {
 
         if (picFunction != null){
             pics.putParcelable("miui.focus.pic_notification", picFunction)
+            picFunctionset = true
+        } else{
+            picFunctionset = false
         }
 
         if (picProfile != null){
             pics.putParcelable("miui.focus.pic_profile", picProfile)
+            picProfileset = true
+        } else{
+            picProfileset = false
         }
 
         if (chatinfo != null){
             param_v2.put("chatInfo", chatinfo)
         }
 
-        if (hintInfo != null){
-            param_v2.put("hintInfo", hintInfo)
+        if (chatinfo != null || highlightInfo != null || baseInfo != null && ProgressInfo == null){
+            if (hintInfo != null){
+                param_v2.put("hintInfo", hintInfo)
+            }
         }
+
+        if (ProgressInfo != null && hintInfo == null){
+            param_v2.put("progressInfo", ProgressInfo)
+        }
+
 
         if (addpics != null){
             pics.putAll(addpics)
@@ -177,8 +205,6 @@ class FocusApi {
      * @param subTitle 焦点通知副标题
      * @param extraTitle 焦点通知额外标题
      * @param specialTitle 焦点通知特殊标题
-     * @param desc1 焦点通知描述1 (不可用
-     * @param desc2 焦点通知描述2 （不可用
      * @param colorsubTitle 焦点通知小标题颜色
      * @param colorSubContent 焦点通知小标题边上的小标题的颜色
      * @param colorSubTitleDark 焦点通知副标题深色颜色
@@ -199,8 +225,6 @@ class FocusApi {
         subContent: String? = null,
         extraTitle: String? = null,
         specialTitle: String? = null,
-        desc1: String? = null,
-        desc2: String? = null,
         colorsubTitle: String? = "#000000",
         colorSubTitleDark: String? = "#000000",
         colorSubContent: String = "#000000",
@@ -268,14 +292,6 @@ class FocusApi {
             }
         }
 
-        if (desc1 != null){
-            baseInfo.put("desc1", desc1)
-        }
-
-        if (desc2 != null){
-            baseInfo.put("desc2", desc2)
-        }
-
         baseInfo.put("type", basetype)
         return baseInfo
     }
@@ -290,19 +306,37 @@ class FocusApi {
      * */
     fun highlightInfo(
         type: Int = 1,
-        timerInfo: JSONObject,
+        timerInfo: JSONObject? = null,
         title: String? = null,
+        content: String? = null,
         subContent: String? = null,
         colorSubContent: String = "#000000",
         colorSubContentDark: String? = null,
+        colorContent: String = "#000000",
+        colorContentDark: String? = null,
+        colorTitle: String = "#000000",
+        colorTitleDark: String? = null,
     ): JSONObject{
         val highlightInfo = JSONObject()
         highlightInfo.put("type", type)
-        highlightInfo.put("timerInfo", timerInfo)
+        if (timerInfo != null){
+            highlightInfo.put("timerInfo", timerInfo)
+        }
         if (title != null){
             highlightInfo.put("title", title)
         }
-        highlightInfo.put("colorTitle", colorSubContent)
+        highlightInfo.put("colorTitle", colorTitle)
+
+        if (colorTitleDark != null){
+            highlightInfo.put("colorTitleDark", colorTitleDark)
+        }
+        if (content != null){
+            highlightInfo.put("content", content)
+            highlightInfo.put("colorContent", colorContent)
+            if (colorContentDark != null){
+                highlightInfo.put("colorContentDark", colorContentDark)
+            }
+        }
 
         if (subContent != null){
             highlightInfo.put("subContent", subContent)
@@ -310,13 +344,16 @@ class FocusApi {
             if (colorSubContentDark != null){
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
-            highlightInfo.put("picFunction", "miui.focus.pic_notification")
+            if (picFunctionset){
+                highlightInfo.put("picFunction", "miui.focus.pic_notification")
+            }
+
         }
         return highlightInfo
     }
 
     /** 时间
-     * @param timerType 时间类型
+     * @param timerType 时间类型 1:过了多少 不设置为倒计时
      * @param timerWhen 结束时间戳
      * @param timerSystemCurrent 系统时间
      * timerWhen 比 timerSystemCurrent 大为倒计时 小为过了多少
@@ -339,7 +376,7 @@ class FocusApi {
     }
 
     /** 聊天信息
-     * @param picProfile 头像
+     * @param picProfile 头像，请在sendFocus中添加picProfile
      * @param timerInfo 时间信息
      * @param title 标题
      * @param colortitle 标题颜色
@@ -359,7 +396,9 @@ class FocusApi {
         colorcontentDark: String? = null,
     ): JSONObject{
         val chatInfo = JSONObject()
-        chatInfo.put("picProfile", picProfile)
+        if (picProfileset){
+            chatInfo.put("picProfile", picProfile)
+        }
         if (timerInfo != null){
             chatInfo.put("timerInfo", timerInfo)
         }
@@ -376,6 +415,7 @@ class FocusApi {
         }
         return chatInfo
     }
+
     /** HintInfo
      * @param colorContentBg 内容背景颜色
      * @param type 标志
@@ -392,6 +432,15 @@ class FocusApi {
         picContent: String? = null,
         timerInfo: JSONObject? = null,
         title: String? = null,
+        content: String? = null,
+        subTitle: String? = null,
+        subContent: String? = null,
+        colorsubTitle: String? = "#000000",
+        colorSubTitleDark: String? = "#000000",
+        colorSubContent: String = "#000000",
+        colorSubContentDark: String? = null,
+        colorContent: String = "#000000",
+        colorContentDark: String? = null,
         colortitle: String = "#000000",
         colortitleDark: String? = null,
         titleLineCount: Int? = null,
@@ -416,6 +465,28 @@ class FocusApi {
         if (titleLineCount != null){
             hintInfo.put("titleLineCount", titleLineCount)
         }
+        if (content != null){
+            hintInfo.put("content", content)
+            hintInfo.put("colorContent", colorContent)
+            if (colorContentDark != null){
+                hintInfo.put("colorContentDark", colorContentDark)
+            }
+        }
+        if (subTitle != null){
+            hintInfo.put("subTitle", subTitle)
+            hintInfo.put("colorSubTitle", colorsubTitle)
+            if (colorSubTitleDark != null){
+                hintInfo.put("colorSubTitleDark", colorSubTitleDark)
+            }
+        }
+        if (subContent != null) {
+            hintInfo.put("subContent", subContent)
+            hintInfo.put("colorSubContent", colorSubContent)
+            if (colorSubContentDark != null) {
+                hintInfo.put("colorSubContentDark", colorSubContentDark)
+            }
+        }
+
         hintInfo.put("type", type)
         return hintInfo
     }
@@ -432,5 +503,50 @@ class FocusApi {
         val namea = "miui.focus.pic_$name"
         pics.putParcelable(namea, icon)
         return pics
+    }
+
+
+    /** 进度条
+     * @param colorProgress 进度条颜色
+     * @param colorProgressEnd 进度条结束颜色
+     * @param picEnd 进度条结束图标
+     * @param picEndUnselected 进度条未选中图标
+     * @param picForward 进度条向前图标
+     * @param picMiddle 进度条中间图标
+     * @param picMiddleUnselected 进度条未选中中间图标
+     * @param progress 进度条进度 */
+    fun ProgressInfo(
+        colorProgress: String,
+        colorProgressEnd: String,
+        picEnd: String? = null,
+        picEndUnselected: String? = null,
+        picForward: String? = null,
+        picMiddle: String? = null,
+        picMiddleUnselected: String? = null,
+        progress:Int
+    ): JSONObject{
+        val progressInfo = JSONObject()
+
+        progressInfo.put("colorProgress", colorProgress)
+        progressInfo.put("colorProgressEnd", colorProgressEnd)
+
+        if (picEnd != null){
+            progressInfo.put("picEnd", picEnd)
+        }
+        if (picEndUnselected != null) {
+            progressInfo.put("picEndUnselected", picEndUnselected)
+        }
+        if (picForward != null){
+            progressInfo.put("picForward", picForward)
+        }
+        if (picMiddle != null){
+            progressInfo.put("picMiddle", picMiddle)
+        }
+        if (picMiddleUnselected != null){
+            progressInfo.put("picMiddleUnselected", picMiddleUnselected)
+        }
+        progressInfo.put("progress", progress)
+
+        return progressInfo
     }
 }
