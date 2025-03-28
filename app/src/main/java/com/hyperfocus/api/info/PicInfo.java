@@ -12,7 +12,7 @@ public final class PicInfo {
     private String pic;
     private Icon myPic;
     private Integer type;
-    Bundle picBundle = new Bundle();
+    transient Bundle picBundle = new Bundle();
 
     public PicInfo setActionInfo(ActionInfo actionInfo) {
         this.actionInfo = actionInfo;

@@ -12,7 +12,7 @@ public final class HighlightInfo extends TextAndColorInfo {
     private String picFunctionDark;
     private TimerInfo timerInfo;
     private int type = 1;
-    Bundle picBundle = new Bundle();
+    transient Bundle picBundle = new Bundle();
 
     public HighlightInfo setPicFunction(Icon picFunction) {
         this.picFunction = "miui.focus.pic_notification";

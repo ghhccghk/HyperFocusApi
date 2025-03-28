@@ -11,7 +11,7 @@ public final class BgInfo {
     private String colorBg;
     private String picBg;
     private int type;
-    Bundle picBundle = new Bundle();
+    transient Bundle picBundle = new Bundle();
 
     public BgInfo setColorBg(String colorBg) {
         this.colorBg = colorBg;

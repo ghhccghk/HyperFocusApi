@@ -10,7 +10,7 @@ import java.util.Objects;
 public final class ChatInfo extends TextAndColorInfo {
     private String picProfile;
     private TimerInfo timerInfo;
-    Bundle picBundle = new Bundle();
+    transient Bundle picBundle = new Bundle();
 
     public ChatInfo setPicProfile(Icon picProfile) {
         this.picProfile = "miui.focus.pic_profile";
