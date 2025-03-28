@@ -10,7 +10,6 @@ import java.util.Objects;
 public final class PicInfo {
     private ActionInfo actionInfo;
     private String pic;
-    private Icon myPic;
     private Integer type;
     transient Bundle picBundle = new Bundle();
 
