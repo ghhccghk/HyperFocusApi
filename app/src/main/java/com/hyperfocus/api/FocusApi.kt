@@ -1,9 +1,13 @@
 package com.hyperfocus.api
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.content.Intent
 import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import org.json.JSONArray
 import org.json.JSONObject
 
 class FocusApi {
@@ -20,6 +24,7 @@ class FocusApi {
      * @param chatinfo 聊天信息
      * @param hintInfo 提示信息 不能和 ProgressInfo 同时使用
      * @param chatinfo 聊天信息
+     * @param actions 按钮信息 不能和picmarkv2 同时使用 ，ActionInfo使用JSONArray合并一起可生成多个按钮
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
      * @param subContent 焦点通知小标题边上的小标题
@@ -27,14 +32,13 @@ class FocusApi {
      * @param aodPic aodPic 息屏图标
      * @param normalHeight 焦点通知高度（无法使用）
      * @param picbgtype 背景标志 未知 1~2 可用
-     * @param picmarkv2type 焦点通知右边标志 未知 1~4 可用
+     * @param picmarkv2type 焦点通知右边标志 未知 1~4 可用 不可跟按钮使用
      * 图标要是对应不上反一下 这个我之前测试有点问题
      * @param picticker 焦点在状态栏图标浅色
      * @param pictickerdark 焦点在状态栏图标深色
      * @param picbg 焦点通知背景，留空为默认背景
      * @param picbgtype 背景标志 未知
-     * @param picmarkv2 焦点通知右边图标
-     * @param picmarkv2type 焦点通知右边标志 1-3
+     * @param picmarkv2 焦点通知右边图标 不可跟按钮使用
      * @param basetype 基础标志 可以改成 2
      * @param protocol 控制版本 默认即可
      * @param updatable 焦点通知是否还要更新
@@ -50,6 +54,7 @@ class FocusApi {
         hintInfo: JSONObject? = null,
         chatinfo: JSONObject? = null,
         ProgressInfo: JSONObject? = null,
+        actions : JSONArray? = null,
         scene: String? = null,
         title: String? = null ,
         colorTitle: String = "#000000",
@@ -195,6 +200,10 @@ class FocusApi {
         }
         param.put("param_v2", param_v2)
         paramBundle.putString("miui.focus.param", param.toString())
+
+        if (actions != null && picmarkv2 == null){
+            param.put("miui.focus.actions",actions)
+        }
 
         builder.addExtras(paramBundle)
         return paramBundle
@@ -425,12 +434,14 @@ class FocusApi {
      * @param colortitle 标题颜色
      * @param colortitleDark 标题深色颜色
      * @param titleLineCount 标题行数
+     * @param actionInfo 按钮信息
      * @return JSONObject*/
     fun HintInfo(
         colorContentBg: String? = null,
         type: Int = 1,
         picContent: String? = null,
         timerInfo: JSONObject? = null,
+        actionInfo: JSONObject? = null,
         title: String? = null,
         content: String? = null,
         subTitle: String? = null,
@@ -486,10 +497,14 @@ class FocusApi {
                 hintInfo.put("colorSubContentDark", colorSubContentDark)
             }
         }
+        if (actionInfo != null){
+            hintInfo.put("actionInfo", actionInfo)
+        }
 
         hintInfo.put("type", type)
         return hintInfo
     }
+
     /** 添加图标
      * @param name 图标名称
      * @param icon 图标
@@ -548,5 +563,44 @@ class FocusApi {
         progressInfo.put("progress", progress)
 
         return progressInfo
+    }
+
+    /** 按钮信息 图标和文本不要在一起用 只能分开用
+     * @param actionBgColor 按钮背景颜色
+     * @param actionBgColorDark 按钮深色背景颜色
+     * @param actionsIcon 按钮图标
+     * @param actionsIconDark 按钮深色图标
+     * @param actionsIntent Intent
+     * @param actionsIntentType Intent类型
+     * @param actionsTitle 按钮标题
+     * @param actionTitleColor 按钮标题颜色
+     * @param actionTitleColorDark 按钮深色标题颜色
+     * @return JSONObject */
+    @TargetApi(Build.VERSION_CODES.DONUT)
+    fun ActionInfo(
+        actionBgColor: String? = null,
+        actionBgColorDark: String? = null,
+        actionsIcon: String? = null,
+        actionsIconDark: String? = null,
+        actionsIntent: Intent,
+        actionsIntentType: String? = null,
+        actionsTitle: String? = null,
+        actionTitleColor: String? = null,
+        actionTitleColorDark: String? = null,
+    ): JSONObject  {
+        val actionObject = JSONObject()  // 单个 action 信息
+
+        actionObject.put("actionIntent", actionsIntent.toUri(Intent.URI_INTENT_SCHEME))
+        actionObject.put("actionIntentType", actionsIntentType)
+        actionObject.put("actionTitle", actionsTitle)
+        actionObject.put("actionTitleColor", actionTitleColor)
+
+        actionBgColor?.let { actionObject.put("actionBgColor", it) }
+        actionBgColorDark?.let { actionObject.put("actionBgColorDark", it) }
+        actionsIcon?.let { actionObject.put("actionIcon", it) }
+        actionsIconDark?.let { actionObject.put("actionIconDark", it) }
+        actionTitleColorDark?.let { actionObject.put("actionTitleColorDark", it) }
+
+        return actionObject
     }
 }
