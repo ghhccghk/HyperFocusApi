@@ -35,7 +35,7 @@ android {
 
 dependencies {
     compileOnly(project(":stub"))
-    implementation("com.google.code.gson:gson:2.12.1")
+    implementation(libs.gson)
 }
 
 afterEvaluate {
@@ -44,7 +44,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.ghhccghk"
                 artifactId = "HyperFocusApi"
-                version = "0.8"
+                version = "0.9"
                 from(components["release"])
             }
         }

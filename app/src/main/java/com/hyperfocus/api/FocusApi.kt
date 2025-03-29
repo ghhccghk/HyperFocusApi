@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import org.json.JSONArray
 import org.json.JSONObject
@@ -42,11 +43,9 @@ class FocusApi {
      * @param enableFloat 焦点通知是否弹出
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
-     * @param addpics 添加图标
-     * @param builder 通知Builder */
+     * @param addpics 添加图标 */
     @SuppressLint("NewApi")
     fun sendFocus(
-        builder: NotificationCompat.Builder,
         baseInfo: JSONObject? = null,
         highlightInfo: JSONObject? = null,
         hintInfo: JSONObject? = null,
@@ -181,9 +180,40 @@ class FocusApi {
         if (actions != null && picInfo == null){
             param.put("miui.focus.actions",actions)
         }
-
-        builder.addExtras(paramBundle)
         return paramBundle
+    }
+
+
+    /** 自定义焦点通知
+     * @param ticker 焦点在状态栏内容
+     * @param picticker 焦点在状态栏图标
+     * @param remoteViews 焦点通知的RemoteViews
+     * @param enableFloat 焦点通知是否弹出
+     * @param addpics 添加图标
+     * @return Bundle*/
+    @TargetApi(Build.VERSION_CODES.M)
+    fun diyFocus(
+        picticker: Icon,
+        ticker: String,
+        remoteViews: RemoteViews,
+        enableFloat: Boolean = false,
+        addpics: Bundle? = null
+
+    ): Bundle{
+        val focus = Bundle()
+        val pics = Bundle()
+        pics.putParcelable("miui.focus.pic_ticker",picticker)
+        val cus = Bundle()
+        cus.putString("ticker",ticker)
+        cus.putString("tickerPic","pro_a")
+        cus.putBoolean("enableFloat",enableFloat)
+        addpics.let { pics.putAll(it) }
+        focus.putParcelable("miui.focus.param.custom",cus)
+        focus.putParcelable("miui.focus.pics",pics)
+        focus.putParcelable("miui.focus.rv",remoteViews)
+        focus.putParcelable("miui.focus.rvAod",remoteViews)
+        focus.putParcelable("miui.focus.rvNight",remoteViews)
+        return focus
     }
 
     /** Baseinfo 自定义背景必须设置颜色，否则导致崩溃后果自负
