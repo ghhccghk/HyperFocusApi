@@ -16,3 +16,4 @@ local.properties
 
 /systemui
 /systemui/.*
+/.idea/
