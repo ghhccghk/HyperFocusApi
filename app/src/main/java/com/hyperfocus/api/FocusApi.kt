@@ -195,6 +195,7 @@ class FocusApi {
     fun diyFocus(
         picticker: Icon,
         ticker: String,
+        pictickerdark: Icon? = null,
         remoteViews: RemoteViews,
         enableFloat: Boolean = false,
         addpics: Bundle? = null
@@ -207,6 +208,12 @@ class FocusApi {
         cus.putString("ticker",ticker)
         cus.putString("tickerPic","pro_a")
         cus.putBoolean("enableFloat",enableFloat)
+        if (pictickerdark != null) {
+            cus.putString("tickerPicDark", "miui.focus.pic_ticker_dark")
+            pics.putParcelable(
+                "miui.focus.pic_ticker_dark", pictickerdark
+            )
+        }
         addpics.let { pics.putAll(it) }
         focus.putParcelable("miui.focus.param.custom",cus)
         focus.putParcelable("miui.focus.pics",pics)
