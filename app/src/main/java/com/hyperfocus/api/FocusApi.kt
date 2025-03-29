@@ -36,14 +36,13 @@ class FocusApi {
      * @param picbg 焦点通知背景，留空为默认背景
      * @param picbgtype 背景标志 未知
      * @param picInfo 焦点通知右边图标 不可跟按钮使用
-     * @param picFunction highlightInfo 里的小图标
-     * @param picProfile chatinfo 用户头像
      * @param basetype 基础标志 可以改成 2
      * @param protocol 控制版本 默认即可
      * @param updatable 焦点通知是否还要更新
      * @param enableFloat 焦点通知是否弹出
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
+     * @param addpics 添加图标
      * @param builder 通知Builder */
     @SuppressLint("NewApi")
     fun sendFocus(
@@ -63,11 +62,9 @@ class FocusApi {
         picticker: Icon,
         pictickerdark: Icon? = null,
         picInfo: Icon? = null,
-        picProfile: Icon? = null,
         aodPic: Icon? = null,
         picbg: Icon? = null,
         addpics: Bundle? = null,
-        picFunction: Icon? = null,
         picbgtype: Int = 1,
         protocol: Int = 1,
         picInfotype: Int = 1,
@@ -151,13 +148,6 @@ class FocusApi {
 
         if (highlightInfo != null){
             param_v2.put("highlightInfo", highlightInfo)
-        }
-
-        if (picFunction != null){
-            pics.putParcelable("miui.focus.pic_notification", picFunction)
-        }
-        if (picProfile != null){
-            pics.putParcelable("miui.focus.pic_profile", picProfile)
         }
 
         if (chatinfo != null){
@@ -311,13 +301,19 @@ class FocusApi {
      * @param subContent 小标题
      * @param colorSubContent 小标题颜色
      * @param colorSubContentDark 小标题深色颜色
+     * @param colorContent 内容颜色
+     * @param colorContentDark 内容深色颜色
+     * @param colorTitle 标题颜色
+     * @param colorTitleDark 标题深色颜色
+     * @param picFunctionDark 小图标深色 请使用addpics自行添加picFunctionDark
+     * @param picFunction 小图标 请使用addpics自行添加picFunction
      * @return JSONObject
      * */
     fun highlightInfo(
         type: Int = 1,
         timerInfo: JSONObject? = null,
         actionInfo: JSONObject? = null,
-        picFunction : String = "miui.focus.pic_notification",
+        picFunction : String? = null,
         picFunctionDark : String? = null,
         title: String? = null,
         content: String? = null,
@@ -365,7 +361,9 @@ class FocusApi {
             if (colorSubContentDark != null){
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
-            highlightInfo.put("picFunction", picFunction)
+            if (picFunction != null){
+                highlightInfo.put("picFunction", picFunction)
+            }
             if (picFunctionDark != null){
                 highlightInfo.put("picFunctionDark", picFunctionDark)
             }
@@ -399,8 +397,8 @@ class FocusApi {
     }
 
     /** 聊天信息 自定义背景必须设置颜色，否则导致崩溃后果自负
-     * @param picProfile 头像，请在sendFocus中添加picProfile
-     * @param picProfileDark 图标 请自行添加picProfileDark
+     * @param picProfile 头像，请使用addpics自行添加picProfile
+     * @param picProfileDark 图标 请使用addpics自行添加picProfileDark
      * @param timerInfo 时间信息
      * @param title 标题
      * @param colortitle 标题颜色
@@ -410,7 +408,7 @@ class FocusApi {
      * @param colorcontentDark 内容深色颜色
      * @return JSONObject*/
     fun chatinfo(
-        picProfile: String = "miui.focus.pic_profile",
+        picProfile: String? = null,
         picProfileDark: String? = null,
         timerInfo: JSONObject? = null,
         title: String,
@@ -421,7 +419,9 @@ class FocusApi {
         colorcontentDark: String? = null,
     ): JSONObject {
         val chatInfo = JSONObject()
-        chatInfo.put("picProfile", picProfile)
+        if (picProfile != null){
+            chatInfo.put("picProfile", picProfile)
+        }
         if (picProfileDark != null) {
             chatInfo.put("picProfileDark", picProfileDark)
         }
