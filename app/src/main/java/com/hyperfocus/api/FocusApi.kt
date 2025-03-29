@@ -12,9 +12,6 @@ import org.json.JSONObject
 
 class FocusApi {
 
-    private var picFunctionset: Boolean = false
-    private var picProfileset: Boolean = false
-
     /**发送焦点通知 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param ticker 焦点在状态栏内容
      * @param scene 场景
@@ -32,13 +29,15 @@ class FocusApi {
      * @param aodPic aodPic 息屏图标
      * @param normalHeight 焦点通知高度（无法使用）
      * @param picbgtype 背景标志 未知 1~2 可用
-     * @param picmarkv2type 焦点通知右边标志 未知 1~4 可用 不可跟按钮使用
+     * @param  picInfotype 焦点通知右边标志 未知 1~4 可用 不可跟按钮使用
      * 图标要是对应不上反一下 这个我之前测试有点问题
      * @param picticker 焦点在状态栏图标浅色
      * @param pictickerdark 焦点在状态栏图标深色
      * @param picbg 焦点通知背景，留空为默认背景
      * @param picbgtype 背景标志 未知
-     * @param picmarkv2 焦点通知右边图标 不可跟按钮使用
+     * @param picInfo 焦点通知右边图标 不可跟按钮使用
+     * @param picFunction highlightInfo 里的小图标
+     * @param picProfile chatinfo 用户头像
      * @param basetype 基础标志 可以改成 2
      * @param protocol 控制版本 默认即可
      * @param updatable 焦点通知是否还要更新
@@ -63,7 +62,7 @@ class FocusApi {
         aodTitle: String? = null,
         picticker: Icon,
         pictickerdark: Icon? = null,
-        picmarkv2: Icon? = null,
+        picInfo: Icon? = null,
         picProfile: Icon? = null,
         aodPic: Icon? = null,
         picbg: Icon? = null,
@@ -71,9 +70,8 @@ class FocusApi {
         picFunction: Icon? = null,
         picbgtype: Int = 1,
         protocol: Int = 1,
-        picmarkv2type: Int = 1,
+        picInfotype: Int = 1,
         timeout: Int? = 280,
-        normalHeight: Int? = null,
         updatable: Boolean = true,
         enableFloat: Boolean = false,
         padding:Boolean = false
@@ -101,9 +99,9 @@ class FocusApi {
         }
         if (title != null){
             param.put("title", title)
-            param.put("colorTitle", colorTitle)
-            param_v2.put("colorTitle", colorTitle)
-
+            if (colorTitle != null){
+                param.put("colorTitle", colorTitle)
+            }
         }
         if (scene != null){
             param.put("scene", scene)
@@ -129,12 +127,12 @@ class FocusApi {
             )
         }
 
-        if (picmarkv2 != null) {
-            val picInfo = JSONObject()
-            picInfo.put("type", picmarkv2type)
-            picInfo.put("pic", "miui.focus.pic_mark_v2")
-            param_v2.put("picInfo", picInfo)
-            pics.putParcelable("miui.focus.pic_mark_v2", picmarkv2)
+        if (picInfo != null) {
+            val picInfoj = JSONObject()
+            picInfoj.put("type", picInfotype)
+            picInfoj.put("pic", "miui.focus.pic_mark_v2")
+            param_v2.put("picInfo", picInfoj)
+            pics.putParcelable("miui.focus.pic_mark_v2", picInfo)
         }
 
 
@@ -157,16 +155,9 @@ class FocusApi {
 
         if (picFunction != null){
             pics.putParcelable("miui.focus.pic_notification", picFunction)
-            picFunctionset = true
-        } else{
-            picFunctionset = false
         }
-
         if (picProfile != null){
             pics.putParcelable("miui.focus.pic_profile", picProfile)
-            picProfileset = true
-        } else{
-            picProfileset = false
         }
 
         if (chatinfo != null){
@@ -197,7 +188,7 @@ class FocusApi {
         param.put("param_v2", param_v2)
         paramBundle.putString("miui.focus.param", param.toString())
 
-        if (actions != null && picmarkv2 == null){
+        if (actions != null && picInfo == null){
             param.put("miui.focus.actions",actions)
         }
 
@@ -315,6 +306,7 @@ class FocusApi {
      * @param type 标志
      * @param timerInfo 时间信息
      * @param actionInfo 按钮信息
+     * @param picFunction 小图标
      * @param title 标题
      * @param subContent 小标题
      * @param colorSubContent 小标题颜色
@@ -325,6 +317,8 @@ class FocusApi {
         type: Int = 1,
         timerInfo: JSONObject? = null,
         actionInfo: JSONObject? = null,
+        picFunction : String = "miui.focus.pic_notification",
+        picFunctionDark : String? = null,
         title: String? = null,
         content: String? = null,
         subContent: String? = null,
@@ -371,9 +365,11 @@ class FocusApi {
             if (colorSubContentDark != null){
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
-            if (picFunctionset){
-                highlightInfo.put("picFunction", "miui.focus.pic_notification")
+            highlightInfo.put("picFunction", picFunction)
+            if (picFunctionDark != null){
+                highlightInfo.put("picFunctionDark", picFunctionDark)
             }
+
 
         }
         return highlightInfo
