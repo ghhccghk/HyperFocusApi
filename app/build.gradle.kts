@@ -44,7 +44,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.ghhccghk"
                 artifactId = "HyperFocusApi"
-                version = "0.9"
+                version = "0.10"
                 from(components["release"])
             }
         }
