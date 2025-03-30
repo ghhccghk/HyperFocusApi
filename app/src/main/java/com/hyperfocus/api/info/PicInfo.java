@@ -1,12 +1,10 @@
 package com.hyperfocus.api.info;
 
-import android.annotation.SuppressLint;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
 import java.util.Objects;
 
-@SuppressLint("NewApi")
 public final class PicInfo {
     private ActionInfo actionInfo;
     private String pic;

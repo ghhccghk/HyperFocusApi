@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -7,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.hyperfocus.api"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
-        namespace = "com.hyperfocus.api"
+        minSdk = 35
     }
 
     buildTypes {

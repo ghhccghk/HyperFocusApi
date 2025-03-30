@@ -1,6 +1,5 @@
 package com.hyperfocus.api.info;
 
-import android.annotation.SuppressLint;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
@@ -9,7 +8,6 @@ import com.hyperfocus.api.FocusNotifyApi;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressLint("NewApi")
 public final class Template {
     private List<ActionInfo> actions;
     private String aodPic;
@@ -77,7 +75,6 @@ public final class Template {
 
     public Template setHighlightInfo(HighlightInfo highlightInfo) {
         this.highlightInfo = highlightInfo;
-        picBundle.putAll(highlightInfo.picBundle);
         return this;
     }
 

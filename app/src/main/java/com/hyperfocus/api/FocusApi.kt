@@ -1,10 +1,8 @@
 package com.hyperfocus.api
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Intent
 import android.graphics.drawable.Icon
-import android.os.Build
 import android.os.Bundle
 import android.widget.RemoteViews
 import org.json.JSONArray
@@ -40,7 +38,6 @@ class FocusApi {
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
      * @param addpics 添加图标 */
-    @SuppressLint("NewApi")
     fun sendFocus(
         baseInfo: JSONObject? = null,
         highlightInfo: JSONObject? = null,
@@ -195,7 +192,7 @@ class FocusApi {
      * @param enableFloat 焦点通知是否弹出
      * @param addpics 添加图标
      * @return Bundle*/
-    @SuppressLint("NewApi")
+
     fun diyFocus(
         picticker: Icon,
         ticker: String,
@@ -595,7 +592,6 @@ class FocusApi {
      * @param name 图标名称
      * @param icon 图标
      * @return Bundle */
-    @Suppress("NewApi")
     fun addpics(
         name : String,
         icon : Icon,
@@ -662,7 +658,7 @@ class FocusApi {
      * @param actionTitleColor 按钮标题颜色
      * @param actionTitleColorDark 按钮深色标题颜色
      * @return JSONObject */
-    @SuppressLint("NewApi")
+
     fun ActionInfo(
         actionBgColor: String? = null,
         actionBgColorDark: String? = null,

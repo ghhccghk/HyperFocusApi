@@ -1,28 +1,20 @@
 package com.hyperfocus.api.info;
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Icon;
-import android.os.Bundle;
-
 import java.util.Objects;
 
-@SuppressLint("NewApi")
 public final class HighlightInfo extends TextAndColorInfo {
     private String picFunction;
     private String picFunctionDark;
     private TimerInfo timerInfo;
     private int type = 1;
-    transient Bundle picBundle = new Bundle();
 
-    public HighlightInfo setPicFunction(Icon picFunction) {
-        this.picFunction = "miui.focus.pic_notification";
-        picBundle.putParcelable("miui.focus.pic_notification", picFunction);
+    public HighlightInfo setPicFunction(String picFunction) {
+        this.picFunction = picFunction;
         return this;
     }
 
-    public HighlightInfo setPicFunctionDark(Icon picFunctionDark) {
-        this.picFunctionDark = "miui.focus.pic_notification_dark";
-        picBundle.putParcelable("miui.focus.pic_notification_dark", picFunctionDark);
+    public HighlightInfo setPicFunctionDark(String picFunctionDark) {
+        this.picFunctionDark = picFunctionDark;
         return this;
     }
 
