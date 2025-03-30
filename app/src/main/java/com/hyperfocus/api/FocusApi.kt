@@ -477,10 +477,10 @@ class FocusApi {
     ): JSONObject {
         val chatInfo = JSONObject()
         if (picProfile != null){
-            chatInfo.put("picProfile", picProfile)
+            chatInfo.put("picProfile", "miui.focus.pic_$picProfile")
         }
         if (picProfileDark != null) {
-            chatInfo.put("picProfileDark", picProfileDark)
+            chatInfo.put("picProfileDark", "miui.focus.pic_$picProfileDark")
         }
         if (timerInfo != null) {
             chatInfo.put("timerInfo", timerInfo)
@@ -539,7 +539,7 @@ class FocusApi {
             hintInfo.put("colorContentBg", colorContentBg)
         }
         if (picContent != null){
-            hintInfo.put("picContent", picContent)
+            hintInfo.put("picContent", "miui.focus.pic_$picContent")
         }
         if (timerInfo != null){
             hintInfo.put("timerInfo", timerInfo)
@@ -632,19 +632,19 @@ class FocusApi {
         progressInfo.put("colorProgressEnd", colorProgressEnd)
 
         if (picEnd != null){
-            progressInfo.put("picEnd", picEnd)
+            progressInfo.put("picEnd", "miui.focus.pic_$picEnd")
         }
         if (picEndUnselected != null) {
-            progressInfo.put("picEndUnselected", picEndUnselected)
+            progressInfo.put("picEndUnselected", "miui.focus.pic_$picEndUnselected")
         }
         if (picForward != null){
-            progressInfo.put("picForward", picForward)
+            progressInfo.put("picForward", "miui.focus.pic_$picForward")
         }
         if (picMiddle != null){
-            progressInfo.put("picMiddle", picMiddle)
+            progressInfo.put("picMiddle", "miui.focus.pic_$picMiddle")
         }
         if (picMiddleUnselected != null){
-            progressInfo.put("picMiddleUnselected", picMiddleUnselected)
+            progressInfo.put("picMiddleUnselected", "miui.focus.pic_$picMiddleUnselected")
         }
         progressInfo.put("progress", progress)
 
@@ -683,8 +683,8 @@ class FocusApi {
 
         actionBgColor?.let { actionObject.put("actionBgColor", it) }
         actionBgColorDark?.let { actionObject.put("actionBgColorDark", it) }
-        actionsIcon?.let { actionObject.put("actionIcon", it) }
-        actionsIconDark?.let { actionObject.put("actionIconDark", it) }
+        actionsIcon?.let { actionObject.put("actionIcon", "miui.focus.pic_$it") }
+        actionsIconDark?.let { actionObject.put("actionIconDark", "miui.focus.pic_$it") }
         actionTitleColorDark?.let { actionObject.put("actionTitleColorDark", it) }
 
         return actionObject
