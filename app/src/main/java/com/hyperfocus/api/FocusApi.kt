@@ -230,18 +230,18 @@ class FocusApi {
                 "miui.focus.pic_ticker_dark", pictickerdark
             )
         }
-        addpics.let { pics.putAll(it) }
+        addpics?.let { pics.putAll(it) }
         focus.putParcelable("miui.focus.param.custom",cus)
         focus.putParcelable("miui.focus.pics",pics)
         focus.putParcelable("miui.focus.rv",rv)
-        rvAod.let { focus.putParcelable("miui.focus.rvAod",it)}
-        rvNight.let {  focus.putParcelable("miui.focus.rvNight",it)}
-        rvtiny.let {  focus.putParcelable("miui.focus.rv.tiny",it)}
-        rvtinyNight.let {  focus.putParcelable("miui.focus.rv.tinyNight",it)}
-        rvdecoland.let {  focus.putParcelable("miui.focus.rv.deco.land",it)}
-        rvdecolandNight.let {  focus.putParcelable("miui.focus.rv.deco.landNight",it)}
-        rvdecoport.let {  focus.putParcelable("miui.focus.rv.deco.port",it)}
-        rvdecoportNight.let {  focus.putParcelable("miui.focus.rv.deco.portNight",it)}
+        rvAod?.let { focus.putParcelable("miui.focus.rvAod",it)}
+        rvNight?.let {  focus.putParcelable("miui.focus.rvNight",it)}
+        rvtiny?.let {  focus.putParcelable("miui.focus.rv.tiny",it)}
+        rvtinyNight?.let {  focus.putParcelable("miui.focus.rv.tinyNight",it)}
+        rvdecoland?.let {  focus.putParcelable("miui.focus.rv.deco.land",it)}
+        rvdecolandNight?.let {  focus.putParcelable("miui.focus.rv.deco.landNight",it)}
+        rvdecoport?.let {  focus.putParcelable("miui.focus.rv.deco.port",it)}
+        rvdecoportNight?.let {  focus.putParcelable("miui.focus.rv.deco.portNight",it)}
 
 
         return focus
