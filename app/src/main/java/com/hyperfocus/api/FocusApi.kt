@@ -187,7 +187,15 @@ class FocusApi {
     /** 自定义焦点通知
      * @param ticker 焦点在状态栏内容
      * @param picticker 焦点在状态栏图标
-     * @param remoteViews 焦点通知的RemoteViews
+     * @param rv 焦点通知的RemoteViews
+     * @param rvAod 焦点通知Aod的RemoteViews
+     * @param rvNight 焦点通知深色的RemoteViews
+     * @param rvtiny 焦点通知小图标的RemoteViews
+     * @param rvtinyNight 焦点通知小图标深色的RemoteViews
+     * @param rvdecoland 焦点通知横屏的RemoteViews
+     * @param rvdecolandNight 焦点通知横屏深色的RemoteViews
+     * @param rvdecoport 焦点通知竖屏的RemoteViews
+     * @param rvdecoportNight 焦点通知竖屏深色的RemoteViews
      * @param enableFloat 焦点通知是否弹出
      * @param addpics 添加图标
      * @return Bundle*/
@@ -196,7 +204,15 @@ class FocusApi {
         picticker: Icon,
         ticker: String,
         pictickerdark: Icon? = null,
-        remoteViews: RemoteViews,
+        rv: RemoteViews,
+        rvAod : RemoteViews? = null,
+        rvNight: RemoteViews? = null,
+        rvtiny : RemoteViews? = null,
+        rvtinyNight: RemoteViews? = null,
+        rvdecoland: RemoteViews? =null,
+        rvdecolandNight: RemoteViews? =null,
+        rvdecoport: RemoteViews? =null,
+        rvdecoportNight: RemoteViews? =null,
         enableFloat: Boolean = false,
         addpics: Bundle? = null
 
@@ -217,9 +233,17 @@ class FocusApi {
         addpics.let { pics.putAll(it) }
         focus.putParcelable("miui.focus.param.custom",cus)
         focus.putParcelable("miui.focus.pics",pics)
-        focus.putParcelable("miui.focus.rv",remoteViews)
-        focus.putParcelable("miui.focus.rvAod",remoteViews)
-        focus.putParcelable("miui.focus.rvNight",remoteViews)
+        focus.putParcelable("miui.focus.rv",rv)
+        rvAod.let { focus.putParcelable("miui.focus.rvAod",it)}
+        rvNight.let {  focus.putParcelable("miui.focus.rvNight",it)}
+        rvtiny.let {  focus.putParcelable("miui.focus.rv.tiny",it)}
+        rvtinyNight.let {  focus.putParcelable("miui.focus.rv.tinyNight",it)}
+        rvdecoland.let {  focus.putParcelable("miui.focus.rv.deco.land",it)}
+        rvdecolandNight.let {  focus.putParcelable("miui.focus.rv.deco.landNight",it)}
+        rvdecoport.let {  focus.putParcelable("miui.focus.rv.deco.port",it)}
+        rvdecoportNight.let {  focus.putParcelable("miui.focus.rv.deco.portNight",it)}
+
+
         return focus
     }
 
