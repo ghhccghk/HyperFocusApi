@@ -7,7 +7,6 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.widget.RemoteViews
-import androidx.core.app.NotificationCompat
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -25,10 +24,8 @@ class FocusApi {
      * @param actions 按钮信息 不能和picmarkv2 同时使用 ，ActionInfo使用JSONArray合并一起可生成两个按钮
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
-     * @param subContent 焦点通知小标题边上的小标题
      * @param aodTitle aodTitle 息屏标题
      * @param aodPic aodPic 息屏图标
-     * @param normalHeight 焦点通知高度（无法使用）
      * @param picbgtype 背景标志 未知 1~2 可用
      * @param  picInfotype 焦点通知右边标志 未知 1~4 可用 不可跟按钮使用
      * 图标要是对应不上反一下 这个我之前测试有点问题
@@ -37,7 +34,6 @@ class FocusApi {
      * @param picbg 焦点通知背景，留空为默认背景
      * @param picbgtype 背景标志 未知
      * @param picInfo 焦点通知右边图标 不可跟按钮使用
-     * @param basetype 基础标志 可以改成 2
      * @param protocol 控制版本 默认即可
      * @param updatable 焦点通知是否还要更新
      * @param enableFloat 焦点通知是否弹出
@@ -199,7 +195,7 @@ class FocusApi {
      * @param enableFloat 焦点通知是否弹出
      * @param addpics 添加图标
      * @return Bundle*/
-    @TargetApi(Build.VERSION_CODES.M)
+    @SuppressLint("NewApi")
     fun diyFocus(
         picticker: Icon,
         ticker: String,
@@ -666,7 +662,7 @@ class FocusApi {
      * @param actionTitleColor 按钮标题颜色
      * @param actionTitleColorDark 按钮深色标题颜色
      * @return JSONObject */
-    @TargetApi(Build.VERSION_CODES.DONUT)
+    @SuppressLint("NewApi")
     fun ActionInfo(
         actionBgColor: String? = null,
         actionBgColorDark: String? = null,
