@@ -222,7 +222,7 @@ class FocusApi {
         pics.putParcelable("miui.focus.pic_ticker",picticker)
         val cus = Bundle()
         cus.putString("ticker",ticker)
-        cus.putString("tickerPic","pro_a")
+        cus.putString("tickerPic","miui.focus.pic_ticker")
         cus.putBoolean("enableFloat",enableFloat)
         if (pictickerdark != null) {
             cus.putString("tickerPicDark", "miui.focus.pic_ticker_dark")
