@@ -167,12 +167,15 @@ class FocusApi {
         if (baseInfo != null){
             param_v2.put("baseInfo", baseInfo)
         }
-        param.put("param_v2", param_v2)
-        paramBundle.putString("miui.focus.param", param.toString())
+
 
         if (actions != null && picInfo == null){
             param.put("miui.focus.actions",actions)
         }
+
+
+        param.put("param_v2", param_v2)
+        paramBundle.putString("miui.focus.param", param.toString())
         return paramBundle
     }
 
@@ -193,7 +196,7 @@ class FocusApi {
      * @param addpics 添加图标
      * @return Bundle*/
 
-    fun diyFocus(
+    fun senddiyFocus(
         picticker: Icon,
         ticker: String,
         pictickerdark: Icon? = null,
@@ -207,6 +210,7 @@ class FocusApi {
         rvdecoport: RemoteViews? =null,
         rvdecoportNight: RemoteViews? =null,
         enableFloat: Boolean = false,
+        updatable: Boolean = true,
         addpics: Bundle? = null
 
     ): Bundle{
@@ -217,6 +221,7 @@ class FocusApi {
         cus.putString("ticker",ticker)
         cus.putString("tickerPic","miui.focus.pic_ticker")
         cus.putBoolean("enableFloat",enableFloat)
+        cus.putBoolean("updatable",updatable)
         if (pictickerdark != null) {
             cus.putString("tickerPicDark", "miui.focus.pic_ticker_dark")
             pics.putParcelable(
@@ -227,6 +232,7 @@ class FocusApi {
         focus.putParcelable("miui.focus.param.custom",cus)
         focus.putParcelable("miui.focus.pics",pics)
         focus.putParcelable("miui.focus.rv",rv)
+        focus.putString("miui.focus.ticker", ticker)
         rvAod?.let { focus.putParcelable("miui.focus.rvAod",it)}
         rvNight?.let {  focus.putParcelable("miui.focus.rvNight",it)}
         rvtiny?.let {  focus.putParcelable("miui.focus.rv.tiny",it)}
@@ -592,6 +598,7 @@ class FocusApi {
      * @param name 图标名称
      * @param icon 图标
      * @return Bundle */
+    @Suppress("NewApi")
     fun addpics(
         name : String,
         icon : Icon,
@@ -658,7 +665,7 @@ class FocusApi {
      * @param actionTitleColor 按钮标题颜色
      * @param actionTitleColorDark 按钮深色标题颜色
      * @return JSONObject */
-
+    @SuppressLint("NewApi")
     fun ActionInfo(
         actionBgColor: String? = null,
         actionBgColorDark: String? = null,
