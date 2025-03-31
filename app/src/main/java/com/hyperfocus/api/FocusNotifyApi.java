@@ -150,6 +150,7 @@ public class FocusNotifyApi {
             picsBundle.putParcelable("miui.focus.pic_ticker", picTicker);
             picsBundle.putAll(addPics);
             focusBundle.putParcelable("miui.focus.param.custom", customBundle);
+            focusBundle.putString("miui.focus.ticker", ticker);
             focusBundle.putParcelable("miui.focus.pics", picsBundle);
             focusBundle.putParcelable("miui.focus.rv", rv);
             if (rvAod != null)
