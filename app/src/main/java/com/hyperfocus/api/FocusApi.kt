@@ -212,6 +212,8 @@ class FocusApi {
         rvdecoportNight: RemoteViews? =null,
         enableFloat: Boolean = false,
         updatable: Boolean = true,
+        timeout: Int = 280,
+        reopen: String? = null ,
         addpics: Bundle? = null
 
     ): Bundle{
@@ -223,6 +225,8 @@ class FocusApi {
         cus.putString("tickerPic","miui.focus.pic_ticker")
         cus.putBoolean("enableFloat",enableFloat)
         cus.putBoolean("updatable",updatable)
+        reopen?.let { cus.putString("reopen",it)}
+        cus.putInt("timeout",timeout)
         if (pictickerdark != null) {
             cus.putString("tickerPicDark", "miui.focus.pic_ticker_dark")
             pics.putParcelable(
