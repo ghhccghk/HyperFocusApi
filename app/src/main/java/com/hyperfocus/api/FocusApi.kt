@@ -1,6 +1,5 @@
 package com.hyperfocus.api
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
@@ -8,6 +7,7 @@ import android.widget.RemoteViews
 import org.json.JSONArray
 import org.json.JSONObject
 
+@Suppress("unused")
 class FocusApi {
 
     /**发送焦点通知 自定义背景必须设置颜色，否则导致崩溃后果自负
@@ -15,7 +15,7 @@ class FocusApi {
      * @param scene 场景
      * @param baseInfo 基础信息
      * @param highlightInfo 高亮信息
-     * @param ProgressInfo 进度信息 不能和hintInfo 同时使用
+     * @param progressInfo 进度信息 不能和hintInfo 同时使用
      * @param chatinfo 聊天信息
      * @param hintInfo 提示信息 不能和 ProgressInfo 同时使用
      * @param chatinfo 聊天信息
@@ -38,12 +38,13 @@ class FocusApi {
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
      * @param addpics 添加图标 */
+    @Suppress("KotlinConstantConditions")
     fun sendFocus(
         baseInfo: JSONObject? = null,
         highlightInfo: JSONObject? = null,
         hintInfo: JSONObject? = null,
         chatinfo: JSONObject? = null,
-        ProgressInfo: JSONObject? = null,
+        progressInfo: JSONObject? = null,
         actions : JSONArray? = null,
         scene: String? = null,
         title: String? = null ,
@@ -68,19 +69,19 @@ class FocusApi {
         val paramBundle = Bundle()
         val pics = Bundle()
         val param = JSONObject()
-        val param_v2 = JSONObject()
+        val paramv2 = JSONObject()
 
-        param_v2.put("protocol", protocol)
+        paramv2.put("protocol", protocol)
         if (enableFloat){
-            param_v2.put("enableFloat", enableFloat)
+            paramv2.put("enableFloat", enableFloat)
         }
-        param_v2.put("ticker", ticker)
-        param_v2.put("tickerPic", "miui.focus.pic_ticker")
+        paramv2.put("ticker", ticker)
+        paramv2.put("tickerPic", "miui.focus.pic_ticker")
         if (updatable){
-            param_v2.put("updatable", updatable)
+            paramv2.put("updatable", updatable)
         }
         if (padding){
-            param_v2.put("padding", padding)
+            paramv2.put("padding", padding)
         }
 
         if (content != null ){
@@ -101,7 +102,7 @@ class FocusApi {
         )
 
         if (pictickerdark != null) {
-            param_v2.put("tickerPicDark", "miui.focus.pic_ticker_dark")
+            paramv2.put("tickerPicDark", "miui.focus.pic_ticker_dark")
             pics.putParcelable(
                 "miui.focus.pic_ticker_dark", pictickerdark
             )
@@ -110,7 +111,7 @@ class FocusApi {
             val bgInfo = JSONObject()
             bgInfo.put("type", picbgtype)
             bgInfo.put("picBg", "miui.focus.pic_bg")
-            param_v2.put("bgInfo", bgInfo)
+            paramv2.put("bgInfo", bgInfo)
             pics.putParcelable(
                 "miui.focus.pic_bg", picbg
             )
@@ -120,40 +121,40 @@ class FocusApi {
             val picInfoj = JSONObject()
             picInfoj.put("type", picInfotype)
             picInfoj.put("pic", "miui.focus.pic_mark_v2")
-            param_v2.put("picInfo", picInfoj)
+            paramv2.put("picInfo", picInfoj)
             pics.putParcelable("miui.focus.pic_mark_v2", picInfo)
         }
 
 
         if (aodTitle != null){
-            param_v2.put("aodTitle", aodTitle)
+            paramv2.put("aodTitle", aodTitle)
             if (aodPic != null){
                 pics.putParcelable("miui.focus.pic_aod", aodPic)
-                param_v2.put("aodPic", "miui.focus.pic_aod")
+                paramv2.put("aodPic", "miui.focus.pic_aod")
             }
         }
 
 
         if (timeout != null){
-            param_v2.put("timeout", timeout)
+            paramv2.put("timeout", timeout)
         }
 
         if (highlightInfo != null){
-            param_v2.put("highlightInfo", highlightInfo)
+            paramv2.put("highlightInfo", highlightInfo)
         }
 
         if (chatinfo != null){
-            param_v2.put("chatInfo", chatinfo)
+            paramv2.put("chatInfo", chatinfo)
         }
 
-        if (chatinfo != null || highlightInfo != null || baseInfo != null && ProgressInfo == null){
+        if (chatinfo != null || highlightInfo != null || baseInfo != null && progressInfo == null){
             if (hintInfo != null){
-                param_v2.put("hintInfo", hintInfo)
+                paramv2.put("hintInfo", hintInfo)
             }
         }
 
-        if (ProgressInfo != null && hintInfo == null){
-            param_v2.put("progressInfo", ProgressInfo)
+        if (progressInfo != null && hintInfo == null){
+            paramv2.put("progressInfo", progressInfo)
         }
 
 
@@ -165,7 +166,7 @@ class FocusApi {
 
 
         if (baseInfo != null){
-            param_v2.put("baseInfo", baseInfo)
+            paramv2.put("baseInfo", baseInfo)
         }
 
 
@@ -174,7 +175,7 @@ class FocusApi {
         }
 
 
-        param.put("param_v2", param_v2)
+        param.put("param_v2", paramv2)
         paramBundle.putString("miui.focus.param", param.toString())
         return paramBundle
     }
@@ -517,7 +518,7 @@ class FocusApi {
      * @param titleLineCount 标题行数
      * @param actionInfo 按钮信息
      * @return JSONObject*/
-    fun HintInfo(
+    fun hintInfo(
         colorContentBg: String? = null,
         type: Int = 1,
         picContent: String? = null,
@@ -598,7 +599,6 @@ class FocusApi {
      * @param name 图标名称
      * @param icon 图标
      * @return Bundle */
-    @Suppress("NewApi")
     fun addpics(
         name : String,
         icon : Icon,
@@ -619,7 +619,7 @@ class FocusApi {
      * @param picMiddle 进度条中间图标
      * @param picMiddleUnselected 进度条未选中中间图标
      * @param progress 进度条进度 */
-    fun ProgressInfo(
+    fun progressInfo(
         colorProgress: String,
         colorProgressEnd: String,
         picEnd: String? = null,
@@ -665,8 +665,7 @@ class FocusApi {
      * @param actionTitleColor 按钮标题颜色
      * @param actionTitleColorDark 按钮深色标题颜色
      * @return JSONObject */
-    @SuppressLint("NewApi")
-    fun ActionInfo(
+    fun actionInfo(
         actionBgColor: String? = null,
         actionBgColorDark: String? = null,
         actionsIcon: String? = null,

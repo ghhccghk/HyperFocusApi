@@ -6,10 +6,11 @@ plugins {
 
 android {
     namespace = "com.hyperfocus.api"
-    compileSdk = 35
+    //noinspection GradleDependency
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = 35
+        minSdk = 34
     }
 
     buildTypes {
@@ -43,7 +44,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.ghhccghk"
                 artifactId = "HyperFocusApi"
-                version = "0.11"
+                version = "0.12"
                 from(components["release"])
             }
         }
