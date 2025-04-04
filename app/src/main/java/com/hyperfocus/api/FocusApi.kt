@@ -220,21 +220,21 @@ class FocusApi {
         val focus = Bundle()
         val pics = Bundle()
         pics.putParcelable("miui.focus.pic_ticker",picticker)
-        val cus = Bundle()
-        cus.putString("ticker",ticker)
-        cus.putString("tickerPic","miui.focus.pic_ticker")
-        cus.putBoolean("enableFloat",enableFloat)
-        cus.putBoolean("updatable",updatable)
-        reopen?.let { cus.putString("reopen",it)}
-        cus.putInt("timeout",timeout)
+        val cus = JSONObject()
+        cus.put("ticker",ticker)
+        cus.put("tickerPic","miui.focus.pic_ticker")
+        cus.put("enableFloat",enableFloat)
+        cus.put("updatable",updatable)
+        reopen?.let { cus.put("reopen",it)}
+        cus.put("timeout",timeout)
         if (pictickerdark != null) {
-            cus.putString("tickerPicDark", "miui.focus.pic_ticker_dark")
+            cus.put("tickerPicDark", "miui.focus.pic_ticker_dark")
             pics.putParcelable(
                 "miui.focus.pic_ticker_dark", pictickerdark
             )
         }
         addpics?.let { pics.putAll(it) }
-        focus.putParcelable("miui.focus.param.custom",cus)
+        focus.putString("miui.focus.param.custom",cus.toString())
         focus.putParcelable("miui.focus.pics",pics)
         focus.putParcelable("miui.focus.rv",rv)
         focus.putString("miui.focus.ticker", ticker)
