@@ -186,8 +186,10 @@ class FocusApi {
     /** 自定义焦点通知
      * @param ticker 焦点在状态栏内容
      * @param picticker 焦点在状态栏图标
+     * @param aodTitle aod文本 与 rvAod 互斥
+     * @param aodPic aod图标 与 rvAod 互斥
      * @param rv 焦点通知的RemoteViews
-     * @param rvAod 焦点通知Aod的RemoteViews
+     * @param rvAod 焦点通知Aod的RemoteViews 与 aodTitle 互斥
      * @param rvNight 焦点通知深色的RemoteViews
      * @param rvtiny 焦点通知小图标的RemoteViews
      * @param rvtinyNight 焦点通知小图标深色的RemoteViews
@@ -220,7 +222,6 @@ class FocusApi {
         timeout: Int = 280,
         reopen: String? = null ,
         addpics: Bundle? = null
-
     ): Bundle{
         val focus = Bundle()
         val pics = Bundle()
@@ -641,7 +642,7 @@ class FocusApi {
      * @param progress 进度条进度 */
     fun progressInfo(
         colorProgress: String,
-        colorProgressEnd: String,
+        colorProgressEnd: String? = null,
         picEnd: String? = null,
         picEndUnselected: String? = null,
         picForward: String? = null,
@@ -652,7 +653,7 @@ class FocusApi {
         val progressInfo = JSONObject()
 
         progressInfo.put("colorProgress", colorProgress)
-        progressInfo.put("colorProgressEnd", colorProgressEnd)
+        colorProgressEnd?.let { progressInfo.put("colorProgressEnd", colorProgressEnd) }
 
         if (picEnd != null){
             progressInfo.put("picEnd", "miui.focus.pic_$picEnd")
