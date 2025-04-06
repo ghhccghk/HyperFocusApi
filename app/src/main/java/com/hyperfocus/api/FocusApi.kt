@@ -283,7 +283,9 @@ class FocusApi {
      * @param colorExtraTitleDark extraTitle深色颜色
      * @param colorSpecialTitle specialTitle颜色
      * @param colorSpecialTitleDark specialTitle深色颜色
-     * @param colorSpecialTitleBg specialTitle背景颜色 */
+     * @param colorSpecialTitleBg specialTitle背景颜色
+     * @param picFunctionDark 小图标深色 请使用addpics自行添加picFunctionDark
+     * @param picFunction 小图标 请使用addpics自行添加picFunction */
     fun baseinfo(
         basetype: Int = 1,
         title: String,
@@ -305,6 +307,8 @@ class FocusApi {
         colorSpecialTitle: String? = null,
         colorSpecialTitleDark: String? = null,
         colorSpecialTitleBg: String? = null,
+        picFunction : String? = null,
+        picFunctionDark : String? = null,
     ): JSONObject{
         val baseInfo = JSONObject()
 
@@ -335,6 +339,12 @@ class FocusApi {
             }
             if (colorSubContentDark != null) {
                 baseInfo.put("colorSubContentDark", colorSubContentDark)
+            }
+            if (picFunction != null){
+                baseInfo.put("picFunction", "miui.focus.pic_$picFunction")
+            }
+            if (picFunctionDark != null){
+                baseInfo.put("picFunctionDark", "miui.focus.pic_$picFunctionDark")
             }
         }
 
@@ -443,10 +453,10 @@ class FocusApi {
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
             if (picFunction != null){
-                highlightInfo.put("picFunction", picFunction)
+                highlightInfo.put("picFunction", "miui.focus.pic_$picFunction")
             }
             if (picFunctionDark != null){
-                highlightInfo.put("picFunctionDark", picFunctionDark)
+                highlightInfo.put("picFunctionDark", "miui.focus.pic_$picFunctionDark")
             }
 
 
@@ -533,6 +543,9 @@ class FocusApi {
      * @param picContent 图标
      * @param timerInfo 时间信息
      * @param title 标题
+     * @param content 小标题
+     * @param colorContentDark 小标题字体颜色深色
+     * @param colorContent 小标题字体颜色
      * @param colortitle 标题颜色
      * @param colortitleDark 标题深色颜色
      * @param titleLineCount 标题行数
@@ -546,12 +559,6 @@ class FocusApi {
         actionInfo: JSONObject? = null,
         title: String? = null,
         content: String? = null,
-        subTitle: String? = null,
-        subContent: String? = null,
-        colorsubTitle: String? = null,
-        colorSubTitleDark: String? = null,
-        colorSubContent: String? = null,
-        colorSubContentDark: String? = null,
         colorContent: String? = null,
         colorContentDark: String? = null,
         colortitle: String? = null,
@@ -589,28 +596,9 @@ class FocusApi {
                 hintInfo.put("colorContentDark", colorContentDark)
             }
         }
-        if (subTitle != null){
-            hintInfo.put("subTitle", subTitle)
-            if (colorsubTitle != null) {
-                hintInfo.put("colorSubTitle", colorsubTitle)
-            }
-            if (colorSubTitleDark != null){
-                hintInfo.put("colorSubTitleDark", colorSubTitleDark)
-            }
-        }
-        if (subContent != null) {
-            hintInfo.put("subContent", subContent)
-            if (colorSubContent != null){
-                hintInfo.put("colorSubContent", colorSubContent)
-            }
-            if (colorSubContentDark != null) {
-                hintInfo.put("colorSubContentDark", colorSubContentDark)
-            }
-        }
         if (actionInfo != null){
             hintInfo.put("actionInfo", actionInfo)
         }
-
         hintInfo.put("type", type)
         return hintInfo
     }
