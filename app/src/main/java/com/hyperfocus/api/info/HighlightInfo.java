@@ -9,12 +9,12 @@ public final class HighlightInfo extends TextAndColorInfo {
     private int type = 1;
 
     public HighlightInfo setPicFunction(String picFunction) {
-        this.picFunction = picFunction;
+        this.picFunction = "miui.focus.pic_" + picFunction;
         return this;
     }
 
     public HighlightInfo setPicFunctionDark(String picFunctionDark) {
-        this.picFunctionDark = picFunctionDark;
+        this.picFunctionDark = "miui.focus.pic_" + picFunctionDark;
         return this;
     }
 

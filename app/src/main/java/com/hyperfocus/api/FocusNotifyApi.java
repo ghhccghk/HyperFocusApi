@@ -8,10 +8,13 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyperfocus.api.info.ActionInfo;
 import com.hyperfocus.api.info.Template;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class FocusNotifyApi {
     private static final Gson mGson = new GsonBuilder().create();
@@ -27,12 +30,13 @@ public class FocusNotifyApi {
         return new FocusDiy(builder);
     }
 
-    public Bundle create(Bundle picBundle) {
+    public Bundle create(List<ActionInfo> actionInfos, Bundle picBundle) {
         try {
             JSONObject jsonObject = new JSONObject();
             Bundle bundle = new Bundle();
             String param = mGson.toJson(mTemplate);
 
+            jsonObject.put("miui.focus.actions", mGson.toJson(actionInfos));
             jsonObject.put("param_v2", param);
             bundle.putBundle("miui.focus.pics", picBundle);
             bundle.putString("miui.focus.param", jsonObject.toString());
@@ -44,10 +48,12 @@ public class FocusNotifyApi {
     }
 
     public static class FocusDiy {
-        private NotificationCompat.Builder mBuilder;
+        private final NotificationCompat.Builder mBuilder;
         private Icon picTicker;
         private String ticker;
         private Icon picTickerDark;
+        private String aodTitle;
+        private Icon aodPic;
         private RemoteViews rv;
         private RemoteViews rvAod;
         private RemoteViews rvNight;
@@ -57,7 +63,10 @@ public class FocusNotifyApi {
         private RemoteViews rvDecoLandNight;
         private RemoteViews rvDecoPort;
         private RemoteViews rvDecoPortNight;
-        private boolean enableFloat;
+        private boolean enableFloat = false;
+        private boolean updatable = true;
+        private int timeout = 280;
+        private String reopen;
         private final Bundle addPics = new Bundle();
 
         private FocusDiy(NotificationCompat.Builder builder) {
@@ -134,6 +143,31 @@ public class FocusNotifyApi {
             return this;
         }
 
+        public FocusDiy setAodTitle(String aodTitle) {
+            this.aodTitle = aodTitle;
+            return this;
+        }
+
+        public FocusDiy setAodPic(Icon aodPic) {
+            this.aodPic = aodPic;
+            return this;
+        }
+
+        public FocusDiy setUpdatable(boolean updatable) {
+            this.updatable = updatable;
+            return this;
+        }
+
+        public FocusDiy setTimeout(int timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        public FocusDiy setReopen(String reopen) {
+            this.reopen = reopen;
+            return this;
+        }
+
         public Bundle create() {
             Bundle focusBundle = new Bundle();
             Bundle picsBundle = new Bundle();
@@ -142,10 +176,21 @@ public class FocusNotifyApi {
             customBundle.putString("ticker", ticker);
             customBundle.putBoolean("enableFloat", enableFloat);
             customBundle.putString("tickerPic", "miui.focus.pic_ticker");
+            customBundle.putBoolean("updatable", updatable);
+            if (reopen != null)
+                customBundle.putString("reopen", reopen);
+            customBundle.putInt("timeout", timeout);
 
             if (picTickerDark != null) {
                 customBundle.putString("tickerPicDark", "miui.focus.pic_ticker_dark");
                 picsBundle.putParcelable("miui.focus.pic_ticker_dark", picTickerDark);
+            }
+            if (aodTitle != null && rvAod == null) {
+                customBundle.putString("aodTitle", aodTitle);
+                if (aodPic != null) {
+                    picsBundle.putParcelable("miui.focus.pic_aod", aodPic);
+                    customBundle.putString("aodPic", "miui.focus.pic_aod");
+                }
             }
             picsBundle.putParcelable("miui.focus.pic_ticker", picTicker);
             picsBundle.putAll(addPics);
@@ -153,7 +198,7 @@ public class FocusNotifyApi {
             focusBundle.putString("miui.focus.ticker", ticker);
             focusBundle.putParcelable("miui.focus.pics", picsBundle);
             focusBundle.putParcelable("miui.focus.rv", rv);
-            if (rvAod != null)
+            if (aodTitle == null && rvAod != null)
                 focusBundle.putParcelable("miui.focus.rvAod", rvAod);
             if (rvNight != null)
                 focusBundle.putParcelable("miui.focus.rvNight", rvNight);

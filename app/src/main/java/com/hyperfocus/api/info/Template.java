@@ -15,7 +15,7 @@ public final class Template {
     private BaseInfo baseInfo;
     private BgInfo bgInfo;
     private ChatInfo chatInfo;
-    private boolean enableFloat;
+    private boolean enableFloat = false;
     private HighlightInfo highlightInfo;
     private HintInfo hintInfo;
     private PicInfo picInfo;
@@ -25,8 +25,10 @@ public final class Template {
     private String ticker;
     private String tickerPic;
     private String tickerPicDark;
-    private int timeout;
-    private boolean updatable;
+    private boolean padding = false;
+    private int protocol = 1;
+    private int timeout = 280;
+    private boolean updatable = true;
     private transient final FocusNotifyApi focusNotifyApi;
     private transient final Bundle picBundle;
 
@@ -37,6 +39,21 @@ public final class Template {
 
     public Template setActions(List<ActionInfo> actions) {
         this.actions = actions;
+        return this;
+    }
+
+    public Template setAodPic(String aodPic) {
+        this.aodPic = aodPic;
+        return this;
+    }
+
+    public Template setProtocol(int protocol) {
+        this.protocol = protocol;
+        return this;
+    }
+
+    public Template setPadding(boolean padding) {
+        this.padding = padding;
         return this;
     }
 
@@ -64,7 +81,7 @@ public final class Template {
 
     public Template setChatInfo(ChatInfo chatInfo) {
         this.chatInfo = chatInfo;
-        picBundle.putAll(chatInfo.picBundle);
+        // picBundle.putAll(chatInfo.picBundle);
         return this;
     }
 
@@ -132,7 +149,7 @@ public final class Template {
     }
 
     public Bundle create() {
-        return focusNotifyApi.create(picBundle);
+        return focusNotifyApi.create(actions, picBundle);
     }
 
     @Override

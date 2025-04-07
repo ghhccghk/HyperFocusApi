@@ -8,7 +8,7 @@ import java.util.Objects;
 public final class BgInfo {
     private String colorBg;
     private String picBg;
-    private int type;
+    private int type = 1;
     transient Bundle picBundle = new Bundle();
 
     public BgInfo setColorBg(String colorBg) {

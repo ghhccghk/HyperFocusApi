@@ -8,7 +8,7 @@ import java.util.Objects;
 public final class PicInfo {
     private ActionInfo actionInfo;
     private String pic;
-    private Integer type;
+    private Integer type = 1;
     transient Bundle picBundle = new Bundle();
 
     public PicInfo setActionInfo(ActionInfo actionInfo) {

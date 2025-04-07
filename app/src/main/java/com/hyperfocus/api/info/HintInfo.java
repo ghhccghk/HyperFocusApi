@@ -9,7 +9,7 @@ public final class HintInfo extends TextAndColorInfo {
     private String picContent;
     private TimerInfo timerInfo;
     private int titleLineCount;
-    private Integer type;
+    private Integer type = 1;
 
     public HintInfo setActionInfo(ActionInfo actionInfo) {
         this.actionInfo = actionInfo;
@@ -22,7 +22,7 @@ public final class HintInfo extends TextAndColorInfo {
     }
 
     public HintInfo setPicContent(String picContent) {
-        this.picContent = picContent;
+        this.picContent = "miui.focus.pic_" + picContent;
         return this;
     }
 

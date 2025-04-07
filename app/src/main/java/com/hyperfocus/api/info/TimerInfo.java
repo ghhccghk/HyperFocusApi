@@ -5,7 +5,7 @@ import java.util.Objects;
 public final class TimerInfo {
     private Long timerSystemCurrent;
     private long timerTotal;
-    private int timerType;
+    private int timerType = -1;
     private Long timerWhen;
 
     public TimerInfo setTimerSystemCurrent(Long timerSystemCurrent) {

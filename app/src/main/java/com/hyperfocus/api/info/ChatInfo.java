@@ -1,18 +1,15 @@
 package com.hyperfocus.api.info;
 
-import android.graphics.drawable.Icon;
-import android.os.Bundle;
-
 import java.util.Objects;
 
 public final class ChatInfo extends TextAndColorInfo {
     private String picProfile;
     private TimerInfo timerInfo;
-    transient Bundle picBundle = new Bundle();
+    // transient Bundle picBundle = new Bundle();
 
-    public ChatInfo setPicProfile(Icon picProfile) {
-        this.picProfile = "miui.focus.pic_profile";
-        picBundle.putParcelable("miui.focus.pic_profile", picProfile);
+    public ChatInfo setPicProfile(String picProfile) {
+        this.picProfile = "miui.focus.pic_" + picProfile;
+        // picBundle.putParcelable("miui.focus.pic_profile", picProfile);
         return this;
     }
 

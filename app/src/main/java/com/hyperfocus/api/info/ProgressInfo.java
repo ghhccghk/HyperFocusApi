@@ -23,27 +23,27 @@ public final class ProgressInfo {
     }
 
     public ProgressInfo setPicEnd(String picEnd) {
-        this.picEnd = picEnd;
+        this.picEnd = "miui.focus.pic_" + picEnd;
         return this;
     }
 
     public ProgressInfo setPicEndUnselected(String picEndUnselected) {
-        this.picEndUnselected = picEndUnselected;
+        this.picEndUnselected = "miui.focus.pic_" + picEndUnselected;
         return this;
     }
 
     public ProgressInfo setPicForward(String picForward) {
-        this.picForward = picForward;
+        this.picForward = "miui.focus.pic_" + picForward;
         return this;
     }
 
     public ProgressInfo setPicMiddle(String picMiddle) {
-        this.picMiddle = picMiddle;
+        this.picMiddle = "miui.focus.pic_" + picMiddle;
         return this;
     }
 
     public ProgressInfo setPicMiddleUnselected(String picMiddleUnselected) {
-        this.picMiddleUnselected = picMiddleUnselected;
+        this.picMiddleUnselected = "miui.focus.pic_" + picMiddleUnselected;
         return this;
     }
 

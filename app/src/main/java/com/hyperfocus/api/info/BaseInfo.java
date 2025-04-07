@@ -8,10 +8,10 @@ public final class BaseInfo extends TextAndColorInfo {
     private Boolean setMarginTop;
     private Boolean showContentDivider;
     private Boolean showDivider;
-    private Integer type;
+    private Integer type = 1;
 
     public BaseInfo setPicFunction(String picFunction) {
-        this.picFunction = picFunction;
+        this.picFunction = "miui.focus.pic_" + picFunction;
         return this;
     }
 

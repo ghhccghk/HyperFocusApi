@@ -30,12 +30,12 @@ public final class ActionInfo {
     }
 
     public ActionInfo setActionIcon(String actionIcon) {
-        this.actionIcon = actionIcon;
+        this.actionIcon = "miui.focus.pic_" + actionIcon;
         return this;
     }
 
     public ActionInfo setActionIconDark(String actionIconDark) {
-        this.actionIconDark = actionIconDark;
+        this.actionIconDark = "miui.focus.pic_" + actionIconDark;
         return this;
     }
 
