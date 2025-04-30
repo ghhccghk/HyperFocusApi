@@ -9,7 +9,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 @Suppress("unused")
-class FocusApi {
+object FocusApi {
 
     /**发送焦点通知 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param ticker 焦点在状态栏内容
@@ -666,11 +666,11 @@ class FocusApi {
     /** 按钮信息 图标和文本不要在一起用 只能分开用 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param actionBgColor 按钮背景颜色
      * @param actionBgColorDark 按钮深色背景颜色
-     * @param actionsIcon 按钮图标
-     * @param actionsIconDark 按钮深色图标
-     * @param actionsIntent Intent
-     * @param actionsIntentType Intent类型
-     * @param actionsTitle 按钮标题
+     * @param actionIcon 按钮图标
+     * @param actionIconDark 按钮深色图标
+     * @param actionIntent Intent
+     * @param actionIntentType Intent类型
+     * @param actionTitle 按钮标题
      * @param actionTitleColor 按钮标题颜色
      * @param actionTitleColorDark 按钮深色标题颜色
      * @return JSONObject */
@@ -678,25 +678,25 @@ class FocusApi {
     fun actionInfo(
         actionBgColor: String? = null,
         actionBgColorDark: String? = null,
-        actionsIcon: String? = null,
-        actionsIconDark: String? = null,
-        actionsIntent: Intent,
-        actionsIntentType: String? = null,
-        actionsTitle: String? = null,
+        actionIcon: String? = null,
+        actionIconDark: String? = null,
+        actionIntent: Intent,
+        actionIntentType: String? = null,
+        actionTitle: String? = null,
         actionTitleColor: String? = null,
         actionTitleColorDark: String? = null,
     ): JSONObject  {
         val actionObject = JSONObject()  // 单个 action 信息
 
-        actionObject.put("actionIntent", actionsIntent.toUri(Intent.URI_INTENT_SCHEME))
-        actionObject.put("actionIntentType", actionsIntentType)
-        actionObject.put("actionTitle", actionsTitle)
+        actionObject.put("actionIntent", actionIntent.toUri(Intent.URI_INTENT_SCHEME))
+        actionObject.put("actionIntentType", actionIntentType)
+        actionObject.put("actionTitle", actionTitle)
         actionObject.put("actionTitleColor", actionTitleColor)
 
         actionBgColor?.let { actionObject.put("actionBgColor", it) }
         actionBgColorDark?.let { actionObject.put("actionBgColorDark", it) }
-        actionsIcon?.let { actionObject.put("actionIcon", "miui.focus.pic_$it") }
-        actionsIconDark?.let { actionObject.put("actionIconDark", "miui.focus.pic_$it") }
+        actionIcon?.let { actionObject.put("actionIcon", "miui.focus.pic_$it") }
+        actionIconDark?.let { actionObject.put("actionIconDark", "miui.focus.pic_$it") }
         actionTitleColorDark?.let { actionObject.put("actionTitleColorDark", it) }
 
         return actionObject
