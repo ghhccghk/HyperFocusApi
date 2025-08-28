@@ -701,4 +701,47 @@ object FocusApi {
 
         return actionObject
     }
+
+    @SuppressLint("UseRequiresApi")
+    fun animIconInfo(
+        autoplay:Boolean,
+        effectColor:String,
+        effectSrc: String,
+        loop: Boolean,
+        number: Int,
+        src: String,
+        srcDark : String,
+        type: Int
+
+    ): JSONObject{
+        val animObject = JSONObject()
+        animObject.put("autoplay",autoplay)
+        animObject.put("effectColor",effectColor)
+        animObject.put("effectSrc",effectSrc)
+        animObject.put("loop",loop)
+        animObject.put("number",number)
+        animObject.put("src",src)
+        animObject.put("srcDark",srcDark)
+        animObject.put("type",type)
+
+        return animObject
+    }
+
+    fun AnimTextInfo(
+        timerInfo: JSONObject? = null,
+        animIconInfo: JSONObject? = null,
+    ): JSONObject{
+        val animObject = JSONObject()
+        animObject.put("TimerInfo",timerInfo)
+        animObject.put("AnimIconInfo",animIconInfo)
+        return animObject
+    }
+
+    fun CoverInfo(
+        picCover: String,
+    ): JSONObject{
+        val coverObject = JSONObject()
+        coverObject.put("picCover", picCover)
+        return coverObject
+    }
 }
