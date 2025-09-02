@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.distribution
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -44,9 +46,45 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 groupId = "com.github.ghhccghk"
                 artifactId = "HyperFocusApi"
-                version = "1.4"
+                version = "1.5"
                 from(components["release"])
+
+                pom {
+                    name = "HyperFocusApi"
+                    description = "Support Xiaomi HyperOS Focus notification And Island"
+                    inceptionYear = "2025"
+
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                            distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = "ghhccghk"
+                            name = "李太白"
+                            url = "https://github.com/ghhccghk"
+                        }
+                        developer {
+                            id = "HChenX"
+                            name = "焕晨"
+                            url = "https://github.com/HChenX"
+                        }
+                    }
+                    scm {
+                        url = "https://github.com/ghhccghk/HyperFocusApi"
+                        connection = "scm:git:git://github.com/ghhccghk/HyperFocusApi.git"
+                        developerConnection = "scm:git:ssh://git@github.com/ghhccghk/HyperFocusApi.git"
+                    }
+
+
+                }
             }
         }
     }
 }
+
+

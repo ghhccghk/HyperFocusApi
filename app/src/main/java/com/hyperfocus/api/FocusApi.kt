@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import org.json.JSONArray
 import org.json.JSONObject
@@ -66,7 +67,8 @@ object FocusApi {
         timeout: Int? = 280,
         updatable: Boolean = true,
         enableFloat: Boolean = false,
-        padding:Boolean = false
+        padding:Boolean = false,
+        island: JSONObject? = null,
     ): Bundle {
         val paramBundle = Bundle()
         val pics = Bundle()
@@ -77,6 +79,7 @@ object FocusApi {
         if (enableFloat){
             paramv2.put("enableFloat", enableFloat)
         }
+        island?.let{ paramv2.put("param_island",it) }
         paramv2.put("ticker", ticker)
         paramv2.put("tickerPic", "miui.focus.pic_ticker")
         if (updatable){
@@ -199,6 +202,7 @@ object FocusApi {
      * @param rvdecoportNight 焦点通知竖屏深色的RemoteViews
      * @param enableFloat 焦点通知是否弹出
      * @param addpics 添加图标
+     * @param island 小米超级岛配置
      * @return Bundle*/
 
     @SuppressLint("NewApi")
@@ -208,6 +212,7 @@ object FocusApi {
         aodTitle: String? = null,
         aodPic: Icon? = null,
         pictickerdark: Icon? = null,
+        island: JSONObject? = null,
         rv: RemoteViews,
         rvAod : RemoteViews? = null,
         rvNight: RemoteViews? = null,
@@ -231,6 +236,7 @@ object FocusApi {
         cus.put("tickerPic","miui.focus.pic_ticker")
         cus.put("enableFloat",enableFloat)
         cus.put("updatable",updatable)
+        cus.put("outEffectSrc",ticker)
         reopen?.let { cus.put("reopen",it)}
         cus.put("timeout",timeout)
         if (pictickerdark != null) {
@@ -248,6 +254,8 @@ object FocusApi {
             }
         }
         addpics?.let { pics.putAll(it) }
+        island?.let { cus.put("param_island",it)
+            Log.d("param_island",it.toString())}
         focus.putString("miui.focus.param.custom",cus.toString())
         focus.putParcelable("miui.focus.pics",pics)
         focus.putParcelable("miui.focus.rv",rv)
@@ -255,6 +263,7 @@ object FocusApi {
         if (aodTitle == null ){
             rvAod?.let { focus.putParcelable("miui.focus.rvAod",it)}
         }
+
         rvNight?.let {  focus.putParcelable("miui.focus.rvNight",it)}
         rvtiny?.let {  focus.putParcelable("miui.focus.rv.tiny",it)}
         rvtinyNight?.let {  focus.putParcelable("miui.focus.rv.tinyNight",it)}
