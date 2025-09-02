@@ -210,6 +210,8 @@ object FocusApi {
         picticker: Icon,
         ticker: String,
         aodTitle: String? = null,
+        outEffectSrc:String? = null,
+        islandFirstFloat: Boolean = true,
         aodPic: Icon? = null,
         pictickerdark: Icon? = null,
         island: JSONObject? = null,
@@ -236,7 +238,8 @@ object FocusApi {
         cus.put("tickerPic","miui.focus.pic_ticker")
         cus.put("enableFloat",enableFloat)
         cus.put("updatable",updatable)
-        cus.put("outEffectSrc",ticker)
+        outEffectSrc.let { cus.put("outEffectSrc", it) }
+        islandFirstFloat.let { cus.put("islandFirstFloat", it) }
         reopen?.let { cus.put("reopen",it)}
         cus.put("timeout",timeout)
         if (pictickerdark != null) {

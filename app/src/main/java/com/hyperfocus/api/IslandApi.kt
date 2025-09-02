@@ -4,6 +4,12 @@ import org.json.JSONObject
 
 @Suppress("unused", "LocalVariableName", "KotlinConstantConditions", "FunctionName")
 object IslandApi {
+    /**
+     * 小米超级岛展开配置
+     * @param BigIslandData 大岛数据
+     * @param SmallIslandData 小岛数据
+     * @param islandPriority 优先级
+     * @param islandProperty 优先级*/
     fun islandData(
         BigIslandData: JSONObject,
         SmallIslandData: JSONObject,
@@ -18,6 +24,23 @@ object IslandApi {
         return json
     }
 
+
+    /**
+     * 小米超级岛初始化配置
+     * @param bigIslandArea 岛展开区域
+     * @param business 业务
+     * @param dismissIsland 是否可关闭
+     * @param expandedTime 展开时间
+     * @param highlightColor 高亮颜色
+     * @param islandOrder 是否展开
+     * @param islandPriority 优先级
+     * @param islandProperty 优先级
+     * @param islandTimeout 超时时间
+     * @param maxSize 是否最大尺寸
+     * @param needCloseAnimation 是否需要关闭动画
+     * @param shareData 分享数据
+     * @param smallIslandArea 小岛展开区域
+     * */
     fun IslandTemplate(
         bigIslandArea: JSONObject? =null,
         business: String? =null,
@@ -60,16 +83,25 @@ object IslandApi {
         return json
     }
 
+    /**
+     * 小米超级岛未展开态区域
+     * @param combinePicInfo 图片和进度信息
+     * @param picInfo 图片信息*/
     fun SmallIslandArea(
-        combinePicInfo: JSONObject?=null,
-        picInfo: JSONObject,
+        combinePicInfo: JSONObject ?= null,
+        picInfo: JSONObject ?= null,
     ): JSONObject {
         val json = JSONObject()
         if (combinePicInfo != null) { json.put("combinePicInfo", combinePicInfo) }
-        json.put("picInfo",picInfo)
+        picInfo.let{ json.put("picInfo", it) }
         return json
     }
 
+    /**
+     * 未测试
+     * 小米超级岛未展开态Data
+     * @param pic 图片
+     * */
     fun SmallIslandData(
         pic: String,
     ): JSONObject{
@@ -78,7 +110,15 @@ object IslandApi {
         return json
     }
 
-    fun timerInfo(
+
+    /**
+     * 小米超级岛时间信息
+     * @param timerType 时间类型
+     * @param timerTotal 总时间
+     * @param timerWhen 剩余时间
+     * @param timerSystemCurrent 系统时间
+     * */
+    fun TimerInfo(
         timerType: Int = -1,
         timerTotal:Long? = null,
         timerWhen: Long? = null,
@@ -99,7 +139,15 @@ object IslandApi {
         return timerInfo
     }
 
-
+    /**
+     * 小米超级岛文字信息
+     * @param content 内容
+     * @param frontTitle 前置标题
+     * @param showHighlightColor 是否显示高亮颜色
+     * @param turnAnim 动画开关
+     * @param isTitleDigit 是否数字
+     * @param title 标题
+     * */
     fun TextInfo(
         content: String? = null,
         frontTitle: String? = null,
@@ -119,6 +167,15 @@ object IslandApi {
 
     }
 
+    /**
+     * 该接口未测试
+     * 小米超级岛固定宽度信息
+     * @param content 内容
+     * @param digit 数字
+     * @param timeInfo 时间信息
+     * @param showHighlightColor 是否显示高亮颜色
+     * @param turnAnim 动画开关
+     * */
     fun SameWidthDigitInfo(
         content: String,
         digit:String,
@@ -134,7 +191,15 @@ object IslandApi {
         json.put("turnAnim",turnAnim)
         return json
     }
-
+    /**
+     * 该接口未测试
+     * 小米超级岛分享信息
+     * @param content 内容
+     * @param title 标题
+     * @param pic 图片
+     * @param shareContent 分享内容
+     * @param sharePic 分享图片
+     * */
     fun ShareData(
         content: String,
         title: String,
@@ -151,6 +216,11 @@ object IslandApi {
         return json
     }
 
+    /**
+     * 小米超级岛进度和文字信息
+     * @param progressInfo 进度信息
+     * @param textInfo 文字信息
+     * */
     fun ProgressTextInfo(
         progressInfo: JSONObject,
         textInfo: JSONObject,
@@ -160,7 +230,17 @@ object IslandApi {
         json.put("textInfo",textInfo)
         return json
     }
-
+    /**
+     * 只测试了pic图片
+     * 小米超级岛图片信息
+     * @param autoplay 是否自动播放
+     * @param contentDescription 内容描述
+     * @param effectColor 效果颜色
+     * @param effectSrc 效果图片
+     * @param loop 是否循环
+     * @param number 未知
+     * @param pic 图片
+     * */
     fun PicInfo(
         autoplay: Boolean = false,
         contentDescription: String? = null,
@@ -183,6 +263,14 @@ object IslandApi {
         return json
     }
 
+    /**
+     * 小米超级岛进度信息
+     * @param colorReach 进度颜色
+     * @param colorUnReach 未完成进度颜色
+     * @param isCCW 是否顺时针
+     * @param progress 进度
+     * */
+
     fun ProgressInfo(
         colorReach: String,
         colorUnReach: String,
@@ -197,6 +285,14 @@ object IslandApi {
         return json
     }
 
+
+    /**
+     * 该接口未测试
+     * 小米超级岛固定宽度信息
+     * @param content 内容
+     * @param digit 数字
+     * @param showHighlightColor 是否显示高亮颜色
+     * @param turnAnim 动画开关*/
     fun FixedWidthDigitInfo(
         content: String,
         digit:String,
@@ -211,6 +307,13 @@ object IslandApi {
         return json
     }
 
+
+    /**
+     * 小米超级岛图片进度信息
+     * @param picInfo 图片信息
+     * @param progressInfo 进度信息
+     * @param smallPicInfo 小图片信息
+     * */
     fun CombinePicInfo(
         picInfo: JSONObject,
         progressInfo: JSONObject,
@@ -244,7 +347,17 @@ object IslandApi {
         return json
     }
 
-    fun BigIslandAreaToJson(
+    /**
+     * 小米超级岛展开配置
+     * @param fixedWidthDigitInfo 固定宽度信息
+     * @param imageTextInfoLeft 左边图片和文字信息
+     * @param imageTextInfoRight 右边图片和文字信息
+     * @param picInfo 图片信息
+     * @param progressTextInfo 进度和文字信息
+     * @param sameWidthDigitInfo 同宽度信息
+     * @param textInfo 文字信息
+     * */
+    fun BigIslandArea(
         fixedWidthDigitInfo: JSONObject? = null,
         imageTextInfoLeft: JSONObject? = null,
         imageTextInfoRight: JSONObject? = null,
