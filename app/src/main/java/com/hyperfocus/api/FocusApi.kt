@@ -203,6 +203,7 @@ object FocusApi {
      * @param enableFloat 焦点通知是否弹出
      * @param addpics 添加图标
      * @param island 小米超级岛配置
+     * @param rvIsLand 小米超级岛点击展开视图
      * @return Bundle*/
 
     @SuppressLint("NewApi")
@@ -216,6 +217,7 @@ object FocusApi {
         pictickerdark: Icon? = null,
         island: JSONObject? = null,
         rv: RemoteViews,
+        rvIsLand: RemoteViews? = null,
         rvAod : RemoteViews? = null,
         rvNight: RemoteViews? = null,
         rvtiny : RemoteViews? = null,
@@ -266,7 +268,7 @@ object FocusApi {
         if (aodTitle == null ){
             rvAod?.let { focus.putParcelable("miui.focus.rvAod",it)}
         }
-
+        rvIsLand?.let { focus.putParcelable("miui.focus.rv.island.expand",it)}
         rvNight?.let {  focus.putParcelable("miui.focus.rvNight",it)}
         rvtiny?.let {  focus.putParcelable("miui.focus.rv.tiny",it)}
         rvtinyNight?.let {  focus.putParcelable("miui.focus.rv.tinyNight",it)}
