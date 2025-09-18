@@ -205,14 +205,14 @@ object IslandApi {
         title: String,
         pic: String,
         shareContent: String,
-        sharePic: String,
+        sharePic: String? = null,
     ): JSONObject{
         val json = JSONObject()
         json.put("content",content)
         json.put("title",title)
         json.put("pic",pic)
         json.put("shareContent",shareContent)
-        json.put("sharePic",sharePic)
+        sharePic?.let { json.put("sharePic", it) }
         return json
     }
 
@@ -231,15 +231,14 @@ object IslandApi {
         return json
     }
     /**
-     * 只测试了pic图片
      * 小米超级岛图片信息
      * @param autoplay 是否自动播放
      * @param contentDescription 内容描述
      * @param effectColor 效果颜色
      * @param effectSrc 效果图片
-     * @param loop 是否循环
-     * @param number 未知
-     * @param pic 图片
+     * @param loop Lottie 动画文件是否循环
+     * @param number 当为 Lottie 动画文件时，可以指定动画循环次数
+     * @param pic 图片，可注入Lottie 动画文件
      * */
     fun PicInfo(
         autoplay: Boolean = false,
@@ -258,7 +257,7 @@ object IslandApi {
         if (effectSrc != null){ json.put("effectSrc", effectSrc) }
         json.put("loop",loop)
         json.put("number",number)
-        json.put("pic",pic)
+        json.put("pic","miui.focus.pic_$pic")
         json.put("type",type)
         return json
     }
@@ -295,7 +294,7 @@ object IslandApi {
      * @param turnAnim 动画开关*/
     fun FixedWidthDigitInfo(
         content: String,
-        digit:String,
+        digit:String? = null,
         showHighlightColor: Boolean = false,
         turnAnim: Boolean = false,
     ): JSONObject {
@@ -330,7 +329,7 @@ object IslandApi {
      * 小米超级岛，图片和文字配置
      * @param picInfo 图片信息
      * @param textInfo 文字信息
-     * @param type 标识 left为 1 right 为 2
+     * @param type 标识 left为 1 right 为 2 ~ 5
      * @param progressInfo 进度信息
      * */
     fun ImageTextInfo(
