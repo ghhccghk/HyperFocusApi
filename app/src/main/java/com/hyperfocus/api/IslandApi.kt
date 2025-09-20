@@ -93,7 +93,7 @@ object IslandApi {
     ): JSONObject {
         val json = JSONObject()
         if (combinePicInfo != null) { json.put("combinePicInfo", combinePicInfo) }
-        picInfo.let{ json.put("picInfo", it) }
+        picInfo?.let { json.put("picInfo", it) }
         return json
     }
 
@@ -238,7 +238,7 @@ object IslandApi {
      * @param effectSrc 效果图片
      * @param loop Lottie 动画文件是否循环
      * @param number 当为 Lottie 动画文件时，可以指定动画循环次数
-     * @param pic 图片，可注入Lottie 动画文件
+     * @param pic 图片，可注入 Lottie 动画文件名称，目前只能使用小米预设动画
      * */
     fun PicInfo(
         autoplay: Boolean = false,
@@ -246,7 +246,7 @@ object IslandApi {
         effectColor: String? = null,
         effectSrc: String? = null,
         loop: Boolean = false,
-        number:Int = 1,
+        number:Int = 0,
         pic: String,
         type: Int = 1,
     ): JSONObject {
@@ -256,7 +256,7 @@ object IslandApi {
         if (effectColor != null){ json.put("effectColor", effectColor) }
         if (effectSrc != null){ json.put("effectSrc", effectSrc) }
         json.put("loop",loop)
-        json.put("number",number)
+        if (number <= 1){ json.put("number", number) }
         json.put("pic","miui.focus.pic_$pic")
         json.put("type",type)
         return json
@@ -271,14 +271,14 @@ object IslandApi {
      * */
 
     fun ProgressInfo(
-        colorReach: String,
-        colorUnReach: String,
+        colorReach: String? = null,
+        colorUnReach: String? = null,
         isCCW:Boolean = false,
         progress: Int,
     ): JSONObject {
         val json = JSONObject()
-        json.put("colorReach",colorReach)
-        json.put("colorUnReach",colorUnReach)
+        colorReach?.let { json.put("colorReach", it) }
+        colorUnReach?.let { json.put("colorUnReach", it) }
         json.put("isCCW",isCCW)
         json.put("progress",progress)
         return json
@@ -308,20 +308,20 @@ object IslandApi {
 
 
     /**
-     * 小米超级岛图片进度信息
+     * 小米超级岛未展开小岛 Combine 图片进度信息
      * @param picInfo 图片信息
      * @param progressInfo 进度信息
      * @param smallPicInfo 小图片信息
      * */
     fun CombinePicInfo(
         picInfo: JSONObject,
-        progressInfo: JSONObject,
-        smallPicInfo: JSONObject
+        progressInfo: JSONObject ? = null,
+        smallPicInfo: JSONObject? = null
     ): JSONObject{
         val combine = JSONObject()
         combine.put("picInfo",picInfo)
-        combine.put("progressInfo",progressInfo)
-        combine.put("smallPicInfo",smallPicInfo)
+        progressInfo?.let { combine.put("progressInfo", progressInfo) }
+        smallPicInfo.let { combine.put("smallPicInfo", smallPicInfo) }
         return combine
     }
 

@@ -39,6 +39,7 @@ object FocusApi {
      * @param enableFloat 焦点通知是否弹出
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
+     * @param isShowNotification 是否显示通知在通知栏
      * @param addpics 添加图标 */
     @SuppressLint("NewApi")
     @Suppress("KotlinConstantConditions")
@@ -69,6 +70,7 @@ object FocusApi {
         enableFloat: Boolean = false,
         padding:Boolean = false,
         island: JSONObject? = null,
+        isShowNotification : Boolean = true,
     ): Bundle {
         val paramBundle = Bundle()
         val pics = Bundle()
@@ -181,6 +183,7 @@ object FocusApi {
 
 
         param.put("param_v2", paramv2)
+        param.put("isShowNotification",isShowNotification)
         paramBundle.putString("miui.focus.param", param.toString())
         return paramBundle
     }
@@ -204,6 +207,7 @@ object FocusApi {
      * @param addpics 添加图标
      * @param island 小米超级岛配置
      * @param rvIsLand 小米超级岛点击展开视图
+     * @param isShowNotification 是否显示通知在通知栏
      * @return Bundle*/
 
     @SuppressLint("NewApi")
@@ -230,7 +234,8 @@ object FocusApi {
         updatable: Boolean = true,
         timeout: Int = 280,
         reopen: String? = null ,
-        addpics: Bundle? = null
+        addpics: Bundle? = null,
+        isShowNotification : Boolean = true,
     ): Bundle{
         val focus = Bundle()
         val pics = Bundle()
@@ -240,6 +245,7 @@ object FocusApi {
         cus.put("tickerPic","miui.focus.pic_ticker")
         cus.put("enableFloat",enableFloat)
         cus.put("updatable",updatable)
+        cus.put("isShowNotification",isShowNotification)
         outEffectSrc.let { cus.put("outEffectSrc", it) }
         islandFirstFloat.let { cus.put("islandFirstFloat", it) }
         reopen?.let { cus.put("reopen",it)}
