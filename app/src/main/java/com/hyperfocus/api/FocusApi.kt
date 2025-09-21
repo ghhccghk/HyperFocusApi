@@ -11,7 +11,6 @@ import org.json.JSONObject
 
 @Suppress("unused")
 object FocusApi {
-
     /**发送焦点通知 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param ticker 焦点在状态栏内容
      * @param scene 场景
@@ -22,6 +21,17 @@ object FocusApi {
      * @param hintInfo 提示信息 不能和 ProgressInfo 同时使用
      * @param chatinfo 聊天信息
      * @param actions 按钮信息 不能和picmarkv2 同时使用 ，ActionInfo使用JSONArray合并一起可生成两个按钮
+     * @param textButton 文字按钮
+     * @param animTextInfo 动画文字
+     * @param coverInfo 封面
+     * @param multiProgressInfo 多进度
+     * @param iconTextInfo 图标文字
+     * @param island 小米超级岛配置信息
+     * @param notifyId 通知id
+     * @param orderId 订单id
+     * @param outEffectColor 外部特效颜色
+     * @param outEffectSrc 外部特效图片
+     * @param reopen 打开
      * @param title 焦点通知标题
      * @param content 焦点通知小标题
      * @param aodTitle aodTitle 息屏标题
@@ -46,31 +56,51 @@ object FocusApi {
     fun sendFocus(
         baseInfo: JSONObject? = null,
         highlightInfo: JSONObject? = null,
+        highlightInfoV3: JSONObject? = null,
         hintInfo: JSONObject? = null,
         chatinfo: JSONObject? = null,
         progressInfo: JSONObject? = null,
+        animTextInfo: JSONObject? = null,
+        coverInfo: JSONObject? = null,
+        multiProgressInfo: JSONObject? = null,
+        iconTextInfo: JSONObject? = null,
+        island: JSONObject? = null,
+
         actions : JSONArray? = null,
+        textButton: JSONArray? =null,
+
         scene: String? = null,
         title: String? = null ,
         colorTitle: String? = null,
         content: String? = null,
         ticker: String,
         aodTitle: String? = null,
+        notifyId:String? = null,
+        orderId:String? = null,
+        outEffectColor:String? = null,
+        outEffectSrc:String? = null,
+        reopen: String? = null,
+
         picticker: Icon,
         pictickerdark: Icon? = null,
         picInfo: Icon? = null,
         aodPic: Icon? = null,
         picbg: Icon? = null,
         addpics: Bundle? = null,
+
         picbgtype: Int = 1,
         protocol: Int = 1,
         picInfotype: Int = 1,
         timeout: Int? = 280,
+
         updatable: Boolean = true,
         enableFloat: Boolean = false,
         padding:Boolean = false,
-        island: JSONObject? = null,
         isShowNotification : Boolean = true,
+        islandFirstFloat: Boolean = true,
+        showSmallIcon: Boolean = true,
+        hideDeco: Boolean = false,
+        cancel: Boolean = true,
     ): Bundle {
         val paramBundle = Bundle()
         val pics = Bundle()
@@ -94,6 +124,7 @@ object FocusApi {
         if (content != null ){
             param.put("content", content)
         }
+
         if (title != null){
             param.put("title", title)
             if (colorTitle != null){
@@ -154,6 +185,22 @@ object FocusApi {
             paramv2.put("chatInfo", chatinfo)
         }
 
+        textButton?.let { paramv2.put("textButton", textButton) }
+        animTextInfo?.let { paramv2.put("animTextInfo", animTextInfo) }
+        coverInfo?.let { paramv2.put("coverInfo", coverInfo) }
+        multiProgressInfo?.let { paramv2.put("multiProgressInfo", multiProgressInfo) }
+        iconTextInfo?.let { paramv2.put("iconTextInfo", iconTextInfo) }
+        notifyId?.let { paramv2.put("notifyId", notifyId) }
+        orderId?.let { paramv2.put("orderId", orderId) }
+        highlightInfoV3?.let { paramv2.put("highlightInfoV3", highlightInfoV3) }
+        outEffectColor?.let { paramv2.put("outEffectColor", outEffectColor) }
+        outEffectSrc?.let { paramv2.put("outEffectSrc", outEffectSrc) }
+        reopen?.let { paramv2.put("reopen", reopen) }
+        cancel.let { paramv2.put("cancel", cancel) }
+        showSmallIcon.let { paramv2.put("showSmallIcon", showSmallIcon) }
+        hideDeco.let { paramv2.put("hideDeco", hideDeco) }
+
+
         if (chatinfo != null || highlightInfo != null || baseInfo != null && progressInfo == null){
             if (hintInfo != null){
                 paramv2.put("hintInfo", hintInfo)
@@ -182,6 +229,7 @@ object FocusApi {
         }
 
 
+
         param.put("param_v2", paramv2)
         param.put("isShowNotification",isShowNotification)
         paramBundle.putString("miui.focus.param", param.toString())
@@ -191,7 +239,8 @@ object FocusApi {
 
     /** 自定义焦点通知
      * @param ticker 焦点在状态栏内容
-     * @param picticker 焦点在状态栏图标
+     * @param picticker 焦点图标浅色
+     * @param pictickerdark 焦点图标深色
      * @param aodTitle aod文本 与 rvAod 互斥
      * @param aodPic aod图标 与 rvAod 互斥
      * @param rv 焦点通知的RemoteViews
@@ -203,6 +252,7 @@ object FocusApi {
      * @param rvdecolandNight 焦点通知横屏深色的RemoteViews
      * @param rvdecoport 焦点通知竖屏的RemoteViews
      * @param rvdecoportNight 焦点通知竖屏深色的RemoteViews
+     * @param rvIsLand 小米超级岛点击展开视图
      * @param enableFloat 焦点通知是否弹出
      * @param addpics 添加图标
      * @param island 小米超级岛配置
@@ -488,12 +538,14 @@ object FocusApi {
      * @param timerType 时间类型 1:过了多少 不设置为倒计时
      * @param timerWhen 结束时间戳
      * @param timerSystemCurrent 系统时间
+     * @param timerTotal 总时间,os3新增
      * timerWhen 比 timerSystemCurrent 大为倒计时 小为过了多少
      * @return JSONObject*/
     fun timerInfo(
         timerType: Int = -1,
         timerWhen: Long? = null,
         timerSystemCurrent: Long? = null,
+        timerTotal: Long? = null,
     ): JSONObject {
         val timerInfo = JSONObject()
         timerInfo.put("timerType", timerType)
@@ -503,6 +555,7 @@ object FocusApi {
         if (timerSystemCurrent != null){
             timerInfo.put("timerSystemCurrent", timerSystemCurrent)
         }
+        timerTotal?.let{ timerInfo.put("timerTotal", timerTotal)}
 
         return timerInfo
     }
@@ -517,11 +570,13 @@ object FocusApi {
      * @param content 内容
      * @param colorcontent 内容颜色
      * @param colorcontentDark 内容深色颜色
+     * @param appIconPkg 应用图标包名
      * @return JSONObject*/
     fun chatinfo(
         picProfile: String? = null,
         picProfileDark: String? = null,
         timerInfo: JSONObject? = null,
+        appIconPkg: String? = null,
         title: String,
         colortitle: String? = null,
         colortitleDark: String? = null,
@@ -554,6 +609,7 @@ object FocusApi {
         if (colorcontentDark != null){
             chatInfo.put("colorContentDark", colorcontentDark)
         }
+        appIconPkg?.let {chatInfo.put("appIconPkg",it) }
         return chatInfo
     }
 
@@ -723,6 +779,17 @@ object FocusApi {
     }
 
     @SuppressLint("UseRequiresApi")
+    /**
+     * 动画图标信息，os3新增
+     * @param autoplay 是否自动播放
+     * @param effectColor 效果颜色
+     * @param effectSrc 效果图片
+     * @param loop 是否循环
+     * @param number 循环次数
+     * @param src 图片
+     * @param srcDark 图片深色
+     * @param type 标识
+     * @return JSONObject*/
     fun animIconInfo(
         autoplay:Boolean,
         effectColor:String,
@@ -732,7 +799,6 @@ object FocusApi {
         src: String,
         srcDark : String,
         type: Int
-
     ): JSONObject{
         val animObject = JSONObject()
         animObject.put("autoplay",autoplay)
@@ -746,7 +812,10 @@ object FocusApi {
 
         return animObject
     }
-
+    /**
+     * 动画信息，os3新增
+     * @param timerInfo 时间信息
+     * @param animIconInfo 动画图标信息*/
     fun AnimTextInfo(
         timerInfo: JSONObject? = null,
         animIconInfo: JSONObject? = null,
@@ -757,6 +826,11 @@ object FocusApi {
         return animObject
     }
 
+    /**
+     * 封面信息,os3添加
+     * @param picCover 封面
+     * @return JSONObject
+     * */
     fun CoverInfo(
         picCover: String,
     ): JSONObject{
