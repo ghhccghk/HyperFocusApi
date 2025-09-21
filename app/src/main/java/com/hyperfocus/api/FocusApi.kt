@@ -50,6 +50,10 @@ object FocusApi {
      * @param padding padding开关
      * @param timeout 焦点通知超时时间 单位秒
      * @param isShowNotification 是否显示通知在通知栏
+     * @param islandFirstFloat 小米超级岛是否弹出
+     * @param showSmallIcon 是否显示小图标
+     * @param hideDeco 是否隐藏Deco
+     * @param cancel 是否取消显示焦点通知
      * @param addpics 添加图标 */
     @SuppressLint("NewApi")
     @Suppress("KotlinConstantConditions")
@@ -100,7 +104,7 @@ object FocusApi {
         islandFirstFloat: Boolean = true,
         showSmallIcon: Boolean = true,
         hideDeco: Boolean = false,
-        cancel: Boolean = true,
+        cancel: Boolean = false,
     ): Bundle {
         val paramBundle = Bundle()
         val pics = Bundle()
@@ -340,6 +344,7 @@ object FocusApi {
     /** Baseinfo 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param title 焦点通知标题
      * @param subTitle 焦点通知副标题
+     * @param content 焦点通知内容
      * @param extraTitle 焦点通知额外标题
      * @param specialTitle 焦点通知特殊标题
      * @param colorsubTitle 焦点通知小标题颜色
@@ -457,9 +462,10 @@ object FocusApi {
      * @param type 标志
      * @param timerInfo 时间信息
      * @param actionInfo 按钮信息
+     * @param content 内容
      * @param picFunction 小图标
      * @param title 标题
-     * @param subContent 小标题
+     * @param subContent 小内容
      * @param colorSubContent 小标题颜色
      * @param colorSubContentDark 小标题深色颜色
      * @param colorContent 内容颜色
@@ -467,7 +473,6 @@ object FocusApi {
      * @param colorTitle 标题颜色
      * @param colorTitleDark 标题深色颜色
      * @param picFunctionDark 小图标深色 请使用addpics自行添加picFunctionDark
-     * @param picFunction 小图标 请使用addpics自行添加picFunction
      * @return JSONObject
      * */
     fun highlightInfo(
@@ -832,10 +837,28 @@ object FocusApi {
      * @return JSONObject
      * */
     fun CoverInfo(
+        title: String,
         picCover: String,
     ): JSONObject{
         val coverObject = JSONObject()
-        coverObject.put("picCover", picCover)
+        coverObject.put("picCover","miui.focus.pic_$picCover")
+        coverObject.put("title", title)
         return coverObject
+    }
+
+    /**
+     * 多进度点进度条信息,os3添加
+     * @param progress 进度
+     * @param points 进度点
+     * @param color 颜色*/
+    fun MultiProgressInfo(
+        progress: Int = 1,
+        points: Int = 1,
+        color: String? = null,
+    ): JSONObject {
+        val json = JSONObject()
+        json.put("progress",progress).put("points",points)
+        color?.let { json.put("color",it) }
+        return json
     }
 }
