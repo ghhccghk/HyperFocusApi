@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
-import android.util.Log
 import android.widget.RemoteViews
 import org.json.JSONArray
 import org.json.JSONObject
@@ -319,8 +318,7 @@ object FocusApi {
             }
         }
         addpics?.let { pics.putAll(it) }
-        island?.let { cus.put("param_island",it)
-            Log.d("param_island",it.toString())}
+        island?.let { cus.put("param_island",it) }
         focus.putString("miui.focus.param.custom",cus.toString())
         focus.putParcelable("miui.focus.pics",pics)
         focus.putParcelable("miui.focus.rv",rv)
@@ -336,7 +334,6 @@ object FocusApi {
         rvdecolandNight?.let {  focus.putParcelable("miui.focus.rv.deco.landNight",it)}
         rvdecoport?.let {  focus.putParcelable("miui.focus.rv.deco.port",it)}
         rvdecoportNight?.let {  focus.putParcelable("miui.focus.rv.deco.portNight",it)}
-
 
         return focus
     }
