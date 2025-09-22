@@ -1,5 +1,8 @@
 package com.hyperfocus.api
 
+import android.content.Context
+import android.graphics.drawable.Icon
+import android.os.Bundle
 import org.json.JSONObject
 
 @Suppress("unused", "LocalVariableName", "KotlinConstantConditions", "FunctionName")
@@ -22,6 +25,41 @@ object IslandApi {
         json.put("bigIsland",BigIslandData)
         json.put("smallIsland",SmallIslandData)
         return json
+    }
+
+    /**
+     * 小米超级岛之音乐岛分享配置
+     * @param addpic 添加图标
+     * @param content 分享卡片内容
+     * @param title 分享卡片标题
+     * @param shareContent 分享到应用的内容
+     * @param sharePic 分享到应用的图片 (目前不知道怎么分享图片，未测试)
+     * @return 直接注入到媒体通知即可 */
+    fun isLandMusicShare(
+        addpic: Bundle,
+        content: String,
+        title: String,
+        shareContent: String,
+        sharePic: String? = null,
+    ): Bundle {
+        val nfBundle = Bundle()
+        val param = JSONObject()
+        val paramV2 = JSONObject()
+        val island = JSONObject()
+        island.put("shareData", ShareData(
+            title = title,
+            content = content,
+            pic = "miui.focus.pic_app",
+            sharePic = sharePic,
+            shareContent = shareContent
+        ))
+
+        paramV2.put("param_island",island)
+        param.put("param_v2",paramV2)
+
+        nfBundle.putBundle("miui.focus.pics",addpic)
+        nfBundle.putString("miui.focus.param.media",param.toString())
+        return nfBundle
     }
 
 
