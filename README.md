@@ -51,7 +51,6 @@ dependencies {
 //代码还需要补充
 import com.hyperfocus.api.FocusApi
 
-val FocusApi = FocusApi()
 val sendNotification = NotificationHelper.sendNotification("你好", "世界")
 val intent = Intent()
 intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"  // 设置 Action，跳转到应用详情页
@@ -78,7 +77,7 @@ val api = FocusApi.sendFocus(
 sendNotification.addExtras(api)
 NotificationManagerCompat.from(this).notify(1, sendNotification.build())
 ```
-看完不会写可以看看这个![demo](https://github.com/ghhccghk/HyperFocusNotifDemo)
+看完不会写可以看看这个! [demo](https://github.com/ghhccghk/HyperFocusNotifDemo)
 
 ## Star History
 
