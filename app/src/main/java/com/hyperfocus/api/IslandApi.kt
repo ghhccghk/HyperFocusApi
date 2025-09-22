@@ -209,32 +209,30 @@ object IslandApi {
     }
 
     /**
-     * 该接口未测试
      * 小米超级岛固定宽度信息
      * @param content 内容
      * @param digit 数字
-     * @param timeInfo 时间信息
+     * @param timeInfo 时间信息 如果单使用这个请不要传 digit
      * @param showHighlightColor 是否显示高亮颜色
      * @param turnAnim 动画开关
      * */
     fun SameWidthDigitInfo(
-        content: String,
-        digit:String,
-        timeInfo: JSONObject,
+        content: String? = null,
+        digit:String? = null,
+        timeInfo: JSONObject? = null,
         showHighlightColor: Boolean = false,
         turnAnim: Boolean = false,
     ): JSONObject{
         val json = JSONObject()
-        json.put("content",content)
-        json.put("digit",digit)
-        json.put("timeInfo",timeInfo)
+        content?.let { json.put("content", content) }
+        digit?.let { json.put("digit", digit) }
+        timeInfo?.let { json.put("timerInfo", timeInfo) }
         json.put("showHighlightColor",showHighlightColor)
         json.put("turnAnim",turnAnim)
         return json
     }
 
     /**
-     * 该接口未测试
      * 小米超级岛分享信息
      * @param content 内容
      * @param title 标题
@@ -252,7 +250,7 @@ object IslandApi {
         val json = JSONObject()
         json.put("content",content)
         json.put("title",title)
-        json.put("pic",pic)
+        json.put("pic","miui.focus.pic_$pic")
         json.put("shareContent",shareContent)
         sharePic?.let { json.put("sharePic", it) }
         return json
