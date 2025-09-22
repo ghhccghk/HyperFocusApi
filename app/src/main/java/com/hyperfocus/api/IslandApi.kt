@@ -12,7 +12,8 @@ object IslandApi {
      * @param BigIslandData 大岛数据
      * @param SmallIslandData 小岛数据
      * @param islandPriority 优先级
-     * @param islandProperty 优先级*/
+     * @param islandProperty 优先级
+     * */
     fun islandData(
         BigIslandData: JSONObject,
         SmallIslandData: JSONObject,
@@ -67,7 +68,7 @@ object IslandApi {
 
     /**
      * 小米超级岛初始化配置
-     * @param bigIslandArea 岛展开区域
+     * @param bigIslandArea 大岛区域
      * @param business 业务
      * @param dismissIsland 是否可关闭
      * @param expandedTime 展开时间
@@ -79,7 +80,7 @@ object IslandApi {
      * @param maxSize 是否最大尺寸
      * @param needCloseAnimation 是否需要关闭动画
      * @param shareData 分享数据
-     * @param smallIslandArea 小岛展开区域
+     * @param smallIslandArea 小岛区域
      * */
     fun IslandTemplate(
         bigIslandArea: JSONObject? =null,
@@ -231,6 +232,7 @@ object IslandApi {
         json.put("turnAnim",turnAnim)
         return json
     }
+
     /**
      * 该接口未测试
      * 小米超级岛分享信息
@@ -309,7 +311,6 @@ object IslandApi {
      * @param isCCW 是否顺时针
      * @param progress 进度
      * */
-
     fun ProgressInfo(
         colorReach: String? = null,
         colorUnReach: String? = null,
@@ -326,20 +327,19 @@ object IslandApi {
 
 
     /**
-     * 该接口未测试
      * 小米超级岛固定宽度信息
      * @param content 内容
-     * @param digit 数字
+     * @param digit 数字，只能最多传3个数字并且只能有一个小数点
      * @param showHighlightColor 是否显示高亮颜色
-     * @param turnAnim 动画开关*/
+     * @param turnAnim 动画开关 */
     fun FixedWidthDigitInfo(
-        content: String,
-        digit:String? = null,
+        content: String? = null,
+        digit: Int,
         showHighlightColor: Boolean = false,
-        turnAnim: Boolean = false,
+        turnAnim: Boolean = true,
     ): JSONObject {
         val json = JSONObject()
-        json.put("content",content)
+        content?.let{ json.put("content", it) }
         json.put("digit",digit)
         json.put("showHighlightColor",showHighlightColor)
         json.put("turnAnim",turnAnim)
