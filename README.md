@@ -1,4 +1,4 @@
-![](https://socialify.git.ci/ghhccghk/HyperFocusApi/image?description=1&descriptionEditable=把小米澎湃的焦点通知写成api方便调用&language=1&name=1&owner=1&theme=Auto)
+![](https://socialify.git.ci/ghhccghk/HyperFocusApi/image?description=1&descriptionEditable=把小米澎湃的焦点通知和灵动岛写成Api方便调用&language=1&name=1&owner=1&theme=Auto)
 
 [![](https://jitpack.io/v/ghhccghk/HyperFocusApi.svg)](https://jitpack.io/#ghhccghk/HyperFocusApi)
 

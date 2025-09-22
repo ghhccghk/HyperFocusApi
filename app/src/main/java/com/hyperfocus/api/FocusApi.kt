@@ -264,7 +264,7 @@ object FocusApi {
      * @return Bundle*/
 
     @SuppressLint("NewApi")
-    fun senddiyFocus(
+    fun sendDiyFocus(
         picticker: Icon,
         ticker: String,
         aodTitle: String? = null,
@@ -818,7 +818,7 @@ object FocusApi {
      * 动画信息，os3新增
      * @param timerInfo 时间信息
      * @param animIconInfo 动画图标信息*/
-    fun AnimTextInfo(
+    fun animTextInfo(
         timerInfo: JSONObject? = null,
         animIconInfo: JSONObject? = null,
     ): JSONObject{
@@ -833,7 +833,7 @@ object FocusApi {
      * @param picCover 封面
      * @return JSONObject
      * */
-    fun CoverInfo(
+    fun coverInfo(
         title: String,
         picCover: String,
     ): JSONObject{
@@ -848,7 +848,7 @@ object FocusApi {
      * @param progress 进度
      * @param points 进度点
      * @param color 颜色*/
-    fun MultiProgressInfo(
+    fun multiProgressInfo(
         progress: Int = 1,
         points: Int = 1,
         color: String? = null,

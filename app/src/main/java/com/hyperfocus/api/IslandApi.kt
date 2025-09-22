@@ -1,7 +1,5 @@
 package com.hyperfocus.api
 
-import android.content.Context
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import org.json.JSONObject
 
@@ -49,7 +47,7 @@ object IslandApi {
         val param = JSONObject()
         val paramV2 = JSONObject()
         val island = JSONObject()
-        island.put("shareData", ShareData(
+        island.put("shareData", shareData(
             title = title,
             content = content,
             pic = if (pic != "miui_media_album_icon" ) "miui.focus.pic_$pic" else "miui_media_album_icon",
@@ -216,7 +214,7 @@ object IslandApi {
      * @param showHighlightColor 是否显示高亮颜色
      * @param turnAnim 动画开关
      * */
-    fun SameWidthDigitInfo(
+    fun sameWidthDigitInfo(
         content: String? = null,
         digit:String? = null,
         timeInfo: JSONObject? = null,
@@ -240,7 +238,7 @@ object IslandApi {
      * @param shareContent 分享内容
      * @param sharePic 分享图片
      * */
-    fun ShareData(
+    fun shareData(
         content: String,
         title: String,
         pic: String,
@@ -261,7 +259,7 @@ object IslandApi {
      * @param progressInfo 进度信息
      * @param textInfo 文字信息
      * */
-    fun ProgressTextInfo(
+    fun progressTextInfo(
         progressInfo: JSONObject,
         textInfo: JSONObject,
     ): JSONObject {
@@ -280,7 +278,7 @@ object IslandApi {
      * @param number 当为 Lottie 动画文件时，可以指定动画循环次数
      * @param pic 图片，可注入 Lottie 动画文件名称，目前只能使用小米预设动画
      * */
-    fun PicInfo(
+    fun picInfo(
         autoplay: Boolean = false,
         contentDescription: String? = null,
         effectColor: String? = null,
@@ -309,7 +307,7 @@ object IslandApi {
      * @param isCCW 是否顺时针
      * @param progress 进度
      * */
-    fun ProgressInfo(
+    fun progressInfo(
         colorReach: String? = null,
         colorUnReach: String? = null,
         isCCW:Boolean = false,
@@ -330,7 +328,7 @@ object IslandApi {
      * @param digit 数字，只能最多传3个数字并且只能有一个小数点
      * @param showHighlightColor 是否显示高亮颜色
      * @param turnAnim 动画开关 */
-    fun FixedWidthDigitInfo(
+    fun fixedWidthDigitInfo(
         content: String? = null,
         digit: Int,
         showHighlightColor: Boolean = false,
@@ -351,7 +349,7 @@ object IslandApi {
      * @param progressInfo 进度信息
      * @param smallPicInfo 小图片信息
      * */
-    fun CombinePicInfo(
+    fun combinePicInfo(
         picInfo: JSONObject,
         progressInfo: JSONObject ? = null,
         smallPicInfo: JSONObject? = null
@@ -370,7 +368,7 @@ object IslandApi {
      * @param type 标识 left为 1 right 为 2 ~ 5
      * @param progressInfo 进度信息
      * */
-    fun ImageTextInfo(
+    fun imageTextInfo(
         picInfo: JSONObject? = null ,
         textInfo: JSONObject? = null,
         type: Int = 1,
@@ -394,7 +392,7 @@ object IslandApi {
      * @param sameWidthDigitInfo 同宽度信息
      * @param textInfo 文字信息
      * */
-    fun BigIslandArea(
+    fun bigIslandArea(
         fixedWidthDigitInfo: JSONObject? = null,
         imageTextInfoLeft: JSONObject? = null,
         imageTextInfoRight: JSONObject? = null,
