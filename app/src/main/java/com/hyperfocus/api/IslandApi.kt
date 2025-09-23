@@ -50,7 +50,7 @@ object IslandApi {
         island.put("shareData", shareData(
             title = title,
             content = content,
-            pic = if (pic != "miui_media_album_icon" ) "miui.focus.pic_$pic" else "miui_media_album_icon",
+            pic = pic,
             sharePic = sharePic,
             shareContent = shareContent
         ))
@@ -248,7 +248,7 @@ object IslandApi {
         val json = JSONObject()
         json.put("content",content)
         json.put("title",title)
-        json.put("pic","miui.focus.pic_$pic")
+        json.put("pic",pic)
         json.put("shareContent",shareContent)
         sharePic?.let { json.put("sharePic", it) }
         return json
@@ -295,7 +295,7 @@ object IslandApi {
         if (effectSrc != null){ json.put("effectSrc", effectSrc) }
         json.put("loop",loop)
         if (number <= 1){ json.put("number", number) }
-        json.put("pic","miui.focus.pic_$pic")
+        json.put("pic",pic)
         json.put("type",type)
         return json
     }

@@ -413,10 +413,10 @@ object FocusApi {
                 baseInfo.put("colorSubContentDark", colorSubContentDark)
             }
             if (picFunction != null){
-                baseInfo.put("picFunction", "miui.focus.pic_$picFunction")
+                baseInfo.put("picFunction", picFunction)
             }
             if (picFunctionDark != null){
-                baseInfo.put("picFunctionDark", "miui.focus.pic_$picFunctionDark")
+                baseInfo.put("picFunctionDark", picFunctionDark)
             }
         }
 
@@ -525,10 +525,10 @@ object FocusApi {
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
             if (picFunction != null){
-                highlightInfo.put("picFunction", "miui.focus.pic_$picFunction")
+                highlightInfo.put("picFunction", picFunction)
             }
             if (picFunctionDark != null){
-                highlightInfo.put("picFunctionDark", "miui.focus.pic_$picFunctionDark")
+                highlightInfo.put("picFunctionDark", picFunctionDark)
             }
 
 
@@ -588,10 +588,10 @@ object FocusApi {
     ): JSONObject {
         val chatInfo = JSONObject()
         if (picProfile != null){
-            chatInfo.put("picProfile", "miui.focus.pic_$picProfile")
+            chatInfo.put("picProfile",picProfile)
         }
         if (picProfileDark != null) {
-            chatInfo.put("picProfileDark", "miui.focus.pic_$picProfileDark")
+            chatInfo.put("picProfileDark", picProfileDark)
         }
         if (timerInfo != null) {
             chatInfo.put("timerInfo", timerInfo)
@@ -648,7 +648,7 @@ object FocusApi {
             hintInfo.put("colorContentBg", colorContentBg)
         }
         if (picContent != null){
-            hintInfo.put("picContent", "miui.focus.pic_$picContent")
+            hintInfo.put("picContent", picContent)
         }
         if (timerInfo != null){
             hintInfo.put("timerInfo", timerInfo)
@@ -691,7 +691,7 @@ object FocusApi {
         icon : Icon,
     ): Bundle {
         val pics = Bundle()
-        val namea = "miui.focus.pic_$name"
+        val namea = name
         pics.putParcelable(namea, icon)
         return pics
     }
@@ -722,19 +722,19 @@ object FocusApi {
         colorProgressEnd?.let { progressInfo.put("colorProgressEnd", colorProgressEnd) }
 
         if (picEnd != null){
-            progressInfo.put("picEnd", "miui.focus.pic_$picEnd")
+            progressInfo.put("picEnd", picEnd)
         }
         if (picEndUnselected != null) {
-            progressInfo.put("picEndUnselected", "miui.focus.pic_$picEndUnselected")
+            progressInfo.put("picEndUnselected", picEndUnselected)
         }
         if (picForward != null){
-            progressInfo.put("picForward", "miui.focus.pic_$picForward")
+            progressInfo.put("picForward", picForward)
         }
         if (picMiddle != null){
-            progressInfo.put("picMiddle", "miui.focus.pic_$picMiddle")
+            progressInfo.put("picMiddle",picMiddle)
         }
         if (picMiddleUnselected != null){
-            progressInfo.put("picMiddleUnselected", "miui.focus.pic_$picMiddleUnselected")
+            progressInfo.put("picMiddleUnselected", picMiddleUnselected)
         }
         progressInfo.put("progress", progress)
 
@@ -773,8 +773,8 @@ object FocusApi {
 
         actionBgColor?.let { actionObject.put("actionBgColor", it) }
         actionBgColorDark?.let { actionObject.put("actionBgColorDark", it) }
-        actionIcon?.let { actionObject.put("actionIcon", "miui.focus.pic_$it") }
-        actionIconDark?.let { actionObject.put("actionIconDark", "miui.focus.pic_$it") }
+        actionIcon?.let { actionObject.put("actionIcon", it) }
+        actionIconDark?.let { actionObject.put("actionIconDark", it) }
         actionTitleColorDark?.let { actionObject.put("actionTitleColorDark", it) }
 
         return actionObject
@@ -838,7 +838,7 @@ object FocusApi {
         picCover: String,
     ): JSONObject{
         val coverObject = JSONObject()
-        coverObject.put("picCover","miui.focus.pic_$picCover")
+        coverObject.put("picCover",picCover)
         coverObject.put("title", title)
         return coverObject
     }
