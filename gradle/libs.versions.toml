@@ -1,6 +1,6 @@
 [versions]
-gradle = "8.12.1"
-gson = "2.13.1"
+gradle = "8.13.0"
+gson = "2.13.2"
 kotlinGradlePlugin = "1.8.22"
 
 [libraries]
