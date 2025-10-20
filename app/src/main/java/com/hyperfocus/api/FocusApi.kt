@@ -53,7 +53,9 @@ object FocusApi {
      * @param showSmallIcon 是否显示小图标
      * @param hideDeco 是否隐藏Deco
      * @param cancel 是否取消显示焦点通知
-     * @param addpics 添加图标 */
+     * @param addpics 添加图标
+     * @param actions_b Bundle 按钮信息 不能和picmarkv2同时使用，可以实现传递一个Notification.Action以使用PendingIntent 在里面塞命名为miui.focus.action_test 的Bundle
+     * @return Bundle*/
     @SuppressLint("NewApi")
     @Suppress("KotlinConstantConditions")
     fun sendFocus(
@@ -104,6 +106,8 @@ object FocusApi {
         showSmallIcon: Boolean = true,
         hideDeco: Boolean = false,
         cancel: Boolean = false,
+
+        actions_b : Bundle? =null,
     ): Bundle {
         val paramBundle = Bundle()
         val pics = Bundle()
@@ -236,6 +240,7 @@ object FocusApi {
         param.put("param_v2", paramv2)
         param.put("isShowNotification",isShowNotification)
         paramBundle.putString("miui.focus.param", param.toString())
+        paramBundle.putBundle("miui.focus.actions",actions_b)
         return paramBundle
     }
 
