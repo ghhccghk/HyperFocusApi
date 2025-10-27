@@ -9,6 +9,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 @Suppress("unused")
+/**
+ * 小米焦点通知APi
+ * 注意：在使用 actionInfo 传递 Action 行为时，通过自定义方式创建 Action 参数时， 需要在清单文件中将
+ * actionIntent 对应的 BroadcastReceiver/Service 将 exported 属性显式声明为 true, 否则在一些系列设
+ * 备中将无法响应对应 Action 的行为
+ * 来自小米超级岛APi文档*/
 object FocusApi {
     /**发送焦点通知 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param ticker 焦点在状态栏内容
@@ -231,16 +237,17 @@ object FocusApi {
         }
 
 
-        if (actions != null && picInfo == null){
-            param.put("miui.focus.actions",actions)
+        if (actions != null && actions_b == null) {
+            paramBundle.putString("miui.focus.actions", actions.toString())
         }
 
-
+        if (actions == null && actions_b != null) {
+            paramBundle.putBundle("miui.focus.actions", actions_b)
+        }
 
         param.put("param_v2", paramv2)
         param.put("isShowNotification",isShowNotification)
         paramBundle.putString("miui.focus.param", param.toString())
-        paramBundle.putBundle("miui.focus.actions",actions_b)
         return paramBundle
     }
 
@@ -344,10 +351,11 @@ object FocusApi {
     }
 
     /** Baseinfo 自定义背景必须设置颜色，否则导致崩溃后果自负
-     * @param title 焦点通知标题
-     * @param subTitle 焦点通知副标题
-     * @param content 焦点通知内容
-     * @param extraTitle 焦点通知额外标题
+     * @param basetype 文本组件类型 , 取值如下 1或 2 默认1
+     * @param title 主要文本 1
+     * @param subTitle 主要文本 2
+     * @param content 次要文本 1 在 basetype = 2 时候必须传
+     * @param extraTitle 次要文本 2
      * @param specialTitle 焦点通知特殊标题
      * @param colorsubTitle 焦点通知小标题颜色
      * @param colorSubContent 焦点通知小标题边上的小标题的颜色
@@ -361,8 +369,11 @@ object FocusApi {
      * @param colorSpecialTitle specialTitle颜色
      * @param colorSpecialTitleDark specialTitle深色颜色
      * @param colorSpecialTitleBg specialTitle背景颜色
-     * @param picFunctionDark 小图标深色 请使用addpics自行添加picFunctionDark
-     * @param picFunction 小图标 请使用addpics自行添加picFunction */
+     * @param picFunctionDark 功能图标深色 请使用addpics自行添加picFunctionDark
+     * @param picFunction 功能图标 请使用addpics自行添加picFunction
+     * @param showDivider 间隔符号 是否显示主要文本间的分割符
+     * @param showContentDivider 是否显示主要文本和补充文本的分割符
+     * */
     fun baseinfo(
         basetype: Int = 1,
         title: String,
@@ -386,11 +397,14 @@ object FocusApi {
         colorSpecialTitleBg: String? = null,
         picFunction : String? = null,
         picFunctionDark : String? = null,
+        showDivider: Boolean = false,
+        showContentDivider: Boolean = false,
     ): JSONObject{
         val baseInfo = JSONObject()
 
         baseInfo.put("title", title)
-        baseInfo.put("colorTitle", colorTitle)
+
+        colorTitle?.let { baseInfo.put("colorTitle", it) }
 
         if (colorTitleDark != null){
             baseInfo.put("colorTitleDark", colorTitleDark)
@@ -407,6 +421,21 @@ object FocusApi {
                 baseInfo.put("colorContentDark", colorContentDark)
             }
 
+        }
+        if (basetype == 2) {
+            if (content != null) {
+                baseInfo.put("content", content)
+                if (colorContent != null) {
+                    baseInfo.put("colorContent", colorContent)
+                }
+
+                if (colorContentDark != null) {
+                    baseInfo.put("colorContentDark", colorContentDark)
+                }
+
+            } else {
+                baseInfo.put("content", title)
+            }
         }
 
         if (subContent != null) {
@@ -460,28 +489,30 @@ object FocusApi {
         baseInfo.put("type", basetype)
         return baseInfo
     }
-    /** HighlightInfo 自定义背景必须设置颜色，否则导致崩溃后果自负
-     * @param type 标志
-     * @param timerInfo 时间信息
+
+    /** 强调图文组件 自定义背景必须设置颜色，否则导致崩溃后果自负
+     * 标题 和 timerInfo二选一传
+     * @param type 是否隐藏辅助文本  传入 1隐藏辅助文本
+     * @param timerInfo 计时信息
      * @param actionInfo 按钮信息
-     * @param content 内容
-     * @param picFunction 小图标
-     * @param title 标题
-     * @param subContent 小内容
-     * @param colorSubContent 小标题颜色
-     * @param colorSubContentDark 小标题深色颜色
-     * @param colorContent 内容颜色
-     * @param colorContentDark 内容深色颜色
-     * @param colorTitle 标题颜色
-     * @param colorTitleDark 标题深色颜色
-     * @param picFunctionDark 小图标深色 请使用addpics自行添加picFunctionDark
+     * @param content 辅助文本 1
+     * @param picFunction 功能图标 必传 请使用addpics自行添加picFunction
+     * @param title 强调文本
+     * @param subContent 辅助文本 2
+     * @param colorSubContent 辅助文本 2 颜色
+     * @param colorSubContentDark 辅助文本 2 深色颜色
+     * @param colorContent 辅助文本 1颜色
+     * @param colorContentDark 辅助文本 1深色颜色
+     * @param colorTitle 强调文本颜色
+     * @param colorTitleDark 强调文本深色颜色
+     * @param picFunctionDark 暗黑模式下功能图标 请使用addpics自行添加picFunctionDark
      * @return JSONObject
      * */
     fun highlightInfo(
-        type: Int = 1,
+        type: Int = 0,
         timerInfo: JSONObject? = null,
         actionInfo: JSONObject? = null,
-        picFunction : String? = null,
+        picFunction: String,
         picFunctionDark : String? = null,
         title: String? = null,
         content: String? = null,
@@ -494,7 +525,9 @@ object FocusApi {
         colorTitleDark: String? = null,
     ): JSONObject{
         val highlightInfo = JSONObject()
-        highlightInfo.put("type", type)
+        if (type == 1) {
+            highlightInfo.put("type", type)
+        }
         if (timerInfo != null){
             highlightInfo.put("timerInfo", timerInfo)
         }
@@ -529,23 +562,19 @@ object FocusApi {
             if (colorSubContentDark != null){
                 highlightInfo.put("colorSubContentDark", colorSubContentDark)
             }
-            if (picFunction != null){
-                highlightInfo.put("picFunction", picFunction)
-            }
             if (picFunctionDark != null){
                 highlightInfo.put("picFunctionDark", picFunctionDark)
             }
-
-
         }
+        highlightInfo.put("picFunction", picFunction)
         return highlightInfo
     }
 
     /** 时间 自定义背景必须设置颜色，否则导致崩溃后果自负
-     * @param timerType 时间类型 1:过了多少 不设置为倒计时
-     * @param timerWhen 结束时间戳
-     * @param timerSystemCurrent 系统时间
-     * @param timerTotal 总时间,os3新增
+     * @param timerType 计时类型 取值 :-2,-1, 0 , 1,2 -2: 倒计时暂停 -1: 倒计时开始 0：默认值，如果设置为 0 的话，必须设置相同位置上的标题 1: 正计时开始 2. 正计时暂停
+     * @param timerWhen 计时起点时间戳
+     * @param timerSystemCurrent 计时误差
+     * @param timerTotal 计时进度
      * timerWhen 比 timerSystemCurrent 大为倒计时 小为过了多少
      * @return JSONObject*/
     fun timerInfo(
@@ -569,18 +598,18 @@ object FocusApi {
 
     /** 聊天信息 自定义背景必须设置颜色，否则导致崩溃后果自负
      * @param picProfile 头像，请使用addpics自行添加picProfile
-     * @param picProfileDark 图标 请使用addpics自行添加picProfileDark
+     * @param picProfileDark 头像深色图标 请使用addpics自行添加picProfileDark
      * @param timerInfo 时间信息
-     * @param title 标题
-     * @param colortitle 标题颜色
-     * @param colortitleDark 标题深色颜色
-     * @param content 内容
-     * @param colorcontent 内容颜色
-     * @param colorcontentDark 内容深色颜色
-     * @param appIconPkg 应用图标包名
+     * @param title 主要文本
+     * @param colortitle 主要文本颜色
+     * @param colortitleDark 主要文本深色颜色
+     * @param content 次要文本
+     * @param colorcontent 次要文本 颜色
+     * @param colorcontentDark 次要文本深色颜色
+     * @param appIconPkg 自定义应用图标
      * @return JSONObject*/
     fun chatinfo(
-        picProfile: String? = null,
+        picProfile: String,
         picProfileDark: String? = null,
         timerInfo: JSONObject? = null,
         appIconPkg: String? = null,
@@ -621,8 +650,9 @@ object FocusApi {
     }
 
     /** HintInfo 自定义背景必须设置颜色，否则导致崩溃后果自负
+     * timerInfo和 title 二选一
      * @param colorContentBg 内容背景颜色
-     * @param type 标志
+     * @param type 标志 • 1：按钮组件3; 2:按钮组件2
      * @param picContent 图标
      * @param timerInfo 时间信息
      * @param title 标题
@@ -639,9 +669,9 @@ object FocusApi {
         type: Int = 1,
         picContent: String? = null,
         timerInfo: JSONObject? = null,
-        actionInfo: JSONObject? = null,
-        title: String? = null,
-        content: String? = null,
+        actionInfo: JSONObject,
+        title: String,
+        content: String,
         colorContent: String? = null,
         colorContentDark: String? = null,
         colortitle: String? = null,
@@ -658,30 +688,29 @@ object FocusApi {
         if (timerInfo != null){
             hintInfo.put("timerInfo", timerInfo)
         }
-        if (title != null){
+        if (timerInfo == null) {
             hintInfo.put("title", title)
-            if (colortitle != null) {
-                hintInfo.put("colorTitle", colortitle)
-            }
-            if (colortitleDark != null){
-                hintInfo.put("colortitleDark", colortitleDark)
-            }
         }
+        if (colortitle != null) {
+            hintInfo.put("colorTitle", colortitle)
+        }
+        if (colortitleDark != null) {
+            hintInfo.put("colortitleDark", colortitleDark)
+        }
+
         if (titleLineCount != null){
             hintInfo.put("titleLineCount", titleLineCount)
         }
-        if (content != null){
-            hintInfo.put("content", content)
-            if (colorContent != null){
-                hintInfo.put("colorContent", colorContent)
-            }
-            if (colorContentDark != null){
-                hintInfo.put("colorContentDark", colorContentDark)
-            }
+
+        hintInfo.put("content", content)
+        if (colorContent != null) {
+            hintInfo.put("colorContent", colorContent)
         }
-        if (actionInfo != null){
-            hintInfo.put("actionInfo", actionInfo)
+        if (colorContentDark != null) {
+            hintInfo.put("colorContentDark", colorContentDark)
         }
+
+        hintInfo.put("actionInfo", actionInfo)
         hintInfo.put("type", type)
         return hintInfo
     }
@@ -702,14 +731,14 @@ object FocusApi {
     }
 
 
-    /** 进度条
+    /** 进度条，progressInfo 中不传入任何图标，即为 进度组件 2
      * @param colorProgress 进度条颜色
      * @param colorProgressEnd 进度条结束颜色
-     * @param picEnd 进度条结束图标
-     * @param picEndUnselected 进度条未选中图标
-     * @param picForward 进度条向前图标
-     * @param picMiddle 进度条中间图标
-     * @param picMiddleUnselected 进度条未选中中间图标
+     * @param picEnd 进度条目标点图标(进度通过)
+     * @param picEndUnselected 进度条目标点图标(进度未通过)
+     * @param picForward 进度条前进图形
+     * @param picMiddle 进度条中间节点图标(进度通过)
+     * @param picMiddleUnselected 进度条中间节点图标(进度未通过)
      * @param progress 进度条进度 */
     fun progressInfo(
         colorProgress: String,
@@ -746,16 +775,28 @@ object FocusApi {
         return progressInfo
     }
 
-    /** 按钮信息 图标和文本不要在一起用 只能分开用 自定义背景必须设置颜色，否则导致崩溃后果自负
+    /** 按钮信息 自定义背景必须设置颜色，否则导致崩溃后果自负
+     * 按钮类型由 actionInfo.type 决定，
+     * Action 按钮类型：
+     * 0：普通按钮类型 (默认值)
+     * 1：进度按钮类型
+     * 2：文字按钮类型
+     * 限制：
+     * • 圆形按钮支持 1-3个
+     * • 进度按钮支持 1-3 个
+     * • 文字按钮支持 1 个
+     * • 文字按钮和其他按钮不能同时使用，传入方式有两种，1为直接往 sendFocus传入函数里actions里加，2为自定义构建 Action二选一
      * @param actionBgColor 按钮背景颜色
      * @param actionBgColorDark 按钮深色背景颜色
      * @param actionIcon 按钮图标
      * @param actionIconDark 按钮深色图标
      * @param actionIntent Intent
-     * @param actionIntentType Intent类型
+     * @param actionIntentType Intent类型 1为url to activity 2为action to broadcast 3为action to service
      * @param actionTitle 按钮标题
      * @param actionTitleColor 按钮标题颜色
      * @param actionTitleColorDark 按钮深色标题颜色
+     * @param progressInfo 进度信息
+     * @param clickWithCollapse 点击是否收起面板 备注：1.Action的PendingIntent 是 Activity 类型 ， 默认点击收起 2. actionIntentType为1时，默认点击收起
      * @return JSONObject */
     @SuppressLint("UseRequiresApi")
     fun actionInfo(
@@ -763,15 +804,17 @@ object FocusApi {
         actionBgColorDark: String? = null,
         actionIcon: String? = null,
         actionIconDark: String? = null,
-        actionIntent: Intent,
+        actionIntent: String,
         actionIntentType: String? = null,
         actionTitle: String? = null,
         actionTitleColor: String? = null,
         actionTitleColorDark: String? = null,
+        progressInfo: JSONObject? = null,
+        clickWithCollapse: Boolean = true
     ): JSONObject  {
         val actionObject = JSONObject()  // 单个 action 信息
 
-        actionObject.put("actionIntent", actionIntent.toUri(Intent.URI_INTENT_SCHEME))
+        actionObject.put("actionIntent", actionIntent)
         actionObject.put("actionIntentType", actionIntentType)
         actionObject.put("actionTitle", actionTitle)
         actionObject.put("actionTitleColor", actionTitleColor)
@@ -781,6 +824,8 @@ object FocusApi {
         actionIcon?.let { actionObject.put("actionIcon", it) }
         actionIconDark?.let { actionObject.put("actionIconDark", it) }
         actionTitleColorDark?.let { actionObject.put("actionTitleColorDark", it) }
+        progressInfo?.let { actionObject.put("progressInfo", it) }
+        actionObject.put("clickWithCollapse", clickWithCollapse)
 
         return actionObject
     }
@@ -822,45 +867,165 @@ object FocusApi {
     /**
      * 动画信息，os3新增
      * @param timerInfo 时间信息
+     * @param title 主要文本
+     * @param content 次要文本
+     * @param colorContentDark 次要文本颜色深色
+     * @param colorContent 次要文本颜色
+     * @param colortitle 主要文本颜色
+     * @param colortitleDark 主要文本深色颜色
      * @param animIconInfo 动画图标信息*/
     fun animTextInfo(
         timerInfo: JSONObject? = null,
-        animIconInfo: JSONObject? = null,
+        title: String? = null,
+        animIconInfo: JSONObject,
+        content: String? = null,
+        colorContent: String? = null,
+        colorContentDark: String? = null,
+        colortitle: String? = null,
+        colortitleDark: String? = null,
     ): JSONObject{
         val animObject = JSONObject()
-        animObject.put("TimerInfo",timerInfo)
-        animObject.put("AnimIconInfo",animIconInfo)
+        title?.let { animObject.put("title", it) }
+        content?.let { animObject.put("content", it) }
+        timerInfo?.let { animObject.put("timerInfo", it) }
+        animIconInfo.let { animObject.put("animIconInfo", it) }
+        if (colortitle != null) {
+            animObject.put("colorTitle", colortitle)
+        }
+        if (colortitleDark != null) {
+            animObject.put("colortitleDark", colortitleDark)
+        }
+
+        if (colorContent != null) {
+            animObject.put("colorContent", colorContent)
+        }
+        if (colorContentDark != null) {
+            animObject.put("colorContentDark", colorContentDark)
+        }
+
+
         return animObject
     }
 
     /**
      * 封面信息,os3添加
      * @param picCover 封面
+     * @param content 辅助文本 1
+     * @param title 强调文本
+     * @param subContent 辅助文本 2
+     * @param colorSubContent 辅助文本 2 颜色
+     * @param colorSubContentDark 辅助文本 2 深色颜色
+     * @param colorContent 辅助文本 1颜色
+     * @param colorContentDark 辅助文本 1深色颜色
+     * @param colorTitle 强调文本颜色
+     * @param colorTitleDark 强调文本深色颜色
      * @return JSONObject
      * */
     fun coverInfo(
         title: String,
+        content: String,
+        subContent: String,
         picCover: String,
+        colorSubContent: String? = null,
+        colorSubContentDark: String? = null,
+        colorContent: String? = null,
+        colorContentDark: String? = null,
+        colorTitle: String? = null,
+        colorTitleDark: String? = null,
     ): JSONObject{
         val coverObject = JSONObject()
         coverObject.put("picCover",picCover)
         coverObject.put("title", title)
+        coverObject.put("subContent", subContent)
+        coverObject.put("content", content)
+
+        colorTitle?.let { coverObject.put("colorTitle", it) }
+
+        if (colorTitleDark != null) {
+            coverObject.put("colorTitleDark", colorTitleDark)
+        }
+
+        if (colorContent != null) {
+            coverObject.put("colorContent", colorContent)
+        }
+
+        if (colorContentDark != null) {
+            coverObject.put("colorContentDark", colorContentDark)
+        }
+
+        if (colorSubContent != null) {
+            coverObject.put("colorSubContent", colorSubContent)
+        }
+        if (colorSubContentDark != null) {
+            coverObject.put("colorSubContentDark", colorSubContentDark)
+        }
+
         return coverObject
     }
 
     /**
      * 多进度点进度条信息,os3添加
      * @param progress 进度
-     * @param points 进度点
-     * @param color 颜色*/
+     * @param points 进度点 数量：支持 0-4 个 颜色和进度条一致
+     * @param color 颜色
+     * @param title 描述文本 最小压缩宽度：6 个汉字，12 个字符，72dp */
     fun multiProgressInfo(
         progress: Int = 1,
         points: Int = 1,
         color: String? = null,
+        title: String
     ): JSONObject {
         val json = JSONObject()
         json.put("progress",progress).put("points",points)
         color?.let { json.put("color",it) }
         return json
+    }
+
+
+    /** highlightInfoV3
+     * @param primaryText 高亮文本
+     * @param secondaryText 补充文本
+     * @param showSecondaryLine 补充文本是否划线
+     * @param highLightText 文字标签
+     * @param highLightbgColor 文字标签背景颜色
+     * @param primaryColor 高亮文本颜色
+     * @param primaryColorDark 高亮文本颜色深色
+     * @param secondaryColor 补充文本颜色
+     * @param secondaryColorDark 补充文本颜色深色
+     * @param actionInfo 按钮信息
+     * */
+    fun highlightInfoV3(
+        primaryText: String,
+        secondaryText: String? = null,
+        showSecondaryLine: Boolean = false,
+        highLightText: String? = null,
+        primaryColor: String? = null,
+        secondaryColor: String? = null,
+        highLightTextColor: String? = null,
+        highLightbgColor: String? = null,
+        primaryColorDark: String? = null,
+        secondaryColorDark: String? = null,
+        highLightTextColorDark: String? = null,
+        highLightbgColorDark: String? = null,
+        actionInfo: JSONObject
+    ): JSONObject {
+        val highlightInfoV3 = JSONObject()
+        highlightInfoV3.put("primaryText", primaryText)
+        secondaryText?.let { highlightInfoV3.put("secondaryText", it) }
+        highLightText?.let { highlightInfoV3.put("highLightText", it) }
+        primaryColor?.let { highlightInfoV3.put("primaryColor", it) }
+        secondaryColor?.let { highlightInfoV3.put("secondaryColor", it) }
+        highLightTextColor?.let { highlightInfoV3.put("highLightTextColor", it) }
+        highLightbgColor?.let { highlightInfoV3.put("highLightbgColor", it) }
+        primaryColorDark?.let { highlightInfoV3.put("primaryColorDark", it) }
+        secondaryColorDark?.let { highlightInfoV3.put("secondaryColorDark", it) }
+        highLightTextColorDark?.let { highlightInfoV3.put("highLightTextColorDark", it) }
+        primaryColorDark?.let { highlightInfoV3.put("primaryColorDark", it) }
+        highLightbgColorDark?.let { highlightInfoV3.put("highLightbgColorDark", it) }
+        highLightTextColorDark?.let { highlightInfoV3.put("highLightTextColorDark", it) }
+        highlightInfoV3.put("actionInfo", actionInfo)
+        highlightInfoV3.put("showSecondaryLine", showSecondaryLine)
+
+        return highlightInfoV3
     }
 }
