@@ -3,29 +3,8 @@ package com.hyperfocus.api
 import android.os.Bundle
 import org.json.JSONObject
 
-@Suppress("unused", "LocalVariableName", "KotlinConstantConditions", "FunctionName")
+@Suppress("unused", "KotlinConstantConditions", "FunctionName")
 object IslandApi {
-    /**
-     * 小米超级岛展开配置
-     * @param BigIslandData 大岛数据
-     * @param SmallIslandData 小岛数据
-     * @param islandPriority 优先级
-     * @param islandProperty 优先级
-     * */
-    fun islandData(
-        BigIslandData: JSONObject,
-        SmallIslandData: JSONObject,
-        islandPriority:Int = 1,
-        islandProperty:Int = 1,
-    ): JSONObject {
-        val json = JSONObject()
-        json.put("islandPriority",islandPriority)
-        json.put("islandProperty",islandProperty)
-        json.put("bigIsland",BigIslandData)
-        json.put("smallIsland",SmallIslandData)
-        return json
-    }
-
     /**
      * 小米超级岛之音乐岛分享配置
      * @param addpic 添加图标
@@ -149,40 +128,12 @@ object IslandApi {
         return json
     }
 
-
-    /**
-     * 小米超级岛时间信息
-     * @param timerType 时间类型
-     * @param timerTotal 总时间
-     * @param timerWhen 剩余时间
-     * @param timerSystemCurrent 系统时间
-     * */
-    fun TimerInfo(
-        timerType: Int = -1,
-        timerTotal:Long? = null,
-        timerWhen: Long? = null,
-        timerSystemCurrent: Long? = null,
-    ): JSONObject {
-        val timerInfo = JSONObject()
-        timerInfo.put("timerType", timerType)
-        if (timerTotal != null){
-            timerInfo.put("timerTotal", timerTotal)
-        }
-        if (timerWhen != null){
-            timerInfo.put("timerWhen", timerWhen)
-        }
-        if (timerSystemCurrent != null){
-            timerInfo.put("timerSystemCurrent", timerSystemCurrent)
-        }
-
-        return timerInfo
-    }
-
     /**
      * 小米超级岛文字信息
      * @param content 内容
+     * @param narrowFont 窄字体启用
      * @param frontTitle 前置标题
-     * @param showHighlightColor 是否显示高亮颜色
+     * @param showHighlightColor 是否显示强调颜色
      * @param turnAnim 动画开关
      * @param isTitleDigit 是否数字
      * @param title 标题
@@ -191,6 +142,7 @@ object IslandApi {
         content: String? = null,
         frontTitle: String? = null,
         showHighlightColor: Boolean = false,
+        narrowFont: Boolean = false,
         turnAnim: Boolean = true,
         isTitleDigit: Boolean = false,
         title: String,
@@ -198,6 +150,7 @@ object IslandApi {
         val json = JSONObject()
         content?.let { json.put("content", it) }
         frontTitle.let{ json.put("frontTitle",it) }
+        json.put("narrowFont", narrowFont)
         json.put("showHighlightColor",showHighlightColor)
         json.put("turnAnim",turnAnim)
         json.put("isTitleDigit",isTitleDigit)
@@ -207,7 +160,7 @@ object IslandApi {
     }
 
     /**
-     * 小米超级岛固定宽度信息
+     * 小米超级岛等宽数字⽂本组件：
      * @param content 内容
      * @param digit 数字
      * @param timeInfo 时间信息 如果单使用这个请不要传 digit
@@ -304,7 +257,7 @@ object IslandApi {
      * 小米超级岛进度信息
      * @param colorReach 进度颜色
      * @param colorUnReach 未完成进度颜色
-     * @param isCCW 是否顺时针
+     * @param isCCW 是否顺时针， False - 0 度为起始位置（默认值，3点钟⽅向），True - 270 度为起始位置（
      * @param progress 进度
      * */
     fun progressInfo(
@@ -323,7 +276,7 @@ object IslandApi {
 
 
     /**
-     * 小米超级岛固定宽度信息
+     * 小米超级岛定宽数字⽂本组件
      * @param content 内容
      * @param digit 数字，只能最多传3个数字并且只能有一个小数点
      * @param showHighlightColor 是否显示高亮颜色
@@ -365,7 +318,7 @@ object IslandApi {
      * 小米超级岛，图片和文字配置
      * @param picInfo 图片信息
      * @param textInfo 文字信息
-     * @param type 标识 left为 1 right 为 2 ~ 5
+     * @param type 标识 left为 1 right 为 2
      * @param progressInfo 进度信息
      * */
     fun imageTextInfo(
@@ -410,24 +363,6 @@ object IslandApi {
         sameWidthDigitInfo?.let { json.put("sameWidthDigitInfo", it) }
         textInfo?.let { json.put("textInfo", it) }
         return json
-    }
-
-
-    fun bigIslandData(
-        firstTitle: String,
-        pic:String? = null,
-        secondTitle: String? = null,
-    ): JSONObject {
-        val json = JSONObject()
-        json.put("firstTitle",firstTitle)
-        if (pic != null){
-            json.put("pic",pic)
-        }
-        if (secondTitle != null){
-            json.put("secondTitle",secondTitle)
-        }
-        return json
-
     }
 
 }

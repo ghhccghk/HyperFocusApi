@@ -41,13 +41,13 @@ object FocusApi {
      * @param content 焦点通知小标题
      * @param aodTitle aodTitle 息屏标题
      * @param aodPic aodPic 息屏图标
-     * @param picbgtype 背景标志 未知 1~2 可用
      * @param  picInfotype 焦点通知右边标志 未知 1~4 可用 不可跟按钮使用
      * 图标要是对应不上反一下 这个我之前测试有点问题
      * @param picticker 焦点在状态栏图标浅色
      * @param pictickerdark 焦点在状态栏图标深色
      * @param picbg 焦点通知背景，留空为默认背景
-     * @param picbgtype 背景标志 未知
+     * @param picbgtype 焦点通知背景图的效果的type：1 :全屏（默认） 2: 右侧
+     * @param
      * @param picInfo 焦点通知右边图标 不可跟按钮使用
      * @param protocol 控制版本 默认即可
      * @param updatable 焦点通知是否还要更新
@@ -91,6 +91,8 @@ object FocusApi {
         outEffectColor:String? = null,
         outEffectSrc:String? = null,
         reopen: String? = null,
+        colorBg: String? = null,
+
 
         picticker: Icon,
         pictickerdark: Icon? = null,
@@ -158,14 +160,18 @@ object FocusApi {
                 "miui.focus.pic_ticker_dark", pictickerdark
             )
         }
-        if (picbg != null) {
+        if (picbg != null || colorBg != null) {
             val bgInfo = JSONObject()
+            picbg?.let {
+                bgInfo.put("picBg", "miui.focus.pic_bg")
+                pics.putParcelable(
+                    "miui.focus.pic_bg", it
+                )
+            }
             bgInfo.put("type", picbgtype)
-            bgInfo.put("picBg", "miui.focus.pic_bg")
+            colorBg?.let { bgInfo.put("colorBg", it) }
             paramv2.put("bgInfo", bgInfo)
-            pics.putParcelable(
-                "miui.focus.pic_bg", picbg
-            )
+
         }
 
         if (picInfo != null) {
@@ -866,7 +872,8 @@ object FocusApi {
     }
     /**
      * 动画信息，os3新增
-     * @param timerInfo 时间信息
+     * 主要文本 计时信息 (⼆选⼀)
+     * @param timerInfo 计时信息
      * @param title 主要文本
      * @param content 次要文本
      * @param colorContentDark 次要文本颜色深色
@@ -1027,5 +1034,47 @@ object FocusApi {
         highlightInfoV3.put("showSecondaryLine", showSecondaryLine)
 
         return highlightInfoV3
+    }
+
+    /**
+     * iconTextInfo,os3添加
+     * @param animIconInfo 图片信息
+     * @param content 辅助文本 1
+     * @param title 强调文本
+     * @param subContent 辅助文本 2
+     * @param colorSubContent 辅助文本 2 颜色
+     * @param colorSubContentDark 辅助文本 2 深色颜色
+     * @param colorContent 辅助文本 1颜色
+     * @param colorContentDark 辅助文本 1深色颜色
+     * @param colorTitle 强调文本颜色
+     * @param colorTitleDark 强调文本深色颜色
+     * @return JSONObject
+     * */
+    fun iconTextInfo(
+        title: String,
+        content: String,
+        subContent: String,
+        animIconInfo: JSONObject,
+        colorSubContent: String? = null,
+        colorSubContentDark: String? = null,
+        colorContent: String? = null,
+        colorContentDark: String? = null,
+        colorTitle: String? = null,
+        colorTitleDark: String? = null,
+
+        ): JSONObject {
+        val iconTextObject = JSONObject()
+        iconTextObject.put("title", title)
+        iconTextObject.put("subContent", subContent)
+        iconTextObject.put("content", content)
+        iconTextObject.put("animIconInfo", animIconInfo)
+        colorTitle?.let { iconTextObject.put("colorTitle", it) }
+        colorTitleDark?.let { iconTextObject.put("colorTitleDark", it) }
+        colorSubContent?.let { iconTextObject.put("colorSubContent", it) }
+        colorSubContentDark?.let { iconTextObject.put("colorSubContentDark", it) }
+        colorContent?.let { iconTextObject.put("colorContent", it) }
+        colorContentDark?.let { iconTextObject.put("colorContentDark", it) }
+
+        return iconTextObject
     }
 }
