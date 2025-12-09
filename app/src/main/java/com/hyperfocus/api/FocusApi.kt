@@ -1,12 +1,17 @@
 package com.hyperfocus.api
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.widget.RemoteViews
+import com.hyperfocus.api.utils.PropUtils.getProp
 import org.json.JSONArray
 import org.json.JSONObject
+
 
 @Suppress("unused")
 /**
@@ -1076,5 +1081,45 @@ object FocusApi {
         colorContentDark?.let { iconTextObject.put("colorContentDark", it) }
 
         return iconTextObject
+    }
+
+    /**
+     * 是否支持小米超级岛*/
+    fun isSupportIsland(): Boolean {
+        return getProp("persist.sys.feature.island", false)
+    }
+
+    /**
+     * @param context 上下文
+     * @return 返回值含义:
+     *  1:支持 OS1 版本焦点通知模板
+     *
+     *  2:支持 OS2 版本焦点通知模板
+     *
+     *  3:支持 OS3 版本小米超级岛通知模板
+     */
+    fun focusProtocolVersion(context: Context): Int {
+        return Settings.System.getInt(context.contentResolver, "notification_focus_protocol", 0);
+    }
+
+    /**
+     * 是否有焦点权限
+     * @param ctx 上下文 耗时操作
+     * @return OS1之前无焦点通知功能的版本，返回false
+     * OS1 OS2 OS3上，焦点通知权限关闭时，返回false,焦点通知权限打开时，返回true*/
+    fun hasFocusPermission(ctx: Context): Boolean {
+        var canShowFocus = false
+        try {
+            val uri = Uri.parse("content://miui.statusbar.notification.public")
+            val extras = Bundle()
+            extras.putString("package", ctx.packageName)
+            val bundle = ctx.contentResolver.call(uri, "canShowFocus", null, extras)
+            canShowFocus = bundle?.getBoolean("canShowFocus", false) ?: false
+        } catch (e: Exception) {
+            Log.d("hasFocusPermission", e.toString())
+        }
+        return canShowFocus
+
+
     }
 }
