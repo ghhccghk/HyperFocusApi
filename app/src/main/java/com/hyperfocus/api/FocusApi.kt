@@ -1091,22 +1091,21 @@ object FocusApi {
 
     /**
      * @param context 上下文
-     * @return 返回值含义:
-     *  1:支持 OS1 版本焦点通知模板
-     *
-     *  2:支持 OS2 版本焦点通知模板
-     *
-     *  3:支持 OS3 版本小米超级岛通知模板
+     * @return
+     * - `1` 支持 OS1 版本焦点通知模板
+     * - `2` 支持 OS2 版本焦点通知模板
+     * - `3` 支持 OS3 版本小米超级岛通知模板
      */
     fun focusProtocolVersion(context: Context): Int {
         return Settings.System.getInt(context.contentResolver, "notification_focus_protocol", 0);
     }
 
     /**
-     * 是否有焦点权限
-     * @param ctx 上下文 耗时操作
-     * @return OS1之前无焦点通知功能的版本，返回false
-     * OS1 OS2 OS3上，焦点通知权限关闭时，返回false,焦点通知权限打开时，返回true*/
+     * 是否有焦点权限 耗时操作
+     * @param ctx 上下文
+     * @return
+     * - `false` OS1之前无焦点通知功能的版本，焦点通知权限关闭时,
+     * - `true` 焦点通知权限打开时*/
     fun hasFocusPermission(ctx: Context): Boolean {
         var canShowFocus = false
         try {
