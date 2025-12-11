@@ -16,6 +16,10 @@
 
  * Copyright (C) 2023-2025 HyperCeiler Contributions
  */
+
+/*
+ * 这里复用了 HyperCeilier 的代码，已经经过原作者同意,这里复用的代码不会带有GPL3传染性，商业使用请保留本项目的开源地址
+ * */
 package com.hyperfocus.api.utils;
 
 import android.util.Log;
