@@ -1,6 +1,10 @@
-![](https://socialify.git.ci/ghhccghk/HyperFocusApi/image?description=1&descriptionEditable=把小米澎湃的焦点通知和灵动岛写成Api方便调用&language=1&name=1&owner=1&theme=Auto)
+![](https://socialify.git.ci/ghhccghk/HyperFocusApi/image?description=1&descriptionEditable=把小米澎湃的焦点通知和灵动岛写成Api方便调用，并将关键通知以特殊样式展示&language=1&name=1&owner=1&theme=Auto)
 
 [![](https://jitpack.io/v/ghhccghk/HyperFocusApi.svg)](https://jitpack.io/#ghhccghk/HyperFocusApi)
+
+注：澎湃 OS 对于焦点通知有白名单应用限制，使用前请先安装无视白名单的 XP 模块。
+
+[小米官方开发指南](https://dev.mi.com/xiaomihyperos/documentation/detail?pId=2131)
 
 ### 使用方法
 
